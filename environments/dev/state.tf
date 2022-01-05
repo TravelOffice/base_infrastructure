@@ -1,12 +1,12 @@
-terraform{
-    backend "s3" {
-        bucket = "infrastructure-travel-office"
-        encrypt = true
-        key = "environments/dev/terraform.tfstate"
-        region = "ap-southeast-1"
-    }
+terraform {
+  backend "s3" {
+    bucket  = "root-infrastructure"
+    encrypt = true
+    key     = "environments/dev/terraform.tfstate"
+    region  = "ap-southeast-1"
+  }
 }
 
 provider "aws" {
-    region = "ap-southeast-1"
+  region = "ap-southeast-1"
 }

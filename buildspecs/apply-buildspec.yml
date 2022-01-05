@@ -1,0 +1,11 @@
+version: 0.2
+phases:
+  pre_build:
+    commands:
+      - chmod +x ./scripts/execute_terraform.sh
+      - ./scripts/execute_terraform.sh $BUILD_ENV init
+      - ./scripts/execute_terraform.sh $BUILD_ENV validate
+  
+  build:
+    commands:
+      - ./scripts/execute_terraform.sh $BUILD_ENV apply --auto-approve

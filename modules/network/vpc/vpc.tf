@@ -1,36 +1,32 @@
-variable "SYSTEM" {}
 variable "ENV" {}
 variable "AWS_REGION" {}
 variable "VPC_CIDR" {}
-variable "PREFIX" {
-  default = "CBCB"
-}
-variable "PRIVATE_SUBNETS" {}
-variable "PUBLIC_SUBNETS" {}
-variable "DATABASE_SUBNETS" {}
+variable "PREFIX" {}
+variable "PRIVATE_SUBNETS_CIDR" {}
+variable "PUBLIC_SUBNETS_CIDR" {}
+variable "DATABASE_SUBNETS_CIDR" {}
 
 module "VPC" {
-  source = "terraform-aws-modules/vpc/aws"
-
-  name = "${var.PREFIX}-${var.ENV}-vpc"
-  cidr = var.VPC_CIDR
-  azs             = ["${var.AWS_REGION}a", "${var.AWS_REGION}b"]
-  private_subnets = var.PRIVATE_SUBNETS
-  public_subnets  = var.PUBLIC_SUBNETS
-  database_subnets = var.DATABASE_SUBNETS
-  enable_nat_gateway = false
-  enable_dhcp_options = true
+  source               = "terraform-aws-modules/vpc/aws"
+  version              = "3.11.0"
+  name                 = "${var.ENV}-${var.PREFIX}-vpc"
+  cidr                 = var.VPC_CIDR
+  azs                  = ["${var.AWS_REGION}a", "${var.AWS_REGION}b"]
+  private_subnets      = var.PRIVATE_SUBNETS_CIDR
+  public_subnets       = var.PUBLIC_SUBNETS_CIDR
+  database_subnets     = var.DATABASE_SUBNETS_CIDR
+  enable_nat_gateway   = false
+  enable_dhcp_options  = true
   enable_dns_hostnames = true
 
   tags = {
-    Terraform   = true
-    Environment = var.ENV
-    SYSTEM = var.SYSTEM
+    Terraform = true
+    ENV       = var.ENV
   }
 }
 
 output "id" {
-  description = "The ID of the VPC"
+  description = "The ID of the Root VPC"
   value       = module.VPC.vpc_id
 }
 

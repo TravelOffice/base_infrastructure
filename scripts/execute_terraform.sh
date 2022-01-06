@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 if [ "$#" -lt 2 ]; then
   echo "Usage: $0 ENVIRONMENTNAME[ 'dev' | 'prod' ] [TERRA_FORM_COMMAND]" >&2
   exit 1
@@ -22,7 +22,7 @@ fi
 
 cd ./environments/${ENV}
 ln -sf ../../main.tf .
+ln -sf ../../output.tf .
 cd ${CUR_DIR}
 
-echo "Running terraform -chdir=./environments/${ENV} ${TF_COMAND}"
 terraform -chdir="./environments/${ENV}" ${TF_COMAND}

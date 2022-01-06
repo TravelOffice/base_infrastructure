@@ -8,3 +8,4 @@
 # lock file
 *.lock*
 environments/dev/main.tf
+environments/dev/output.tf

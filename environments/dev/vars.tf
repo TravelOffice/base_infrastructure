@@ -2,6 +2,14 @@ variable "ENV" {
   default = "dev"
 }
 
+variable "TF_VERSION" {
+  default = "1.1.3"
+}
+
+variable "BRANCH_NAME" {
+  default = "dev"
+}
+
 variable "PREFIX" {
   default = "root"
 }
@@ -15,13 +23,17 @@ variable "VPC_CIDR" {
 }
 
 variable "PUBLIC_SUBNETS_CIDR" {
-  default = ["10.9.0.0/28", "10.9.0.32/28"]
+  default = ["10.9.0.192/28", "10.9.0.224/28"]
 }
 
 variable "PRIVATE_SUBNETS_CIDR" {
-  default = ["10.9.0.64/28", "10.9.0.96/28"]
+  default = ["10.9.0.0/28", "10.9.0.32/28", "10.9.0.64/28", "10.9.0.96/28"]
 }
 
 variable "DATABASE_SUBNETS_CIDR" {
   default = ["10.9.0.128/28", "10.9.0.160/28"]
+}
+
+variable "CODESTAR_CONNECTOR_CREDENTIALS" {
+  default = "arn:aws:codestar-connections:ap-southeast-1:249593777629:connection/f7623ad7-387d-4abc-ae08-7b83cd464851"
 }

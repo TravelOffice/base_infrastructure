@@ -21,9 +21,10 @@ variable "CODESTAR_CONNECTOR_CREDENTIALS" {
 variable "CODEPIPELINE_BUCKET" {}
 
 variable "TF_BUCKET" {}
+variable "TF_LOG" {}
 
 resource "aws_codebuild_project" "tf_cicd_download" {
-  name         = "${var.ENV}-backend-cicd-download"
+  name         = "${var.ENV}-marketing-cicd-download"
   description  = "Download stage for backend"
   service_role = var.CODEBUILD_ROLE_ARN
 
@@ -47,6 +48,18 @@ resource "aws_codebuild_project" "tf_cicd_download" {
       value = var.TF_VERSION
       type  = "PLAINTEXT"
     }
+
+    environment_variable {
+      name  = "TF_BUCKET"
+      value = var.TF_BUCKET
+      type  = "PLAINTEXT"
+    }
+
+    environment_variable {
+      name  = "TF_LOG"
+      value = var.TF_LOG
+      type  = "PLAINTEXT"
+    }
   }
   source {
     type      = "CODEPIPELINE"
@@ -55,8 +68,8 @@ resource "aws_codebuild_project" "tf_cicd_download" {
 }
 
 resource "aws_codebuild_project" "tf_cicd_plan" {
-  name         = "${var.ENV}-backend-cicd-plan"
-  description  = "Plan stage for backend"
+  name         = "${var.ENV}-marketing-cicd-plan"
+  description  = "Plan stage for marketing project"
   service_role = var.CODEBUILD_ROLE_ARN
 
   artifacts {
@@ -84,6 +97,12 @@ resource "aws_codebuild_project" "tf_cicd_plan" {
     environment_variable {
       name  = "TF_VERSION"
       value = var.TF_VERSION
+      type  = "PLAINTEXT"
+    }
+
+    environment_variable {
+      name  = "TF_LOG"
+      value = var.TF_LOG
       type  = "PLAINTEXT"
     }
   }
@@ -94,8 +113,8 @@ resource "aws_codebuild_project" "tf_cicd_plan" {
 }
 
 resource "aws_codebuild_project" "tf_cicd_apply" {
-  name         = "${var.ENV}-backend-cicd-apply"
-  description  = "Apply stage for terraform"
+  name         = "${var.ENV}-marketing-cicd-apply"
+  description  = "Apply stage for marketing project"
   service_role = var.CODEBUILD_ROLE_ARN
 
   artifacts {
@@ -123,6 +142,12 @@ resource "aws_codebuild_project" "tf_cicd_apply" {
     environment_variable {
       name  = "TF_VERSION"
       value = var.TF_VERSION
+      type  = "PLAINTEXT"
+    }
+
+    environment_variable {
+      name  = "TF_LOG"
+      value = var.TF_LOG
       type  = "PLAINTEXT"
     }
   }
@@ -135,7 +160,7 @@ resource "aws_codebuild_project" "tf_cicd_apply" {
 
 resource "aws_codepipeline" "tf_cicd_pipeline" {
 
-  name     = "${var.ENV}-backend-cicd-pipeline"
+  name     = "${var.ENV}-marketing-cicd-pipeline"
   role_arn = var.CODEPIPELINE_ROLE_ARN
 
   artifact_store {
@@ -153,7 +178,7 @@ resource "aws_codepipeline" "tf_cicd_pipeline" {
       version          = "1"
       output_artifacts = ["tf-code"]
       configuration = {
-        FullRepositoryId     = "TravelOffice/backend"
+        FullRepositoryId     = "TravelOffice/marketing_backend"
         BranchName           = var.BRANCH_NAME
         ConnectionArn        = var.CODESTAR_CONNECTOR_CREDENTIALS
         OutputArtifactFormat = "CODE_ZIP"

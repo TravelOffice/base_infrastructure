@@ -2,9 +2,18 @@ variable "ENV" {
   default = "prod"
 }
 
+variable "TF_VERSION" {
+  default = "1.1.3"
+}
+
+variable "TF_LOG" {
+  default = "TRACE"
+}
+
 variable "BRANCH_NAME" {
   default = "master"
 }
+
 variable "PREFIX" {
   default = "root"
 }
@@ -26,9 +35,17 @@ variable "PRIVATE_SUBNETS_CIDR" {
 }
 
 variable "DATABASE_SUBNETS_CIDR" {
-  default = ["10.10.0.128/28", "10.10.0.160/28"]
+  default = ["10.9.0.128/28", "10.9.0.160/28"]
 }
 
 variable "CODESTAR_CONNECTOR_CREDENTIALS" {
   default = "arn:aws:codestar-connections:ap-southeast-1:249593777629:connection/f7623ad7-387d-4abc-ae08-7b83cd464851"
+}
+
+variable "TF_BUCKET" {
+  default = "terraform-state20220108143755951900000001"
+}
+
+variable "CODEPIPELINE_BUCKET" {
+  default = "codepipeline-artifacts20220108172710412300000001"
 }

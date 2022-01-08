@@ -1,4 +1,4 @@
-module "ROOT_VPC" {
+module "marketing_vpc" {
   source                = "../../modules/network/vpc"
   ENV                   = var.ENV
   PREFIX                = var.PREFIX
@@ -9,9 +9,12 @@ module "ROOT_VPC" {
   DATABASE_SUBNETS_CIDR = var.DATABASE_SUBNETS_CIDR
 }
 
-module "BACKEND_PIPELINE" {
-  source      = "../../modules/cicd/backend"
-  ENV         = var.ENV
+module "marketting_backend_pipeline" {
+  source                          = "../../modules/cicd/marketing/backend"
+  ENV                             = var.ENV
   BRANCH_NAME = var.BRANCH_NAME
-  CODESTAR_CONNECTOR_CREDENTIALS = var.CODESTAR_CONNECTOR_CREDENTIALS
+  CODESTAR_CONNECTOR_CREDENTIALS  = var.CODESTAR_CONNECTOR_CREDENTIALS
+  TF_BUCKET                       = var.TF_BUCKET
+  TF_LOG                          = var.TF_LOG
+  CODEPIPELINE_BUCKET             = var.CODEPIPELINE_BUCKET
 }

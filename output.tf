@@ -1,15 +1,15 @@
-output "vpc_id" {
-  value = module.ROOT_VPC.id
+output "marketing_vpc_id" {
+  value = module.marketing_vpc.id
 }
 
-output "public_subnets" {
-    value = module.ROOT_VPC.public_subnets
+output "marketing_public_subnets" {
+    value = module.marketing_vpc.public_subnets
 }
 
-output "private_subnets" {
-    value = module.ROOT_VPC.private_subnets
+output "marketing_private_subnets" {
+    value = module.marketing_vpc.private_subnets
 }
 
-output "database_subnets" {
-    value = module.ROOT_VPC.database_subnets
+output "marketing_database_subnets" {
+    value = module.marketing_vpc.database_subnets
 }

@@ -14,9 +14,9 @@ variable "CODEBUILD_ROLE_ARN" {}
 
 variable "CODEPIPELINE_ROLE_ARN" {}
 
-variable "CODESTAR_CONNECTOR_CREDENTIALS" {
-  type = string
-}
+variable "CODESTAR_CONNECTOR_CREDENTIALS" {}
+
+variable "GITHUB_REPO" {}
 
 variable "CODEPIPELINE_BUCKET" {}
 
@@ -178,7 +178,7 @@ resource "aws_codepipeline" "tf_cicd_pipeline" {
       version          = "1"
       output_artifacts = ["tf-code"]
       configuration = {
-        FullRepositoryId     = "TravelOffice/marketing_backend"
+        FullRepositoryId     = var.GITHUB_REPO
         BranchName           = var.BRANCH_NAME
         ConnectionArn        = var.CODESTAR_CONNECTOR_CREDENTIALS
         OutputArtifactFormat = "CODE_ZIP"

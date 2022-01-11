@@ -4,6 +4,7 @@ variable "CODESTAR_CONNECTOR_CREDENTIALS" {}
 variable "TF_BUCKET" {}
 variable "TF_LOG" {}
 variable "CODEPIPELINE_BUCKET" {}
+variable "GITHUB_REPO" {}
 
 module "IAM" {
   source = "../../iam"
@@ -21,4 +22,5 @@ module "PIPELINE" {
   CODEPIPELINE_BUCKET            = var.CODEPIPELINE_BUCKET
   TF_BUCKET                      = var.TF_BUCKET
   TF_LOG                         = var.TF_LOG
+  GITHUB_REPO                    = var.GITHUB_REPO
 }

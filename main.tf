@@ -10,12 +10,21 @@ module "marketing_vpc" {
 }
 
 module "marketing_backend_pipeline" {
-  source                          = "../../modules/cicd/marketing/backend"
-  ENV                             = var.ENV
-  BRANCH_NAME                     = var.BRANCH_NAME
-  CODESTAR_CONNECTOR_CREDENTIALS  = var.CODESTAR_CONNECTOR_CREDENTIALS
-  TF_BUCKET                       = var.TF_BUCKET
-  TF_LOG                          = var.TF_LOG
-  CODEPIPELINE_BUCKET             = var.CODEPIPELINE_BUCKET
-  GITHUB_REPO                     = "TravelOffice/marketing_backend"
+  source                         = "../../modules/cicd/marketing/backend"
+  ENV                            = var.ENV
+  BRANCH_NAME                    = var.BRANCH_NAME
+  CODESTAR_CONNECTOR_CREDENTIALS = var.CODESTAR_CONNECTOR_CREDENTIALS
+  TF_BUCKET                      = var.TF_BUCKET
+  TF_LOG                         = var.TF_LOG
+  CODEPIPELINE_BUCKET            = var.CODEPIPELINE_BUCKET
+  GITHUB_REPO                    = "TravelOffice/marketing_backend"
+}
+
+module "marketing_postgresql" {
+  source  = "../../modules/database/aurora/postgresql"
+  ENV     = var.ENV
+  VPC_ID  = module.marketing_vpc.id
+  DATABASE_SUBNETS = module.marketing_vpc.database_subnets
+  ALLOWED_CIDR_BLOCKS = []
+  FEATURE_NAME    = "marketing"
 }

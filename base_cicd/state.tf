@@ -3,7 +3,7 @@ terraform {
     bucket  = "terraform-state20220108143755951900000001"
     encrypt = true
     /* key     = "common/environments/${var.ENV}/terraform.tfstate" */
-    region  = "ap-southeast-1"
+    region = "ap-southeast-1"
   }
 }
 

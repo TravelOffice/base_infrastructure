@@ -1,15 +1,16 @@
 variable "ENV" {}
 variable "AWS_REGION" {}
 variable "VPC_CIDR" {}
-variable "PREFIX" {}
+variable "FEATURE_NAME" {}
 variable "PRIVATE_SUBNETS_CIDR" {}
 variable "PUBLIC_SUBNETS_CIDR" {}
 variable "DATABASE_SUBNETS_CIDR" {}
+variable "TAGS" {}
 
 module "VPC" {
   source               = "terraform-aws-modules/vpc/aws"
   version              = "3.11.0"
-  name                 = "${var.ENV}-${var.PREFIX}-vpc"
+  name                 = "${var.ENV}-${var.FEATURE_NAME}-vpc"
   cidr                 = var.VPC_CIDR
   azs                  = ["${var.AWS_REGION}a", "${var.AWS_REGION}b"]
   private_subnets      = var.PRIVATE_SUBNETS_CIDR
@@ -19,14 +20,11 @@ module "VPC" {
   enable_dhcp_options  = true
   enable_dns_hostnames = true
 
-  tags = {
-    Terraform = true
-    ENV       = var.ENV
-  }
+  tags = var.TAGS
 }
 
 output "id" {
-  description = "The ID of the Root VPC"
+  description = "The ID of the VPC"
   value       = module.VPC.vpc_id
 }
 

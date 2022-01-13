@@ -49,3 +49,7 @@ variable "TF_BUCKET" {
 variable "CODEPIPELINE_BUCKET" {
   default = "codepipeline-artifacts20220108172710412300000001"
 }
+
+variable "RDS_USERNAME" {
+  default = "admin_account"
+}

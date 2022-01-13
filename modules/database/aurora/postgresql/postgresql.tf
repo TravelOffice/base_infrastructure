@@ -15,10 +15,6 @@ variable "VPC_ID" {
 variable "DATABASE_SUBNETS" {
   type = list(any)
 }
-variable "ALLOWED_SECURITY_GROUPS" {
-  type    = list(any)
-  default = []
-}
 variable "ALLOWED_CIDR_BLOCKS" {
   type = list(any)
 }
@@ -29,15 +25,23 @@ variable "ENGINE" {
   default = "aurora-postgresql"
 }
 variable "INSTANCES" {
-  type    = map(any)
-  default = {}
+  type = map(any)
+  default = {
+    master = {}
+  }
 }
 variable "MONITORING_INTERVAL" {
   default = 60
 }
 variable "LOG_TYPES" {
-    default = "postgresql"
+  default = "postgresql"
 }
+variable "USERNAME" {}
+variable "DATABASE_NAME" {}
+variable "RANDOM_PASSWORD_LENGTH" {
+  default = 32
+}
+variable "TAGS" {}
 
 module "cluster" {
   source = "terraform-aws-modules/rds-aurora/aws"
@@ -51,8 +55,7 @@ module "cluster" {
   vpc_id  = var.VPC_ID
   subnets = var.DATABASE_SUBNETS
 
-  allowed_security_groups = ["sg-12345678"]
-  allowed_cidr_blocks     = ["10.20.0.0/20"]
+  allowed_cidr_blocks = var.ALLOWED_CIDR_BLOCKS
 
   storage_encrypted   = true
   apply_immediately   = true
@@ -63,23 +66,40 @@ module "cluster" {
 
   enabled_cloudwatch_logs_exports = [var.LOG_TYPES]
 
-  tags = {
-    Environment = var.ENV
-    Feature     = var.FEATURE_NAME
-    Terraform   = "true"
-  }
+  master_username        = var.USERNAME
+  random_password_length = var.RANDOM_PASSWORD_LENGTH
+
+  database_name = var.DATABASE_NAME
+
+  tags = var.TAGS
 }
 
 resource "aws_db_parameter_group" "postgresql" {
   name        = "${var.ENV}-${var.FEATURE_NAME}-aurora-db-postgres-parameter-group"
   family      = "aurora-postgresql13"
   description = "${var.ENV}-${var.FEATURE_NAME}-aurora-db-postgres-parameter-group"
-#   tags        = local.tags
+  tags        = var.TAGS
 }
 
 resource "aws_rds_cluster_parameter_group" "postgresql" {
   name        = "${var.ENV}-${var.FEATURE_NAME}-aurora-postgres-cluster-parameter-group"
   family      = "aurora-postgresql13"
   description = "${var.ENV}-${var.FEATURE_NAME}-aurora-postgres-cluster-parameter-group"
-#   tags        = local.tags
+  tags        = var.TAGS
+}
+
+output "writer_endpoint" {
+  value = module.cluster.cluster_endpoint
+}
+
+output "reader_endpoint" {
+  value = module.cluster.cluster_reader_endpoint
+}
+
+output "port" {
+  value = module.cluster.cluster_port
+}
+
+output "cluster_password" {
+  value = module.cluster.cluster_master_password
 }

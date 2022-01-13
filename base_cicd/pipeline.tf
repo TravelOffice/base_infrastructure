@@ -143,12 +143,12 @@ resource "aws_codepipeline" "tf_cicd_pipeline" {
   stage {
     name = "Apply"
     action {
-      name            = "Apply"
-      category        = "Build"
-      provider        = "CodeBuild"
-      version         = "1"
-      owner           = "AWS"
-      input_artifacts = ["tf_code"]
+      name             = "Apply"
+      category         = "Build"
+      provider         = "CodeBuild"
+      version          = "1"
+      owner            = "AWS"
+      input_artifacts  = ["tf_code"]
       output_artifacts = ["tf_apply"]
       configuration = {
         ProjectName = aws_codebuild_project.cicd_apply.name
@@ -168,7 +168,7 @@ resource "aws_codepipeline" "tf_cicd_pipeline" {
       configuration = {
         BucketName = var.CODEPIPELINE_BUCKET,
         Extract    = true
-        ObjectKey = "output-vars/${var.ENV}",
+        ObjectKey  = "output-vars/${var.ENV}",
       }
     }
   }

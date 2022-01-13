@@ -22,6 +22,7 @@ variable "CODEPIPELINE_BUCKET" {}
 
 variable "TF_BUCKET" {}
 variable "TF_LOG" {}
+variable "TAGS" {}
 
 resource "aws_codebuild_project" "tf_cicd_download" {
   name         = "${var.ENV}-marketing-cicd-download"
@@ -65,6 +66,8 @@ resource "aws_codebuild_project" "tf_cicd_download" {
     type      = "CODEPIPELINE"
     buildspec = "buildspecs/download-buildspec.yml"
   }
+
+  tags = var.TAGS
 }
 
 resource "aws_codebuild_project" "tf_cicd_plan" {
@@ -110,6 +113,8 @@ resource "aws_codebuild_project" "tf_cicd_plan" {
     type      = "CODEPIPELINE"
     buildspec = "buildspecs/plan-buildspec.yml"
   }
+
+  tags = var.TAGS
 }
 
 resource "aws_codebuild_project" "tf_cicd_apply" {
@@ -155,6 +160,8 @@ resource "aws_codebuild_project" "tf_cicd_apply" {
     type      = "CODEPIPELINE"
     buildspec = "buildspecs/apply-buildspec.yml"
   }
+
+  tags = var.TAGS
 }
 
 
@@ -189,12 +196,12 @@ resource "aws_codepipeline" "tf_cicd_pipeline" {
   stage {
     name = "Download"
     action {
-      name            = "Download"
-      category        = "Build"
-      provider        = "CodeBuild"
-      version         = "1"
-      owner           = "AWS"
-      input_artifacts = ["tf-code"]
+      name             = "Download"
+      category         = "Build"
+      provider         = "CodeBuild"
+      version          = "1"
+      owner            = "AWS"
+      input_artifacts  = ["tf-code"]
       output_artifacts = ["tf-code-with-var"]
       configuration = {
         ProjectName = aws_codebuild_project.tf_cicd_download.name

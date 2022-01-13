@@ -5,10 +5,12 @@ variable "TF_BUCKET" {}
 variable "TF_LOG" {}
 variable "CODEPIPELINE_BUCKET" {}
 variable "GITHUB_REPO" {}
+variable "TAGS" {}
 
 module "IAM" {
   source = "../../iam"
   ENV    = var.ENV
+  TAGS   = var.TAGS
 }
 
 
@@ -23,4 +25,5 @@ module "PIPELINE" {
   TF_BUCKET                      = var.TF_BUCKET
   TF_LOG                         = var.TF_LOG
   GITHUB_REPO                    = var.GITHUB_REPO
+  TAGS                           = var.TAGS
 }

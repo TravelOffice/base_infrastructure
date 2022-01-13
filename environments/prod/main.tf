@@ -10,8 +10,8 @@ module "ROOT_VPC" {
 }
 
 module "BACKEND_PIPELINE" {
-  source      = "../../modules/cicd/backend"
-  ENV         = var.ENV
-  BRANCH_NAME = var.BRANCH_NAME
+  source                         = "../../modules/cicd/backend"
+  ENV                            = var.ENV
+  BRANCH_NAME                    = var.BRANCH_NAME
   CODESTAR_CONNECTOR_CREDENTIALS = var.CODESTAR_CONNECTOR_CREDENTIALS
 }

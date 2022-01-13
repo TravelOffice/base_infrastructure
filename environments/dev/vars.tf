@@ -14,10 +14,6 @@ variable "BRANCH_NAME" {
   default = "dev"
 }
 
-variable "PREFIX" {
-  default = "root"
-}
-
 variable "AWS_REGION" {
   default = "ap-southeast-1"
 }
@@ -48,4 +44,8 @@ variable "TF_BUCKET" {
 
 variable "CODEPIPELINE_BUCKET" {
   default = "codepipeline-artifacts20220108172710412300000001"
+}
+
+variable "RDS_USERNAME" {
+  default = "admin_account"
 }

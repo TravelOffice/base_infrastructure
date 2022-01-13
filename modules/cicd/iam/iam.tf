@@ -1,8 +1,8 @@
 variable "ENV" {}
-
+variable "TAGS" {}
 resource "aws_iam_role" "codepipeline_role" {
-  name_prefix = "${var.ENV}-base-codepipeline-role"
-
+  name_prefix        = "${var.ENV}-base-codepipeline-role"
+  tags               = var.TAGS
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -41,6 +41,7 @@ resource "aws_iam_policy" "cicd_pipeline_policy" {
   path        = "/"
   description = "Pipeline policy"
   policy      = data.aws_iam_policy_document.cicd_pipeline_policies.json
+  tags        = var.TAGS
 }
 
 resource "aws_iam_role_policy_attachment" "tf-cicd-pipeline-attachment" {

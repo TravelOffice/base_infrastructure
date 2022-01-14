@@ -21,3 +21,7 @@ output "AWS_REGION" {
 output "CODESTAR_CONNECTOR_CREDENTIALS" {
   value = "arn:aws:codestar-connections:ap-southeast-1:249593777629:connection/f7623ad7-387d-4abc-ae08-7b83cd464851"
 }
+
+output "SECRET_MANAGER_READ_POLICY" {
+  value = module.policies_document.secret_manager_read_policy
+}

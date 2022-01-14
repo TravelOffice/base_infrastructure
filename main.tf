@@ -1,8 +1,8 @@
 locals {
   marketing_tags = {
-    env       = var.ENV
-    terraform = true
-    feature   = "marketing"
+    Env       = var.ENV
+    Terraform = true
+    Feature   = "marketing" 
   }
 }
 
@@ -47,11 +47,11 @@ module "marketing_secret_manager" {
   ENV          = var.ENV
   FEATURE_NAME = "marketing"
   STORE_DATA = {
-    "RDS_WRITER_ENDPOINT" = module.marketing_postgresql.writer_endpoint,
-    "RDS_READER_ENDPOINT" = module.marketing_postgresql.reader_endpoint,
+    "RDS_WRITER_ENDPOINT" = module.marketing_postgresql.writer_endpoint
+    "RDS_READER_ENDPOINT" = module.marketing_postgresql.reader_endpoint
     "RDS_NAME"            = "marketing"
-    "RDS_PORT"            = module.marketing_postgresql.port,
-    "RDS_USERNAME"        = var.RDS_USERNAME,
+    "RDS_PORT"            = module.marketing_postgresql.port
+    "RDS_USERNAME"        = var.RDS_USERNAME
     "RDS_PASSWORD"        = module.marketing_postgresql.cluster_password
   }
   TAGS = local.marketing_tags

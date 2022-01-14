@@ -56,4 +56,8 @@ module "marketing_secret_manager" {
   }
   TAGS = local.marketing_tags
 }
+
+module "policies_document" {
+  source = "../../modules/security/iam/policy_document"
+}
 # Marketing Infrastructure: END

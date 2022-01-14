@@ -51,8 +51,8 @@ resource "aws_codebuild_project" "tf_cicd_download" {
     }
 
     environment_variable {
-      name  = "TF_BUCKET"
-      value = var.TF_BUCKET
+      name  = "CODEPIPELINE_BUCKET"
+      value = var.CODEPIPELINE_BUCKET
       type  = "PLAINTEXT"
     }
 

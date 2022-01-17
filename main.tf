@@ -1,8 +1,9 @@
 locals {
+  marketing_feature_name = "marketing"
   marketing_tags = {
     Env       = var.ENV
     Terraform = true
-    Feature   = "marketing" 
+    Feature   = local.marketing_feature_name
   }
 }
 
@@ -10,7 +11,7 @@ locals {
 module "marketing_vpc" {
   source                = "../../modules/network/vpc"
   ENV                   = var.ENV
-  FEATURE_NAME          = "marketing"
+  FEATURE_NAME          = local.marketing_feature_name
   AWS_REGION            = var.AWS_REGION
   VPC_CIDR              = var.VPC_CIDR
   PUBLIC_SUBNETS_CIDR   = var.PUBLIC_SUBNETS_CIDR
@@ -36,20 +37,20 @@ module "marketing_postgresql" {
   VPC_ID              = module.marketing_vpc.id
   DATABASE_SUBNETS    = module.marketing_vpc.database_subnets
   ALLOWED_CIDR_BLOCKS = [var.VPC_CIDR]
-  FEATURE_NAME        = "marketing"
+  FEATURE_NAME        = local.marketing_feature_name
   USERNAME            = var.RDS_USERNAME
-  DATABASE_NAME       = "marketing"
+  DATABASE_NAME       = local.marketing_feature_name
   TAGS                = local.marketing_tags
 }
 
 module "marketing_secret_manager" {
   source       = "../../modules/security/secret_manager"
   ENV          = var.ENV
-  FEATURE_NAME = "marketing"
+  FEATURE_NAME = local.marketing_feature_name
   STORE_DATA = {
     "RDS_WRITER_ENDPOINT" = module.marketing_postgresql.writer_endpoint
     "RDS_READER_ENDPOINT" = module.marketing_postgresql.reader_endpoint
-    "RDS_NAME"            = "marketing"
+    "RDS_NAME"            = local.marketing_feature_name
     "RDS_PORT"            = module.marketing_postgresql.port
     "RDS_USERNAME"        = var.RDS_USERNAME
     "RDS_PASSWORD"        = module.marketing_postgresql.cluster_password
@@ -57,7 +58,11 @@ module "marketing_secret_manager" {
   TAGS = local.marketing_tags
 }
 
-module "policies_document" {
-  source = "../../modules/security/iam/policy_document"
+module "standard_lambda_iam_role" {
+  source = "../../modules/security/iam/role/lambda/standard"
+
+  TAGS         = local.marketing_tags
+  ENV          = var.ENV
+  FEATURE_NAME = local.marketing_feature_name
 }
 # Marketing Infrastructure: END

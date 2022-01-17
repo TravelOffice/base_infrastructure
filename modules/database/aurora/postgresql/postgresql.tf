@@ -44,7 +44,8 @@ variable "RANDOM_PASSWORD_LENGTH" {
 variable "TAGS" {}
 
 module "cluster" {
-  source = "terraform-aws-modules/rds-aurora/aws"
+  source  = "terraform-aws-modules/rds-aurora/aws"
+  version = "6.1.4"
 
   name           = "${var.ENV}-${var.FEATURE_NAME}-aurora-db-postgresql"
   engine         = var.ENGINE
@@ -70,6 +71,7 @@ module "cluster" {
   random_password_length = var.RANDOM_PASSWORD_LENGTH
 
   database_name = var.DATABASE_NAME
+  skip_final_snapshot = true
 
   tags = var.TAGS
 }

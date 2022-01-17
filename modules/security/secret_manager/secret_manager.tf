@@ -27,6 +27,6 @@ data "aws_secretsmanager_secret" "secrets_manager" {
   arn = aws_secretsmanager_secret.secrets_manager.arn
 }
 
-data "aws_secretsmanager_secret_version" "creds" {
-  secret_id = data.aws_secretsmanager_secret.secrets_manager.arn
+output "id" {
+  value = aws_secretsmanager_secret.secrets_manager.id
 }

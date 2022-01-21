@@ -70,7 +70,7 @@ module "cluster" {
   master_username        = var.USERNAME
   random_password_length = var.RANDOM_PASSWORD_LENGTH
 
-  database_name = var.DATABASE_NAME
+  database_name       = var.DATABASE_NAME
   skip_final_snapshot = true
 
   tags = var.TAGS

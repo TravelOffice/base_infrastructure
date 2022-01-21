@@ -57,7 +57,7 @@ resource "aws_iam_policy" "policy" {
 }
 
 resource "aws_iam_role" "role" {
-  name                = "${var.ENV}-${var.FEATURE_NAME}-secret_manager_read_only"
+  name                = "${var.ENV}-${var.FEATURE_NAME}-standard-lambda-role"
   assume_role_policy  = data.aws_iam_policy_document.lambda_assume_role_policy.json
   managed_policy_arns = [aws_iam_policy.policy.arn]
 

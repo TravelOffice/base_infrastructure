@@ -64,7 +64,7 @@ resource "aws_codebuild_project" "tf_cicd_download" {
   }
   source {
     type      = "CODEPIPELINE"
-    buildspec = "buildspecs/download-buildspec.yml"
+    buildspec = "infrastructures/buildspecs/download-buildspec.yml"
   }
 
   tags = var.TAGS
@@ -111,7 +111,7 @@ resource "aws_codebuild_project" "tf_cicd_plan" {
   }
   source {
     type      = "CODEPIPELINE"
-    buildspec = "buildspecs/plan-buildspec.yml"
+    buildspec = "infrastructures/buildspecs/plan-buildspec.yml"
   }
 
   tags = var.TAGS
@@ -158,7 +158,7 @@ resource "aws_codebuild_project" "tf_cicd_apply" {
   }
   source {
     type      = "CODEPIPELINE"
-    buildspec = "buildspecs/apply-buildspec.yml"
+    buildspec = "infrastructures/buildspecs/apply-buildspec.yml"
   }
 
   tags = var.TAGS
@@ -218,6 +218,7 @@ resource "aws_codepipeline" "tf_cicd_pipeline" {
       version         = "1"
       owner           = "AWS"
       input_artifacts = ["tf-code-with-var"]
+      output_artifacts = ["tf-code-with-plan"]
       configuration = {
         ProjectName = aws_codebuild_project.tf_cicd_plan.name
       }
@@ -232,7 +233,7 @@ resource "aws_codepipeline" "tf_cicd_pipeline" {
       provider        = "CodeBuild"
       version         = "1"
       owner           = "AWS"
-      input_artifacts = ["tf-code-with-var"]
+      input_artifacts = ["tf-code-with-plan"]
       configuration = {
         ProjectName = aws_codebuild_project.tf_cicd_apply.name
       }

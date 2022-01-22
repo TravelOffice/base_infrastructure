@@ -7,7 +7,7 @@ variable "TF_VERSION" {
 }
 
 variable "TF_LOG" {
-  default = "TRACE"
+  default = "ERROR"
 }
 
 variable "BRANCH_NAME" {

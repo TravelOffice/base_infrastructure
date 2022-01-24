@@ -11,9 +11,9 @@ variable "CODEPIPELINE_BUCKET" {
 }
 
 variable "TF_VERSION" {
-  default = "1.1.3"
+  default = "1.1.4"
 }
 
 variable "TF_LOG" {
-  default = "TRACE"
+  default = "ERROR"
 }

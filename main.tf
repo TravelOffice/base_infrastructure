@@ -25,6 +25,7 @@ module "marketing_backend_pipeline" {
   ENV                            = var.ENV
   BRANCH_NAME                    = var.BRANCH_NAME
   CODESTAR_CONNECTOR_CREDENTIALS = var.CODESTAR_CONNECTOR_CREDENTIALS
+  TF_VERSION                     = var.TF_VERSION
   TF_BUCKET                      = var.TF_BUCKET
   TF_LOG                         = var.TF_LOG
   CODEPIPELINE_BUCKET            = var.CODEPIPELINE_BUCKET

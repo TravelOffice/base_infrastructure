@@ -1,14 +1,8 @@
-variable "ENV" {
-  default = "dev"
-}
+variable "ENV" {}
 
-variable "BRANCH_NAME" {
-  default = "dev"
-}
+variable "BRANCH_NAME" {}
 
-variable "TF_VERSION" {
-  default = "1.1.3"
-}
+variable "TF_VERSION" {}
 
 variable "CODEBUILD_ROLE_ARN" {}
 

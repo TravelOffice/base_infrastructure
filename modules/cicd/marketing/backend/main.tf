@@ -2,6 +2,7 @@ variable "ENV" {}
 variable "BRANCH_NAME" {}
 variable "CODESTAR_CONNECTOR_CREDENTIALS" {}
 variable "TF_BUCKET" {}
+variable "TF_VERSION" {}
 variable "TF_LOG" {}
 variable "CODEPIPELINE_BUCKET" {}
 variable "GITHUB_REPO" {}
@@ -23,6 +24,7 @@ module "PIPELINE" {
   CODEPIPELINE_ROLE_ARN          = module.IAM.codepipeline_role_arn
   CODEPIPELINE_BUCKET            = var.CODEPIPELINE_BUCKET
   TF_BUCKET                      = var.TF_BUCKET
+  TF_VERSION                     = var.TF_VERSION
   TF_LOG                         = var.TF_LOG
   GITHUB_REPO                    = var.GITHUB_REPO
   TAGS                           = var.TAGS

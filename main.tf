@@ -41,6 +41,9 @@ module "marketing_postgresql" {
   FEATURE_NAME        = local.marketing_feature_name
   USERNAME            = var.RDS_USERNAME
   DATABASE_NAME       = local.marketing_feature_name
+  ENGINE_MODE         = var.ENV == "dev" ? "serverless" : "provisioned"
+  ENGINE_VERSION      = var.RDS_ENGINE_VERSION
+  FAMILY              = var.RDS_FAMILY
   TAGS                = local.marketing_tags
 }
 

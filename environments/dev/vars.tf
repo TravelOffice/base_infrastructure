@@ -49,3 +49,11 @@ variable "CODEPIPELINE_BUCKET" {
 variable "RDS_USERNAME" {
   default = "admin_account"
 }
+
+variable "RDS_FAMILY" {
+  default = "aurora-postgresql10"
+}
+
+variable "RDS_ENGINE_VERSION" {
+  default = "10.14"
+}

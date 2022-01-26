@@ -1,9 +1,78 @@
 variable "ENV" {}
 variable "BRANCH_NAME" {}
+locals {
+  tags = {
+    Terraform = true
+    ENV       = var.ENV
+  }
+
+  is_prod = var.ENV == "prod"
+
+  stages = [
+    {
+      name             = "Source"
+      category         = "Source"
+      owner            = "AWS"
+      provider         = "CodeStarSourceConnection"
+      version          = "1"
+      output_artifacts = ["tf_code"]
+      configuration = {
+        FullRepositoryId     = "TravelOffice/infrastructure"
+        BranchName           = var.BRANCH_NAME
+        ConnectionArn        = var.CODESTAR_CONNECTOR_CREDENTIALS
+        OutputArtifactFormat = "CODE_ZIP"
+      }
+    },
+    {
+      name            = "Plan"
+      category        = "Build"
+      provider        = "CodeBuild"
+      version         = "1"
+      owner           = "AWS"
+      input_artifacts = ["tf_code"]
+      configuration = {
+        ProjectName = aws_codebuild_project.cicd_plan.name
+      }
+    },
+    {
+      name     = "Approve"
+      category = "Approval"
+      provider = "Manual"
+      version  = "1"
+      owner    = "AWS"
+    },
+    {
+      name             = "Apply"
+      category         = "Build"
+      provider         = "CodeBuild"
+      version          = "1"
+      owner            = "AWS"
+      input_artifacts  = ["tf_code"]
+      output_artifacts = ["tf_apply"]
+      configuration = {
+        ProjectName = aws_codebuild_project.cicd_apply.name
+      }
+    },
+    {
+      name            = "UploadOutputToS3"
+      category        = "Deploy"
+      provider        = "S3"
+      version         = "1"
+      owner           = "AWS"
+      input_artifacts = ["tf_apply"]
+      configuration = {
+        BucketName = var.CODEPIPELINE_BUCKET,
+        Extract    = true
+        ObjectKey  = "output-vars/${var.ENV}",
+      }
+    }
+  ]
+}
 
 module "iam" {
   source = "../modules/cicd/iam"
   ENV    = var.ENV
+  TAGS   = local.tags
 }
 
 resource "aws_codebuild_project" "cicd_plan" {
@@ -49,6 +118,8 @@ resource "aws_codebuild_project" "cicd_plan" {
     type      = "CODEPIPELINE"
     buildspec = "buildspecs/plan-buildspec.yml"
   }
+
+  tags = local.tags
 }
 
 resource "aws_codebuild_project" "cicd_apply" {
@@ -94,6 +165,8 @@ resource "aws_codebuild_project" "cicd_apply" {
     type      = "CODEPIPELINE"
     buildspec = "buildspecs/apply-buildspec.yml"
   }
+
+  tags = local.tags
 }
 
 
@@ -107,70 +180,25 @@ resource "aws_codepipeline" "tf_cicd_pipeline" {
     location = var.CODEPIPELINE_BUCKET
   }
 
-  stage {
-    name = "Source"
-    action {
-      name             = "Source"
-      category         = "Source"
-      owner            = "AWS"
-      provider         = "CodeStarSourceConnection"
-      version          = "1"
-      output_artifacts = ["tf_code"]
-      configuration = {
-        FullRepositoryId     = "TravelOffice/infrastructure"
-        BranchName           = var.BRANCH_NAME
-        ConnectionArn        = var.CODESTAR_CONNECTOR_CREDENTIALS
-        OutputArtifactFormat = "CODE_ZIP"
+  dynamic "stage" {
+    # In dev environment, Approve stage will be ignore
+    for_each = { for key, val in local.stages :
+    key => val if local.is_prod || val.name != "Approve" }
+    content {
+      name = stage.value.name
+      action {
+        name             = stage.value.name
+        category         = stage.value.category
+        owner            = stage.value.owner
+        provider         = stage.value.provider
+        version          = stage.value.version
+        input_artifacts  = lookup(stage.value, "input_artifacts", null)
+        output_artifacts = lookup(stage.value, "output_artifacts", null)
+        configuration    = lookup(stage.value, "configuration", null)
       }
     }
+
   }
 
-  stage {
-    name = "Plan"
-    action {
-      name            = "Build"
-      category        = "Build"
-      provider        = "CodeBuild"
-      version         = "1"
-      owner           = "AWS"
-      input_artifacts = ["tf_code"]
-      configuration = {
-        ProjectName = aws_codebuild_project.cicd_plan.name
-      }
-    }
-  }
-
-  stage {
-    name = "Apply"
-    action {
-      name             = "Apply"
-      category         = "Build"
-      provider         = "CodeBuild"
-      version          = "1"
-      owner            = "AWS"
-      input_artifacts  = ["tf_code"]
-      output_artifacts = ["tf_apply"]
-      configuration = {
-        ProjectName = aws_codebuild_project.cicd_apply.name
-      }
-    }
-  }
-
-  stage {
-    name = "Upload"
-    action {
-      name            = "UploadOutputToS3"
-      category        = "Deploy"
-      provider        = "S3"
-      version         = "1"
-      owner           = "AWS"
-      input_artifacts = ["tf_apply"]
-      configuration = {
-        BucketName = var.CODEPIPELINE_BUCKET,
-        Extract    = true
-        ObjectKey  = "output-vars/${var.ENV}",
-      }
-    }
-  }
-
+  tags = local.tags
 }

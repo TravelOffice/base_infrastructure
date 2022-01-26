@@ -41,7 +41,27 @@ variable "DATABASE_NAME" {}
 variable "RANDOM_PASSWORD_LENGTH" {
   default = 32
 }
+variable "ENGINE_MODE" {
+  default = "provisioned"
+}
+variable "FAMILY" {
+  default = "aurora-postgresql13"
+}
 variable "TAGS" {}
+# Attribute for Serverless mode
+variable "MIN_CAPACITY" {
+  default = 2
+}
+variable "MAX_CAPACITY" {
+  default = 4
+}
+variable "SECONDS_UNTIL_AUTO_PAUSE" {
+  default = 300
+}
+
+locals {
+  is_serverless = var.ENGINE_MODE == "serverless"
+}
 
 module "cluster" {
   source  = "terraform-aws-modules/rds-aurora/aws"
@@ -50,8 +70,9 @@ module "cluster" {
   name           = "${var.ENV}-${var.FEATURE_NAME}-aurora-db-postgresql"
   engine         = var.ENGINE
   engine_version = var.ENGINE_VERSION
-  instance_class = var.INSTANCE_CLASS
-  instances      = var.INSTANCES
+  engine_mode    = var.ENGINE_MODE
+  instance_class = local.is_serverless ? null : var.INSTANCE_CLASS
+  instances      = local.is_serverless ? null : var.INSTANCES
 
   vpc_id  = var.VPC_ID
   subnets = var.DATABASE_SUBNETS
@@ -65,7 +86,7 @@ module "cluster" {
   db_parameter_group_name         = aws_db_parameter_group.postgresql.id
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.postgresql.id
 
-  enabled_cloudwatch_logs_exports = [var.LOG_TYPES]
+  enabled_cloudwatch_logs_exports = local.is_serverless ? null : [var.LOG_TYPES]
 
   master_username        = var.USERNAME
   random_password_length = var.RANDOM_PASSWORD_LENGTH
@@ -74,18 +95,26 @@ module "cluster" {
   skip_final_snapshot = true
 
   tags = var.TAGS
+
+  scaling_configuration = local.is_serverless ? {
+    auto_pause               = true
+    min_capacity             = var.MIN_CAPACITY
+    max_capacity             = var.MAX_CAPACITY
+    seconds_until_auto_pause = var.SECONDS_UNTIL_AUTO_PAUSE
+    timeout_action           = "ForceApplyCapacityChange"
+  } : null
 }
 
 resource "aws_db_parameter_group" "postgresql" {
   name        = "${var.ENV}-${var.FEATURE_NAME}-aurora-db-postgres-parameter-group"
-  family      = "aurora-postgresql13"
+  family      = var.FAMILY
   description = "${var.ENV}-${var.FEATURE_NAME}-aurora-db-postgres-parameter-group"
   tags        = var.TAGS
 }
 
 resource "aws_rds_cluster_parameter_group" "postgresql" {
   name        = "${var.ENV}-${var.FEATURE_NAME}-aurora-postgres-cluster-parameter-group"
-  family      = "aurora-postgresql13"
+  family      = var.FAMILY
   description = "${var.ENV}-${var.FEATURE_NAME}-aurora-postgres-cluster-parameter-group"
   tags        = var.TAGS
 }

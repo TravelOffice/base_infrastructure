@@ -206,12 +206,12 @@ resource "aws_codepipeline" "tf_cicd_pipeline" {
   stage {
     name = "Plan"
     action {
-      name            = "Build"
-      category        = "Build"
-      provider        = "CodeBuild"
-      version         = "1"
-      owner           = "AWS"
-      input_artifacts = ["tf-code-with-var"]
+      name             = "Build"
+      category         = "Build"
+      provider         = "CodeBuild"
+      version          = "1"
+      owner            = "AWS"
+      input_artifacts  = ["tf-code-with-var"]
       output_artifacts = ["tf-code-with-plan"]
       configuration = {
         ProjectName = aws_codebuild_project.tf_cicd_plan.name

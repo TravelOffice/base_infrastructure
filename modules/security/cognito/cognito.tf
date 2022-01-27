@@ -1,0 +1,58 @@
+variable "ENV" {}
+variable "FEATURE_NAME" {}
+variable "ALLOW_ADMIN_CREATE_USER_ONLY" {
+  default = false
+}
+variable "MFA_CONFIGURATION" {
+  default = "OFF"
+}
+variable "SMS_VERIFICATION_SUBJECT" {
+  default = "Your verification code is {####}."
+}
+variable "ADMIN_CREATE_USER_CONFIG_SMS_MESSAGE" {
+  default = "Your username is {username} and temporary password is {####}. If you do not log in within 7 days you'll need a new invite."
+}
+variable "SMS_AUTHENTICATION_MESSAGE" {
+  default = "Your authentication code is {####}."
+}
+variable "EMAIL_VERIFICATION_SUBJECT" {
+  default = "Your verification code"
+}
+variable "EMAIL_VERIFICATION_MESSAGE" {
+  default = "{username}, your verification code is {####}."
+}
+variable "ADMIN_CREATE_USER_CONFIG_EMAIL_MESSAGE" {
+  default = "Your username is {username} and temporary password is {####}"
+}
+variable "PASSWORD_POLICY" {
+  default = {
+    minimum_length                   = 8
+    require_lowercase                = true
+    require_numbers                  = true
+    require_symbols                  = true
+    require_uppercase                = true
+    temporary_password_validity_days = 7
+  }
+}
+variable "TAGS" {}
+
+
+module "cognito_user_pool" {
+  source                                                = "lgallard/cognito-user-pool/aws"
+  version                                               = "0.14.2"
+  user_pool_name                                        = "${var.ENV}-${var.FEATURE_NAME}-CognitoUserPool"
+  password_policy                                       = var.PASSWORD_POLICY
+  sms_verification_message                              = var.SMS_VERIFICATION_SUBJECT
+  email_verification_subject                            = var.EMAIL_VERIFICATION_SUBJECT
+  email_verification_message                            = var.EMAIL_VERIFICATION_MESSAGE
+  admin_create_user_config_email_message                = var.ADMIN_CREATE_USER_CONFIG_EMAIL_MESSAGE
+  admin_create_user_config_sms_message                  = var.ADMIN_CREATE_USER_CONFIG_SMS_MESSAGE
+  mfa_configuration                                     = var.MFA_CONFIGURATION
+  sms_authentication_message                            = var.SMS_AUTHENTICATION_MESSAGE
+  admin_create_user_config_allow_admin_create_user_only = var.ALLOW_ADMIN_CREATE_USER_ONLY
+  tags                                                  = var.TAGS
+}
+
+output "id" {
+  value = module.cognito_user_pool.id
+}

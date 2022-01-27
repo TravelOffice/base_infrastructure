@@ -25,3 +25,7 @@ output "CODESTAR_CONNECTOR_CREDENTIALS" {
 output "STANDARD_LAMBDA_IAM_ROLE" {
   value = module.standard_lambda_iam_role.arn
 }
+
+output "COGNITO_USER_POOL_ID" {
+  value = module.cognito_user_pool.id
+}

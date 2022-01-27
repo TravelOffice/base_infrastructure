@@ -7,6 +7,13 @@ locals {
   }
 }
 
+module "cognito_user_pool" {
+  source       = "../../modules/security/cognito"
+  ENV          = var.ENV
+  FEATURE_NAME = local.marketing_feature_name
+  TAGS         = local.marketing_tags
+}
+
 # Marketing Infrastructure: START
 module "marketing_vpc" {
   source                = "../../modules/network/vpc"

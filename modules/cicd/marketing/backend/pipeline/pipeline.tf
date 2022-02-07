@@ -16,11 +16,12 @@ variable "CODEPIPELINE_BUCKET" {}
 
 variable "TF_BUCKET" {}
 variable "TF_LOG" {}
+variable "FEATURE_NAME" {}
 variable "TAGS" {}
 
 resource "aws_codebuild_project" "tf_cicd_download" {
-  name         = "${var.ENV}-marketing-cicd-download"
-  description  = "Download stage for backend"
+  name         = "${var.ENV}-${var.FEATURE_NAME}-cicd-download"
+  description  = "Download stage for ${var.FEATURE_NAME} project"
   service_role = var.CODEBUILD_ROLE_ARN
 
   artifacts {
@@ -65,8 +66,8 @@ resource "aws_codebuild_project" "tf_cicd_download" {
 }
 
 resource "aws_codebuild_project" "tf_cicd_plan" {
-  name         = "${var.ENV}-marketing-cicd-plan"
-  description  = "Plan stage for marketing project"
+  name         = "${var.ENV}-${var.FEATURE_NAME}-cicd-plan"
+  description  = "Plan stage for ${var.FEATURE_NAME} project"
   service_role = var.CODEBUILD_ROLE_ARN
 
   artifacts {
@@ -112,8 +113,8 @@ resource "aws_codebuild_project" "tf_cicd_plan" {
 }
 
 resource "aws_codebuild_project" "tf_cicd_apply" {
-  name         = "${var.ENV}-marketing-cicd-apply"
-  description  = "Apply stage for marketing project"
+  name         = "${var.ENV}-${var.FEATURE_NAME}-cicd-apply"
+  description  = "Apply stage for ${var.FEATURE_NAME} project"
   service_role = var.CODEBUILD_ROLE_ARN
 
   artifacts {
@@ -161,7 +162,7 @@ resource "aws_codebuild_project" "tf_cicd_apply" {
 
 resource "aws_codepipeline" "tf_cicd_pipeline" {
 
-  name     = "${var.ENV}-marketing-cicd-pipeline"
+  name     = "${var.ENV}-${var.FEATURE_NAME}-cicd-pipeline"
   role_arn = var.CODEPIPELINE_ROLE_ARN
 
   artifact_store {

@@ -6,6 +6,7 @@ variable "TF_VERSION" {}
 variable "TF_LOG" {}
 variable "CODEPIPELINE_BUCKET" {}
 variable "GITHUB_REPO" {}
+variable "FEATURE_NAME" {}
 variable "TAGS" {}
 
 module "IAM" {
@@ -27,5 +28,6 @@ module "PIPELINE" {
   TF_VERSION                     = var.TF_VERSION
   TF_LOG                         = var.TF_LOG
   GITHUB_REPO                    = var.GITHUB_REPO
+  FEATURE_NAME                   = var.FEATURE_NAME
   TAGS                           = var.TAGS
 }

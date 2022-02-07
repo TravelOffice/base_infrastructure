@@ -1,11 +1,33 @@
 locals {
   marketing_feature_name = "marketing"
+  base_backend_name = "base_backend"
   marketing_tags = {
     Env       = var.ENV
     Terraform = true
     Feature   = local.marketing_feature_name
   }
+  base_backend_tags = {
+    Env       = var.ENV
+    Terraform = true
+    Feature   = local.base_backend_name
+  }
 }
+
+# Tenant infrastrucutre: START
+module "base_backend_pipeline" {
+  source                         = "../../modules/cicd/marketing/backend"
+  ENV                            = var.ENV
+  BRANCH_NAME                    = var.BRANCH_NAME
+  CODESTAR_CONNECTOR_CREDENTIALS = var.CODESTAR_CONNECTOR_CREDENTIALS
+  TF_VERSION                     = var.TF_VERSION
+  TF_BUCKET                      = var.TF_BUCKET
+  TF_LOG                         = var.TF_LOG
+  CODEPIPELINE_BUCKET            = var.CODEPIPELINE_BUCKET
+  GITHUB_REPO                    = "TravelOffice/base_backend"
+  FEATURE_NAME                   = local.base_backend_name
+  TAGS                           = local.base_backend_tags
+}
+# Tenant infrastrucutre: END
 
 module "cognito_user_pool" {
   source       = "../../modules/security/cognito"
@@ -37,6 +59,7 @@ module "marketing_backend_pipeline" {
   TF_LOG                         = var.TF_LOG
   CODEPIPELINE_BUCKET            = var.CODEPIPELINE_BUCKET
   GITHUB_REPO                    = "TravelOffice/marketing_backend"
+  FEATURE_NAME                   = local.marketing_feature_name
   TAGS                           = local.marketing_tags
 }
 module "marketing_postgresql" {

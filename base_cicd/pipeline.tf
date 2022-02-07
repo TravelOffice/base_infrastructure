@@ -17,7 +17,7 @@ locals {
       version          = "1"
       output_artifacts = ["tf_code"]
       configuration = {
-        FullRepositoryId     = "TravelOffice/infrastructure"
+        FullRepositoryId     = "TravelOffice/base_infrastructure"
         BranchName           = var.BRANCH_NAME
         ConnectionArn        = var.CODESTAR_CONNECTOR_CREDENTIALS
         OutputArtifactFormat = "CODE_ZIP"

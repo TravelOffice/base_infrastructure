@@ -1,6 +1,6 @@
 locals {
   marketing_feature_name = "marketing"
-  base_backend_name = "base_backend"
+  base_backend_name      = "base_backend"
   marketing_tags = {
     Env       = var.ENV
     Terraform = true
@@ -27,6 +27,41 @@ module "base_backend_pipeline" {
   FEATURE_NAME                   = local.base_backend_name
   TAGS                           = local.base_backend_tags
 }
+module "base_backend_vpc" {
+  source               = "../../modules/network/vpc"
+  ENV                  = var.ENV
+  FEATURE_NAME         = local.base_backend_name
+  AWS_REGION           = var.AWS_REGION
+  VPC_CIDR             = var.BASE_BACKEND_VPC_CIDR
+  PUBLIC_SUBNETS_CIDR  = var.BASE_BACKEND_PUBLIC_SUBNETS_CIDR
+  PRIVATE_SUBNETS_CIDR = var.BASE_BACKEND_PRIVATE_SUBNETS_CIDR
+  TAGS                 = local.base_backend_tags
+}
+
+module "cognito_power_user_lambda_role" {
+  source = "../../modules/security/iam/role/lambda/cognito_power_user"
+
+  TAGS         = local.base_backend_tags
+  ENV          = var.ENV
+  FEATURE_NAME = local.base_backend_name
+}
+module "provisioning_tenant_infra_ecs_task_role" {
+  source = "../../modules/security/iam/role/ecs/task"
+
+  TAGS         = local.base_backend_tags
+  ENV          = var.ENV
+  FEATURE_NAME = local.base_backend_name
+}
+
+module "execute_ecs_task_lambda_role" {
+  source = "../../modules/security/iam/role/lambda/execute_ecs_task"
+
+  TAGS          = local.base_backend_tags
+  ENV           = var.ENV
+  FEATURE_NAME  = local.base_backend_name
+  ECS_TASK_ROLE = module.provisioning_tenant_infra_ecs_task_role.arn
+}
+
 # Tenant infrastrucutre: END
 
 module "cognito_user_pool" {
@@ -42,10 +77,10 @@ module "marketing_vpc" {
   ENV                   = var.ENV
   FEATURE_NAME          = local.marketing_feature_name
   AWS_REGION            = var.AWS_REGION
-  VPC_CIDR              = var.VPC_CIDR
-  PUBLIC_SUBNETS_CIDR   = var.PUBLIC_SUBNETS_CIDR
-  PRIVATE_SUBNETS_CIDR  = var.PRIVATE_SUBNETS_CIDR
-  DATABASE_SUBNETS_CIDR = var.DATABASE_SUBNETS_CIDR
+  VPC_CIDR              = var.MARKETING_VPC_CIDR
+  PUBLIC_SUBNETS_CIDR   = var.MARKETING_PUBLIC_SUBNETS_CIDR
+  PRIVATE_SUBNETS_CIDR  = var.MARKETING_PRIVATE_SUBNETS_CIDR
+  DATABASE_SUBNETS_CIDR = var.MARKETING_DATABASE_SUBNETS_CIDR
   TAGS                  = local.marketing_tags
 }
 
@@ -67,7 +102,7 @@ module "marketing_postgresql" {
   ENV                 = var.ENV
   VPC_ID              = module.marketing_vpc.id
   DATABASE_SUBNETS    = module.marketing_vpc.database_subnets
-  ALLOWED_CIDR_BLOCKS = [var.VPC_CIDR]
+  ALLOWED_CIDR_BLOCKS = [var.MARKETING_VPC_CIDR]
   FEATURE_NAME        = local.marketing_feature_name
   USERNAME            = var.RDS_USERNAME
   DATABASE_NAME       = local.marketing_feature_name

@@ -2,9 +2,18 @@ variable "ENV" {}
 variable "AWS_REGION" {}
 variable "VPC_CIDR" {}
 variable "FEATURE_NAME" {}
-variable "PRIVATE_SUBNETS_CIDR" {}
-variable "PUBLIC_SUBNETS_CIDR" {}
-variable "DATABASE_SUBNETS_CIDR" {}
+variable "PRIVATE_SUBNETS_CIDR" {
+  default = []
+}
+variable "PUBLIC_SUBNETS_CIDR" {
+  default = []
+}
+variable "DATABASE_SUBNETS_CIDR" {
+  default = []
+}
+variable "ENABLE_NAT_GATEWAY" {
+  default = false
+}
 variable "TAGS" {}
 
 module "VPC" {
@@ -16,7 +25,7 @@ module "VPC" {
   private_subnets      = var.PRIVATE_SUBNETS_CIDR
   public_subnets       = var.PUBLIC_SUBNETS_CIDR
   database_subnets     = var.DATABASE_SUBNETS_CIDR
-  enable_nat_gateway   = false
+  enable_nat_gateway   = var.ENABLE_NAT_GATEWAY
   enable_dhcp_options  = true
   enable_dns_hostnames = true
 

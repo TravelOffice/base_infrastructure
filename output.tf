@@ -1,3 +1,15 @@
+output "BASE_BACKEND_VPC_ID" {
+  value = module.base_backend_vpc.id
+}
+
+output "BASE_BACKEND_PUBLIC_SUBNETS" {
+  value = module.base_backend_vpc.public_subnets
+}
+
+output "BASE_BACKEND_PRIVATE_SUBNETS" {
+  value = module.base_backend_vpc.private_subnets
+}
+
 output "MARKETING_VPC_ID" {
   value = module.marketing_vpc.id
 }
@@ -28,4 +40,16 @@ output "STANDARD_LAMBDA_IAM_ROLE" {
 
 output "COGNITO_USER_POOL_ID" {
   value = module.cognito_user_pool.id
+}
+
+output "PROVISION_TENANT_INFA_ECS_TASK_ROLE" {
+  value = module.provisioning_tenant_infra_ecs_task_role.arn
+}
+
+output "COGNITO_POWER_USER_LAMBDA_ROLE" {
+  value = module.cognito_power_user_lambda_role.arn
+}
+
+output "EXECUTE_ECS_TASK_LAMBDA_ROLE" {
+  value = module.execute_ecs_task_lambda_role.arn
 }

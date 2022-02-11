@@ -18,19 +18,30 @@ variable "AWS_REGION" {
   default = "ap-southeast-1"
 }
 
-variable "VPC_CIDR" {
+variable "BASE_BACKEND_VPC_CIDR" {
+  default = "1.9.0.0/24"
+}
+
+variable "BASE_BACKEND_PRIVATE_SUBNETS_CIDR" {
+  default = ["1.9.0.0/28", "1.9.0.32/28"]
+}
+variable "BASE_BACKEND_PUBLIC_SUBNETS_CIDR" {
+  default = ["1.9.0.64/28", "1.9.0.96/28"]
+}
+
+variable "MARKETING_VPC_CIDR" {
   default = "10.9.0.0/24"
 }
 
-variable "PUBLIC_SUBNETS_CIDR" {
+variable "MARKETING_PUBLIC_SUBNETS_CIDR" {
   default = ["10.9.0.192/28", "10.9.0.224/28"]
 }
 
-variable "PRIVATE_SUBNETS_CIDR" {
+variable "MARKETING_PRIVATE_SUBNETS_CIDR" {
   default = ["10.9.0.0/28", "10.9.0.32/28", "10.9.0.64/28", "10.9.0.96/28"]
 }
 
-variable "DATABASE_SUBNETS_CIDR" {
+variable "MARKETING_DATABASE_SUBNETS_CIDR" {
   default = ["10.9.0.128/28", "10.9.0.160/28"]
 }
 

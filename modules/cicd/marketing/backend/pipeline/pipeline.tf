@@ -79,6 +79,7 @@ resource "aws_codebuild_project" "tf_cicd_plan" {
     image                       = "aws/codebuild/standard:5.0"
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
+    privileged_mode             = true
 
     environment_variable {
       name  = "TF_BUCKET"
@@ -126,6 +127,7 @@ resource "aws_codebuild_project" "tf_cicd_apply" {
     image                       = "aws/codebuild/standard:5.0"
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
+    privileged_mode             = true
 
     environment_variable {
       name  = "TF_BUCKET"

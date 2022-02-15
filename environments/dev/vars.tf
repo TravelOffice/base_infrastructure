@@ -19,14 +19,14 @@ variable "AWS_REGION" {
 }
 
 variable "BASE_BACKEND_VPC_CIDR" {
-  default = "1.9.0.0/24"
+  default = "10.9.255.0/24"
 }
 
 variable "BASE_BACKEND_PRIVATE_SUBNETS_CIDR" {
-  default = ["1.9.0.0/28", "1.9.0.32/28"]
+  default = ["10.9.255.0/28", "10.9.255.32/28"]
 }
 variable "BASE_BACKEND_PUBLIC_SUBNETS_CIDR" {
-  default = ["1.9.0.64/28", "1.9.0.96/28"]
+  default = ["10.9.255.64/28", "10.9.255.96/28"]
 }
 
 variable "MARKETING_VPC_CIDR" {

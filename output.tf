@@ -53,3 +53,11 @@ output "COGNITO_POWER_USER_LAMBDA_ROLE" {
 output "EXECUTE_ECS_TASK_LAMBDA_ROLE" {
   value = module.execute_ecs_task_lambda_role.arn
 }
+
+output "MARKETING_SECRET_MANAGER_ID" {
+  value = module.marketing_secret_manager.id
+}
+
+output "BASE_BACKEND_SECRET_MANAGER_ID" {
+  value = module.base_backend_secret_manager.id
+}

@@ -14,6 +14,11 @@ locals {
 }
 
 # Tenant infrastrucutre: START
+module "cognito_user_pool" {
+  source = "../../modules/security/cognito"
+  ENV    = var.ENV
+  TAGS   = local.marketing_tags
+}
 module "base_backend_pipeline" {
   source                         = "../../modules/cicd/marketing/backend"
   ENV                            = var.ENV
@@ -62,14 +67,17 @@ module "execute_ecs_task_lambda_role" {
   ECS_TASK_ROLE = module.provisioning_tenant_infra_ecs_task_role.arn
 }
 
-# Tenant infrastrucutre: END
-
-module "cognito_user_pool" {
-  source       = "../../modules/security/cognito"
+module "base_backend_secret_manager" {
+  source       = "../../modules/security/secret_manager"
   ENV          = var.ENV
-  FEATURE_NAME = local.marketing_feature_name
-  TAGS         = local.marketing_tags
+  FEATURE_NAME = local.base_backend_name
+  STORE_DATA = {
+    "COGNITO_USER_POOL_ID" = module.cognito_user_pool.id
+    "COGNITO_CLIENT_ID"    = module.cognito_user_pool.client_ids[0]
+  }
+  TAGS = local.marketing_tags
 }
+# Tenant infrastrucutre: END
 
 # Marketing Infrastructure: START
 module "marketing_vpc" {

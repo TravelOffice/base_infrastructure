@@ -52,19 +52,6 @@ locals {
       configuration = {
         ProjectName = aws_codebuild_project.cicd_apply.name
       }
-    },
-    {
-      name            = "UploadOutputToS3"
-      category        = "Deploy"
-      provider        = "S3"
-      version         = "1"
-      owner           = "AWS"
-      input_artifacts = ["tf_apply"]
-      configuration = {
-        BucketName = var.CODEPIPELINE_BUCKET,
-        Extract    = true
-        ObjectKey  = "output-vars/${var.ENV}",
-      }
     }
   ]
 }

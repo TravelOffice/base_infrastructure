@@ -10,7 +10,7 @@ variable "FEATURE_NAME" {}
 variable "TAGS" {}
 
 module "IAM" {
-  source = "../../iam"
+  source = "./iam"
   ENV    = var.ENV
   TAGS   = var.TAGS
 }

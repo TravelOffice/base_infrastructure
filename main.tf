@@ -20,7 +20,7 @@ module "cognito_user_pool" {
   TAGS   = local.marketing_tags
 }
 module "base_backend_pipeline" {
-  source                         = "../../modules/cicd/marketing/backend"
+  source                         = "../../modules/cicd"
   ENV                            = var.ENV
   BRANCH_NAME                    = var.BRANCH_NAME
   CODESTAR_CONNECTOR_CREDENTIALS = var.CODESTAR_CONNECTOR_CREDENTIALS
@@ -93,7 +93,7 @@ module "marketing_vpc" {
 }
 
 module "marketing_backend_pipeline" {
-  source                         = "../../modules/cicd/marketing/backend"
+  source                         = "../../modules/cicd"
   ENV                            = var.ENV
   BRANCH_NAME                    = var.BRANCH_NAME
   CODESTAR_CONNECTOR_CREDENTIALS = var.CODESTAR_CONNECTOR_CREDENTIALS

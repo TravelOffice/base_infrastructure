@@ -1,63 +1,61 @@
-output "BASE_BACKEND_VPC_ID" {
-  value = module.base_backend_vpc.id
+output "BASE_INFRASTRUCTURE" {
+  value = {
+    backend = {
+      vpc = {
+        id              = module.base_backend_vpc.id
+        private_subnets = module.base_backend_vpc.private_subnets
+        public_subnets  = module.base_backend_vpc.public_subnets
+      }
+      secret_manager = {
+        id = module.base_backend_secret_manager.id
+      }
+    }
+  }
 }
 
-output "BASE_BACKEND_PUBLIC_SUBNETS" {
-  value = module.base_backend_vpc.public_subnets
+output "MARKETING" {
+  value = {
+    backend = {
+      vpc = {
+        id               = module.marketing_vpc.id
+        public_subnets   = module.marketing_vpc.public_subnets
+        private_subnets  = module.marketing_vpc.private_subnets
+        database_subnets = module.marketing_vpc.database_subnets
+      }
+      secret_manager = {
+        id = module.marketing_secret_manager.id
+      }
+    }
+  }
 }
 
-output "BASE_BACKEND_PRIVATE_SUBNETS" {
-  value = module.base_backend_vpc.private_subnets
-}
+output "COMMON_CONFIG" {
+  value = {
+    region                         = "ap-southeast-1"
+    codestar_connector_credentials = "arn:aws:codestar-connections:ap-southeast-1:249593777629:connection/f7623ad7-387d-4abc-ae08-7b83cd464851"
+    cognito = {
+      user_pool_id = module.cognito_user_pool.id
 
-output "MARKETING_VPC_ID" {
-  value = module.marketing_vpc.id
-}
-
-output "MARKETING_PUBLIC_SUBNETS" {
-  value = module.marketing_vpc.public_subnets
-}
-
-output "MARKETING_PRIVATE_SUBNETS" {
-  value = module.marketing_vpc.private_subnets
-}
-
-output "MARKETING_DATABASE_SUBNETS" {
-  value = module.marketing_vpc.database_subnets
-}
-
-output "AWS_REGION" {
-  value = "ap-southeast-1"
-}
-
-output "CODESTAR_CONNECTOR_CREDENTIALS" {
-  value = "arn:aws:codestar-connections:ap-southeast-1:249593777629:connection/f7623ad7-387d-4abc-ae08-7b83cd464851"
-}
-
-output "STANDARD_LAMBDA_IAM_ROLE" {
-  value = module.standard_lambda_iam_role.arn
-}
-
-output "COGNITO_USER_POOL_ID" {
-  value = module.cognito_user_pool.id
-}
-
-output "PROVISION_TENANT_INFA_ECS_TASK_ROLE" {
-  value = module.provisioning_tenant_infra_ecs_task_role.arn
-}
-
-output "COGNITO_POWER_USER_LAMBDA_ROLE" {
-  value = module.cognito_power_user_lambda_role.arn
-}
-
-output "EXECUTE_ECS_TASK_LAMBDA_ROLE" {
-  value = module.execute_ecs_task_lambda_role.arn
-}
-
-output "MARKETING_SECRET_MANAGER_ID" {
-  value = module.marketing_secret_manager.id
-}
-
-output "BASE_BACKEND_SECRET_MANAGER_ID" {
-  value = module.base_backend_secret_manager.id
+    }
+    iam = {
+      roles = {
+        standard_lambda_iam_role            = module.standard_lambda_iam_role.arn
+        provision_tenant_infa_ecs_task_role = module.provisioning_tenant_infra_ecs_task_role.arn
+        cognito_power_user_lambda_role      = module.cognito_power_user_lambda_role.arn
+        execute_ecs_task_lambda_role        = module.execute_ecs_task_lambda_role.arn
+        marketing_secret_manager_id         = module.marketing_secret_manager.id
+      }
+    }
+    route53 = {
+      hosted_zone = {
+        id = "Z0837421MRKFPV1O1ZCI"
+        domain = {
+          name = "traveloffice.shop"
+          certificate = {
+            arn = "arn:aws:acm:ap-southeast-1:249593777629:certificate/2b282e8a-acad-4b69-aca0-9a6906e62c5f"
+          }
+        }
+      }
+    }
+  }
 }

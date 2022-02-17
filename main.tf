@@ -1,10 +1,16 @@
 locals {
-  marketing_feature_name = "marketing"
-  base_backend_name      = "base_backend"
+  marketing_feature_name = "marketing-backend"
+  sale_frontend_name     = "sale-frontend"
+  base_backend_name        = "base-backend"
   marketing_tags = {
     Env       = var.ENV
     Terraform = true
     Feature   = local.marketing_feature_name
+  }
+  sale_frontend_tags = {
+    Env       = var.ENV
+    Terraform = true
+    Feature   = local.sale_frontend_name
   }
   base_backend_tags = {
     Env       = var.ENV
@@ -92,6 +98,20 @@ module "marketing_vpc" {
   TAGS                  = local.marketing_tags
 }
 
+module "sale_frontend_pipeline" {
+  source                         = "../../modules/cicd"
+  ENV                            = var.ENV
+  BRANCH_NAME                    = var.BRANCH_NAME
+  CODESTAR_CONNECTOR_CREDENTIALS = var.CODESTAR_CONNECTOR_CREDENTIALS
+  TF_VERSION                     = var.TF_VERSION
+  TF_BUCKET                      = var.TF_BUCKET
+  TF_LOG                         = var.TF_LOG
+  CODEPIPELINE_BUCKET            = var.CODEPIPELINE_BUCKET
+  GITHUB_REPO                    = "TravelOffice/sale_web"
+  FEATURE_NAME                   = local.sale_frontend_name
+  TAGS                           = local.sale_frontend_tags
+}
+
 module "marketing_backend_pipeline" {
   source                         = "../../modules/cicd"
   ENV                            = var.ENV
@@ -113,7 +133,7 @@ module "marketing_postgresql" {
   ALLOWED_CIDR_BLOCKS = [var.MARKETING_VPC_CIDR]
   FEATURE_NAME        = local.marketing_feature_name
   USERNAME            = var.RDS_USERNAME
-  DATABASE_NAME       = local.marketing_feature_name
+  DATABASE_NAME       = "marketing"
   ENGINE_MODE         = var.ENV == "dev" ? "serverless" : "provisioned"
   ENGINE_VERSION      = var.RDS_ENGINE_VERSION
   FAMILY              = var.RDS_FAMILY

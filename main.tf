@@ -1,7 +1,7 @@
 locals {
   marketing_feature_name = "marketing-backend"
   sale_frontend_name     = "sale-frontend"
-  base_backend_name        = "base-backend"
+  base_backend_name      = "base-backend"
   marketing_tags = {
     Env       = var.ENV
     Terraform = true
@@ -80,6 +80,7 @@ module "base_backend_secret_manager" {
   STORE_DATA = {
     "COGNITO_USER_POOL_ID" = module.cognito_user_pool.id
     "COGNITO_CLIENT_ID"    = module.cognito_user_pool.client_ids[0]
+    "TF_BUCKET"            = var.TF_BUCKET
   }
   TAGS = local.marketing_tags
 }
@@ -110,6 +111,12 @@ module "sale_frontend_pipeline" {
   GITHUB_REPO                    = "TravelOffice/sale_web"
   FEATURE_NAME                   = local.sale_frontend_name
   TAGS                           = local.sale_frontend_tags
+}
+
+module "sale_frontend_hosting" {
+  source        = "../../modules/hosting"
+  BUCKET_PREFIX = "${var.ENV}-${local.sale_frontend_name}"
+  TAGS          = local.sale_frontend_tags
 }
 
 module "marketing_backend_pipeline" {

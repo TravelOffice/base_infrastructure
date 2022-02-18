@@ -26,6 +26,12 @@ output "MARKETING" {
         id = module.marketing_secret_manager.id
       }
     }
+    frontend = {
+      sale_web = {
+        s3_bucket = module.sale_frontend_hosting.s3_id
+        cdn_domain = module.sale_frontend_hosting.cdn_domain
+      }
+    }
   }
 }
 
@@ -33,6 +39,7 @@ output "COMMON_CONFIG" {
   value = {
     region                         = "ap-southeast-1"
     codestar_connector_credentials = "arn:aws:codestar-connections:ap-southeast-1:249593777629:connection/f7623ad7-387d-4abc-ae08-7b83cd464851"
+    tf_bucket                      = var.TF_BUCKET
     cognito = {
       user_pool_id = module.cognito_user_pool.id
 

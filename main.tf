@@ -1,7 +1,7 @@
 locals {
   marketing_feature_name = "marketing-backend"
   sale_frontend_name     = "sale-frontend"
-  base_backend_name        = "base-backend"
+  base_backend_name      = "base-backend"
   marketing_tags = {
     Env       = var.ENV
     Terraform = true
@@ -110,6 +110,12 @@ module "sale_frontend_pipeline" {
   GITHUB_REPO                    = "TravelOffice/sale_web"
   FEATURE_NAME                   = local.sale_frontend_name
   TAGS                           = local.sale_frontend_tags
+}
+
+module "sale_frontend_hosting" {
+  source        = "../../modules/hosting"
+  BUCKET_PREFIX = "${var.ENV}-${local.sale_frontend_name}"
+  TAGS          = local.sale_frontend_tags
 }
 
 module "marketing_backend_pipeline" {

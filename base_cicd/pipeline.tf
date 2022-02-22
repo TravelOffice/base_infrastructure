@@ -51,7 +51,6 @@ locals {
       version          = "1"
       owner            = "AWS"
       input_artifacts  = ["tf_code"]
-      output_artifacts = ["tf_apply"]
       configuration = {
         ProjectName = aws_codebuild_project.cicd_apply.name
       }

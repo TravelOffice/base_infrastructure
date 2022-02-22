@@ -17,8 +17,4 @@ phases:
   build:
     commands:
       - ./scripts/execute_terraform.sh $BUILD_ENV apply --auto-approve
-      - ./scripts/execute_terraform.sh $BUILD_ENV output > base_infra_output.tfvars
-
-artifacts:
-  files:
-    - base_infra_output.tfvars
+      - ./scripts/execute_terraform.sh $BUILD_ENV output

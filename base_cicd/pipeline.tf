@@ -1,5 +1,8 @@
 variable "ENV" {}
 variable "BRANCH_NAME" {}
+variable "IMAGE" {
+  default = "aws/codebuild/amazonlinux2-x86_64-standard:3.0"
+}
 locals {
   tags = {
     Terraform = true
@@ -73,7 +76,7 @@ resource "aws_codebuild_project" "cicd_plan" {
 
   environment {
     compute_type                = "BUILD_GENERAL1_SMALL"
-    image                       = "aws/codebuild/standard:5.0"
+    image                       = var.IMAGE
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
 
@@ -120,7 +123,7 @@ resource "aws_codebuild_project" "cicd_apply" {
 
   environment {
     compute_type                = "BUILD_GENERAL1_SMALL"
-    image                       = "aws/codebuild/standard:5.0"
+    image                       = var.IMAGE
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
 

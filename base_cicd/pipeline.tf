@@ -45,12 +45,12 @@ locals {
       owner    = "AWS"
     },
     {
-      name             = "Apply"
-      category         = "Build"
-      provider         = "CodeBuild"
-      version          = "1"
-      owner            = "AWS"
-      input_artifacts  = ["tf_code"]
+      name            = "Apply"
+      category        = "Build"
+      provider        = "CodeBuild"
+      version         = "1"
+      owner           = "AWS"
+      input_artifacts = ["tf_code"]
       configuration = {
         ProjectName = aws_codebuild_project.cicd_apply.name
       }

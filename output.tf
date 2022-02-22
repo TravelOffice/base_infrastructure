@@ -28,7 +28,7 @@ output "MARKETING" {
     }
     frontend = {
       sale_web = {
-        s3_bucket = module.sale_frontend_hosting.s3_id
+        s3_bucket  = module.sale_frontend_hosting.s3_id
         cdn_domain = module.sale_frontend_hosting.cdn_domain
       }
     }

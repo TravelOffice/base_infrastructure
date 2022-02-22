@@ -17,6 +17,7 @@ locals {
     Terraform = true
     Feature   = local.base_backend_name
   }
+  is_prod = var.ENV == "prod"
 }
 
 # Tenant infrastrucutre: START
@@ -39,14 +40,16 @@ module "base_backend_pipeline" {
   TAGS                           = local.base_backend_tags
 }
 module "base_backend_vpc" {
-  source               = "../../modules/network/vpc"
-  ENV                  = var.ENV
-  FEATURE_NAME         = local.base_backend_name
-  AWS_REGION           = var.AWS_REGION
-  VPC_CIDR             = var.BASE_BACKEND_VPC_CIDR
-  PUBLIC_SUBNETS_CIDR  = var.BASE_BACKEND_PUBLIC_SUBNETS_CIDR
-  PRIVATE_SUBNETS_CIDR = var.BASE_BACKEND_PRIVATE_SUBNETS_CIDR
-  TAGS                 = local.base_backend_tags
+  source                 = "../../modules/network/vpc"
+  ENV                    = var.ENV
+  FEATURE_NAME           = local.base_backend_name
+  AWS_REGION             = var.AWS_REGION
+  VPC_CIDR               = var.BASE_BACKEND_VPC_CIDR
+  PUBLIC_SUBNETS_CIDR    = var.BASE_BACKEND_PUBLIC_SUBNETS_CIDR
+  PRIVATE_SUBNETS_CIDR   = var.BASE_BACKEND_PRIVATE_SUBNETS_CIDR
+  SINGLE_NAT_GATEWAY     = local.is_prod ? false : true
+  ONE_NAT_GATEWAY_PER_AZ = local.is_prod ? true : false
+  TAGS                   = local.base_backend_tags
 }
 
 module "cognito_power_user_lambda_role" {
@@ -82,21 +85,24 @@ module "base_backend_secret_manager" {
     "COGNITO_CLIENT_ID"    = module.cognito_user_pool.client_ids[0]
     "TF_BUCKET"            = var.TF_BUCKET
   }
-  TAGS = local.marketing_tags
+  TAGS = local.base_backend_tags
 }
 # Tenant infrastrucutre: END
 
 # Marketing Infrastructure: START
 module "marketing_vpc" {
-  source                = "../../modules/network/vpc"
-  ENV                   = var.ENV
-  FEATURE_NAME          = local.marketing_feature_name
-  AWS_REGION            = var.AWS_REGION
-  VPC_CIDR              = var.MARKETING_VPC_CIDR
-  PUBLIC_SUBNETS_CIDR   = var.MARKETING_PUBLIC_SUBNETS_CIDR
-  PRIVATE_SUBNETS_CIDR  = var.MARKETING_PRIVATE_SUBNETS_CIDR
-  DATABASE_SUBNETS_CIDR = var.MARKETING_DATABASE_SUBNETS_CIDR
-  TAGS                  = local.marketing_tags
+  source                 = "../../modules/network/vpc"
+  ENV                    = var.ENV
+  FEATURE_NAME           = local.marketing_feature_name
+  AWS_REGION             = var.AWS_REGION
+  VPC_CIDR               = var.MARKETING_VPC_CIDR
+  PUBLIC_SUBNETS_CIDR    = var.MARKETING_PUBLIC_SUBNETS_CIDR
+  PRIVATE_SUBNETS_CIDR   = var.MARKETING_PRIVATE_SUBNETS_CIDR
+  DATABASE_SUBNETS_CIDR  = var.MARKETING_DATABASE_SUBNETS_CIDR
+  ENABLE_NAT_GATEWAY     = local.is_prod ? true : false
+  SINGLE_NAT_GATEWAY     = local.is_prod ? false : true
+  ONE_NAT_GATEWAY_PER_AZ = local.is_prod ? true : false
+  TAGS                   = local.marketing_tags
 }
 
 module "sale_frontend_pipeline" {

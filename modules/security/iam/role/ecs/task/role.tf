@@ -24,6 +24,7 @@ resource "aws_iam_role" "role" {
     "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
     "arn:aws:iam::aws:policy/AmazonS3FullAccess",
     "arn:aws:iam::aws:policy/AmazonRoute53FullAccess",
+    "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
   ]
 }
 

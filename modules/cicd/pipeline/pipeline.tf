@@ -17,6 +17,9 @@ variable "CODEPIPELINE_BUCKET" {}
 variable "TF_BUCKET" {}
 variable "TF_LOG" {}
 variable "FEATURE_NAME" {}
+variable "IMAGE" {
+  default = "aws/codebuild/amazonlinux2-x86_64-standard:3.0"
+}
 variable "TAGS" {}
 
 resource "aws_codebuild_project" "tf_cicd_plan" {
@@ -30,7 +33,7 @@ resource "aws_codebuild_project" "tf_cicd_plan" {
 
   environment {
     compute_type                = "BUILD_GENERAL1_SMALL"
-    image                       = "aws/codebuild/standard:5.0"
+    image                       = var.IMAGE
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
     privileged_mode             = true
@@ -78,7 +81,7 @@ resource "aws_codebuild_project" "tf_cicd_apply" {
 
   environment {
     compute_type                = "BUILD_GENERAL1_SMALL"
-    image                       = "aws/codebuild/standard:5.0"
+    image                       = var.IMAGE
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
     privileged_mode             = true

@@ -51,7 +51,20 @@ module "base_backend_vpc" {
   ONE_NAT_GATEWAY_PER_AZ = local.is_prod ? true : false
   TAGS                   = local.base_backend_tags
 }
+module "standard_lambda_role" {
+  source = "../../modules/security/iam/role/lambda/standard"
 
+  TAGS         = local.marketing_tags
+  ENV          = var.ENV
+  FEATURE_NAME = local.marketing_feature_name
+}
+module "send_mail_lambda_role" {
+  source = "../../modules/security/iam/role/lambda/send_mail"
+
+  TAGS         = local.marketing_tags
+  ENV          = var.ENV
+  FEATURE_NAME = local.marketing_feature_name
+}
 module "cognito_power_user_lambda_role" {
   source = "../../modules/security/iam/role/lambda/cognito_power_user"
 
@@ -81,11 +94,11 @@ module "base_backend_secret_manager" {
   ENV          = var.ENV
   FEATURE_NAME = local.base_backend_name
   STORE_DATA = {
-    "COGNITO_USER_POOL_ID" = module.cognito_user_pool.id
-    "COGNITO_CLIENT_ID"    = module.cognito_user_pool.client_ids[0]
-    "TF_BUCKET"            = var.TF_BUCKET
+    "COGNITO_USER_POOL_ID"      = module.cognito_user_pool.id
+    "COGNITO_CLIENT_ID"         = module.cognito_user_pool.client_ids[0]
+    "TF_BUCKET"                 = var.TF_BUCKET
     "NOTIFICATION_SENDER_EMAIL" = "anh93.nguyentuan@gmail.com"
-    "ADMIN_EMAIL" = "anh93.nguyentuan@gmail.com"
+    "ADMIN_EMAIL"               = "anh93.nguyentuan@gmail.com"
   }
   TAGS = local.base_backend_tags
 }
@@ -168,13 +181,5 @@ module "marketing_secret_manager" {
     "RDS_PASSWORD"        = module.marketing_postgresql.cluster_password
   }
   TAGS = local.marketing_tags
-}
-
-module "standard_lambda_iam_role" {
-  source = "../../modules/security/iam/role/lambda/standard"
-
-  TAGS         = local.marketing_tags
-  ENV          = var.ENV
-  FEATURE_NAME = local.marketing_feature_name
 }
 # Marketing Infrastructure: END

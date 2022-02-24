@@ -84,6 +84,8 @@ module "base_backend_secret_manager" {
     "COGNITO_USER_POOL_ID" = module.cognito_user_pool.id
     "COGNITO_CLIENT_ID"    = module.cognito_user_pool.client_ids[0]
     "TF_BUCKET"            = var.TF_BUCKET
+    "NOTIFICATION_SENDER_EMAIL" = "anh93.nguyentuan@gmail.com"
+    "ADMIN_EMAIL" = "anh93.nguyentuan@gmail.com"
   }
   TAGS = local.base_backend_tags
 }

@@ -46,11 +46,12 @@ output "COMMON_CONFIG" {
     }
     iam = {
       roles = {
-        standard_lambda_iam_role            = module.standard_lambda_iam_role.arn
+        standard_lambda_role                = module.standard_lambda_role.arn
         provision_tenant_infa_ecs_task_role = module.provisioning_tenant_infra_ecs_task_role.arn
         cognito_power_user_lambda_role      = module.cognito_power_user_lambda_role.arn
         execute_ecs_task_lambda_role        = module.execute_ecs_task_lambda_role.arn
         marketing_secret_manager_id         = module.marketing_secret_manager.id
+        send_mail_lambda_role               = module.send_mail_lambda_role
       }
     }
     route53 = {

@@ -1,4 +1,6 @@
 locals {
+  hosted_zone_id         = "Z0837421MRKFPV1O1ZCI"
+  acm                    = "arn:aws:acm:us-east-1:249593777629:certificate/20027980-d231-448a-930d-b37a515342dd"
   marketing_feature_name = "marketing-backend"
   sale_frontend_name     = "sale-frontend"
   base_backend_name      = "base-backend"
@@ -18,6 +20,48 @@ locals {
     Feature   = local.base_backend_name
   }
   is_prod = var.ENV == "prod"
+  code_build_env = {
+    common = [
+      {
+        name  = "TF_BUCKET"
+        value = var.TF_BUCKET
+      },
+      {
+        name  = "BUILD_ENV"
+        value = var.ENV
+      },
+      {
+        name  = "TF_VERSION"
+        value = var.TF_VERSION
+      },
+      {
+        name  = "TF_LOG"
+        value = var.TF_LOG
+      }
+    ],
+    sale_web = [
+      {
+        name  = "REACT_APP_BASE_URL"
+        value = "localhost:5000/"
+      },
+      {
+        name  = "REACT_APP_SSO_PAGE"
+        value = "https://sso.traveloffice.shop"
+      },
+      {
+        name  = "REACT_APP_APPSYNC_API_ENDPOINT"
+        value = module.chat_appsync.domain
+      },
+      {
+        name  = "REACT_APP_AWS_REGION"
+        value = var.AWS_REGION
+      },
+      {
+        name  = "REACT_APP_APPSYNC_REALTIME_ENDPOINT"
+        value = "${module.chat_appsync.domain}/realtime"
+      }
+    ]
+  }
 }
 
 # Tenant infrastrucutre: START
@@ -31,9 +75,7 @@ module "base_backend_pipeline" {
   ENV                            = var.ENV
   BRANCH_NAME                    = var.BRANCH_NAME
   CODESTAR_CONNECTOR_CREDENTIALS = var.CODESTAR_CONNECTOR_CREDENTIALS
-  TF_VERSION                     = var.TF_VERSION
-  TF_BUCKET                      = var.TF_BUCKET
-  TF_LOG                         = var.TF_LOG
+  ENV_VARS                       = local.code_build_env.common
   CODEPIPELINE_BUCKET            = var.CODEPIPELINE_BUCKET
   GITHUB_REPO                    = "TravelOffice/base_backend"
   FEATURE_NAME                   = local.base_backend_name
@@ -125,9 +167,7 @@ module "sale_frontend_pipeline" {
   ENV                            = var.ENV
   BRANCH_NAME                    = var.BRANCH_NAME
   CODESTAR_CONNECTOR_CREDENTIALS = var.CODESTAR_CONNECTOR_CREDENTIALS
-  TF_VERSION                     = var.TF_VERSION
-  TF_BUCKET                      = var.TF_BUCKET
-  TF_LOG                         = var.TF_LOG
+  ENV_VARS                       = concat(local.code_build_env.common, local.code_build_env.sale_web)
   CODEPIPELINE_BUCKET            = var.CODEPIPELINE_BUCKET
   GITHUB_REPO                    = "TravelOffice/sale_web"
   FEATURE_NAME                   = local.sale_frontend_name
@@ -137,6 +177,7 @@ module "sale_frontend_pipeline" {
 module "sale_frontend_hosting" {
   source        = "../../modules/hosting"
   BUCKET_PREFIX = "${var.ENV}-${local.sale_frontend_name}"
+  ACM           = local.acm
   TAGS          = local.sale_frontend_tags
 }
 
@@ -145,9 +186,7 @@ module "marketing_backend_pipeline" {
   ENV                            = var.ENV
   BRANCH_NAME                    = var.BRANCH_NAME
   CODESTAR_CONNECTOR_CREDENTIALS = var.CODESTAR_CONNECTOR_CREDENTIALS
-  TF_VERSION                     = var.TF_VERSION
-  TF_BUCKET                      = var.TF_BUCKET
-  TF_LOG                         = var.TF_LOG
+  ENV_VARS                       = local.code_build_env.common
   CODEPIPELINE_BUCKET            = var.CODEPIPELINE_BUCKET
   GITHUB_REPO                    = "TravelOffice/marketing_backend"
   FEATURE_NAME                   = local.marketing_feature_name
@@ -181,5 +220,16 @@ module "marketing_secret_manager" {
     "RDS_PASSWORD"        = module.marketing_postgresql.cluster_password
   }
   TAGS = local.marketing_tags
+}
+
+module "chat_appsync" {
+  source               = "../../modules/application/appsync"
+  AWS_REGION           = var.AWS_REGION
+  ENV                  = var.ENV
+  FEATURE_NAME         = local.marketing_feature_name
+  COGNITO_USER_POOL_ID = module.cognito_user_pool.id
+  ACM                  = local.acm
+  HOSTED_ZONE_ID       = local.hosted_zone_id
+  TAGS                 = local.marketing_tags
 }
 # Marketing Infrastructure: END

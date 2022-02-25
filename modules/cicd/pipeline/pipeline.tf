@@ -2,8 +2,6 @@ variable "ENV" {}
 
 variable "BRANCH_NAME" {}
 
-variable "TF_VERSION" {}
-
 variable "CODEBUILD_ROLE_ARN" {}
 
 variable "CODEPIPELINE_ROLE_ARN" {}
@@ -14,11 +12,12 @@ variable "GITHUB_REPO" {}
 
 variable "CODEPIPELINE_BUCKET" {}
 
-variable "TF_BUCKET" {}
-variable "TF_LOG" {}
 variable "FEATURE_NAME" {}
 variable "IMAGE" {
   default = "aws/codebuild/amazonlinux2-x86_64-standard:3.0"
+}
+variable "ENV_VARS" {
+  default = []
 }
 variable "TAGS" {}
 
@@ -38,28 +37,13 @@ resource "aws_codebuild_project" "tf_cicd_plan" {
     image_pull_credentials_type = "CODEBUILD"
     privileged_mode             = true
 
-    environment_variable {
-      name  = "TF_BUCKET"
-      value = var.TF_BUCKET
-      type  = "PLAINTEXT"
-    }
-
-    environment_variable {
-      name  = "BUILD_ENV"
-      value = var.ENV
-      type  = "PLAINTEXT"
-    }
-
-    environment_variable {
-      name  = "TF_VERSION"
-      value = var.TF_VERSION
-      type  = "PLAINTEXT"
-    }
-
-    environment_variable {
-      name  = "TF_LOG"
-      value = var.TF_LOG
-      type  = "PLAINTEXT"
+    dynamic "environment_variable" {
+      for_each = { for key, val in var.ENV_VARS : key => val }
+      content {
+        name  = environment_variable.value.name
+        value = environment_variable.value.value
+        type  = lookup(environment_variable.value, "type", "PLAINTEXT")
+      }
     }
   }
   source {
@@ -86,28 +70,14 @@ resource "aws_codebuild_project" "tf_cicd_apply" {
     image_pull_credentials_type = "CODEBUILD"
     privileged_mode             = true
 
-    environment_variable {
-      name  = "TF_BUCKET"
-      value = var.TF_BUCKET
-      type  = "PLAINTEXT"
-    }
+    dynamic "environment_variable" {
+      for_each = { for key, val in var.ENV_VARS : key => val }
+      content {
+        name  = environment_variable.value.name
+        value = environment_variable.value.value
+        type  = lookup(environment_variable.value, "type", "PLAINTEXT")
 
-    environment_variable {
-      name  = "BUILD_ENV"
-      value = var.ENV
-      type  = "PLAINTEXT"
-    }
-
-    environment_variable {
-      name  = "TF_VERSION"
-      value = var.TF_VERSION
-      type  = "PLAINTEXT"
-    }
-
-    environment_variable {
-      name  = "TF_LOG"
-      value = var.TF_LOG
-      type  = "PLAINTEXT"
+      }
     }
   }
   source {

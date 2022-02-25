@@ -1,4 +1,5 @@
 variable "BUCKET_PREFIX" {}
+variable "ACM" {}
 variable "TAGS" {}
 
 module "s3_bucket" {
@@ -10,6 +11,7 @@ module "s3_bucket" {
 module "cdn" {
   source    = "./cloudfront"
   S3_BUCKET = module.s3_bucket
+  ACM       = var.ACM
 }
 
 output "s3_id" {

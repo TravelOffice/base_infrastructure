@@ -1,0 +1,60 @@
+﻿schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+interface ResolverResponse {
+  message: String
+}
+
+#   Refer to 
+######  - Facebook Message API: https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/messages
+type Message {
+  #  Customer id
+  customerId: String!
+  #   A unique identifier for the Message.
+  id: ID!
+  #   Abtraction object which contains all the conversation data
+  ######  Each third-party messaging provider has difference schema definition
+  messageData: AWSJSON
+  #   Recipient
+  recipient: String!
+  #   Sender
+  sender: String!
+  #   Created at as timestamp
+  timestamp: Int
+}
+
+type MessageMutationResponse implements ResolverResponse {
+  data: Message
+  message: String
+}
+
+type MessagesQueryResponse implements ResolverResponse {
+  data: [Message]
+  message: String
+}
+
+type Mutation {
+  #   Receive a message from customer. The message is sent from third-party webhook
+  receiveMessage(customerId: String!, id: ID!, messageData: AWSJSON, recipient: String!, sender: String!, timestamp: Int): MessageMutationResponse
+  #   Send a message to customer. The message is send from Sales Web Application
+  sendMessage(customerId: String!, messageData: AWSJSON, recipient: String!, sender: String!, timestamp: Int): MessageMutationResponse
+}
+
+type Query {
+  #  Get all messages by customer id
+  allMessages(customerId: String!): MessagesQueryResponse
+  #   Get all the related User. TODO: Fetch data by page.
+  allUsers: [AWSJSON]
+  #   Get my user/page.
+  me: AWSJSON
+  #   Get user profile
+  user(id: ID!): AWSJSON
+}
+
+type Subscription {
+  #   Subscribes to all new messages in a given Message.
+  onNewMessage: MessageMutationResponse @aws_auth @aws_subscribe(mutations : ["receiveMessage"])
+}

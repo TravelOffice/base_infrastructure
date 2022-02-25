@@ -1,4 +1,5 @@
 variable "S3_BUCKET" {}
+variable "ACM" {}
 
 module "cdn" {
   source = "terraform-aws-modules/cloudfront/aws"
@@ -44,9 +45,18 @@ module "cdn" {
   ]
 
   viewer_certificate = {
-    acm_certificate_arn = "arn:aws:acm:us-east-1:249593777629:certificate/20027980-d231-448a-930d-b37a515342dd"
+    acm_certificate_arn = var.ACM
     ssl_support_method  = "sni-only"
   }
+
+  custom_error_response = [
+    {
+      error_caching_min_ttl = 10
+      error_code            = 403
+      response_code         = 200
+      response_page_path    = "/index.html"
+    }
+  ]
 }
 
 resource "aws_s3_bucket_policy" "allow_access_from_cloudfront_to_s3" {

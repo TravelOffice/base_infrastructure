@@ -34,11 +34,11 @@ variable "MARKETING_VPC_CIDR" {
 }
 
 variable "MARKETING_PUBLIC_SUBNETS_CIDR" {
-  default = ["10.9.0.192/28", "10.9.0.224/28"]
+  default = ["10.9.0.64/28", "10.9.0.96/28"]
 }
 
 variable "MARKETING_PRIVATE_SUBNETS_CIDR" {
-  default = ["10.9.0.0/28", "10.9.0.32/28", "10.9.0.64/28", "10.9.0.96/28"]
+  default = ["10.9.0.0/28", "10.9.0.32/28"]
 }
 
 variable "MARKETING_DATABASE_SUBNETS_CIDR" {

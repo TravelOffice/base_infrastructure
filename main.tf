@@ -156,7 +156,6 @@ module "marketing_vpc" {
   PUBLIC_SUBNETS_CIDR    = var.MARKETING_PUBLIC_SUBNETS_CIDR
   PRIVATE_SUBNETS_CIDR   = var.MARKETING_PRIVATE_SUBNETS_CIDR
   DATABASE_SUBNETS_CIDR  = var.MARKETING_DATABASE_SUBNETS_CIDR
-  ENABLE_NAT_GATEWAY     = local.is_prod ? true : false
   SINGLE_NAT_GATEWAY     = local.is_prod ? false : true
   ONE_NAT_GATEWAY_PER_AZ = local.is_prod ? true : false
   TAGS                   = local.marketing_tags

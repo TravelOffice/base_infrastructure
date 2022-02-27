@@ -56,5 +56,9 @@ resource "aws_route53_record" "record" {
 }
 
 output "domain" {
-  value = module.appsync.appsync_domain_name
+  value = module.appsync.appsync_domain_id
+}
+
+output "id" {
+  value = module.appsync.appsync_graphql_api_id
 }

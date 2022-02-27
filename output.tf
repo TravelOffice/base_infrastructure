@@ -25,6 +25,10 @@ output "MARKETING" {
       secret_manager = {
         id = module.marketing_secret_manager.id
       }
+      appsync = {
+        id     = module.chat_appsync.id
+        domain = module.chat_appsync.domain
+      }
     }
     frontend = {
       sale_web = {

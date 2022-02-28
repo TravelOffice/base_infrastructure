@@ -131,6 +131,15 @@ module "execute_ecs_task_lambda_role" {
   ECS_TASK_ROLE = module.provisioning_tenant_infra_ecs_task_role.arn
 }
 
+module "read_write_dynamodb_lambda_role" {
+  source = "../../modules/security/iam/role/lambda/read_write_dynamodb"
+
+  TAGS         = local.base_backend_tags
+  ENV          = var.ENV
+  FEATURE_NAME = local.base_backend_name
+  DYNAMO_TABLE_ARN = module.sale_chat_dynamodb.arn
+}
+
 module "base_backend_secret_manager" {
   source       = "../../modules/security/secret_manager"
   ENV          = var.ENV
@@ -230,5 +239,11 @@ module "chat_appsync" {
   ACM                  = local.acm
   HOSTED_ZONE_ID       = local.hosted_zone_id
   TAGS                 = local.marketing_tags
+}
+
+module "sale_chat_dynamodb" {
+  source = "../../modules/database/dynamodb"
+  ENV    = var.ENV
+  TAGS   = local.marketing_tags
 }
 # Marketing Infrastructure: END

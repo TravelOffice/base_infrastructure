@@ -29,6 +29,9 @@ output "MARKETING" {
         id     = module.chat_appsync.id
         domain = module.chat_appsync.domain
       }
+      dynamodb = {
+        arn = module.sale_chat_dynamodb.arn
+      }
     }
     frontend = {
       sale_web = {
@@ -54,8 +57,8 @@ output "COMMON_CONFIG" {
         provision_tenant_infa_ecs_task_role = module.provisioning_tenant_infra_ecs_task_role.arn
         cognito_power_user_lambda_role      = module.cognito_power_user_lambda_role.arn
         execute_ecs_task_lambda_role        = module.execute_ecs_task_lambda_role.arn
-        marketing_secret_manager_id         = module.marketing_secret_manager.id
-        send_mail_lambda_role               = module.send_mail_lambda_role
+        send_mail_lambda_role               = module.send_mail_lambda_role.arn
+        read_write_dynamodb_lambda_role     = module.read_write_dynamodb_lambda_role.arn
       }
     }
     route53 = {

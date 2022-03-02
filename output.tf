@@ -48,8 +48,10 @@ output "COMMON_CONFIG" {
     codestar_connector_credentials = "arn:aws:codestar-connections:ap-southeast-1:249593777629:connection/f7623ad7-387d-4abc-ae08-7b83cd464851"
     tf_bucket                      = var.TF_BUCKET
     cognito = {
-      user_pool_id = module.cognito_user_pool.id
-
+      user_pool = {
+        id  = module.cognito_user_pool.id
+        arn = module.cognito_user_pool.arn
+      }
     }
     iam = {
       roles = {

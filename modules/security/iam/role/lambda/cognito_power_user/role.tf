@@ -3,7 +3,7 @@ variable "FEATURE_NAME" {}
 variable "TAGS" {}
 
 resource "aws_iam_policy" "policy" {
-  name = "${var.ENV}-${var.FEATURE_NAME}-standard"
+  name = "${var.ENV}-${var.FEATURE_NAME}-cognito"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -41,7 +41,8 @@ resource "aws_iam_policy" "policy" {
       },
       {
         Action = [
-          "cognito-idp:AdminCreateUser"
+          "cognito-idp:AdminCreateUser",
+          "cognito-idp:ListUsers"
         ]
         Effect   = "Allow"
         Resource = "arn:aws:cognito-idp:*:249593777629:userpool/*"

@@ -134,9 +134,9 @@ module "execute_ecs_task_lambda_role" {
 module "read_write_dynamodb_lambda_role" {
   source = "../../modules/security/iam/role/lambda/read_write_dynamodb"
 
-  TAGS         = local.base_backend_tags
-  ENV          = var.ENV
-  FEATURE_NAME = local.base_backend_name
+  TAGS             = local.base_backend_tags
+  ENV              = var.ENV
+  FEATURE_NAME     = local.base_backend_name
   DYNAMO_TABLE_ARN = module.sale_chat_dynamodb.arn
 }
 

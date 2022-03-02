@@ -67,3 +67,7 @@ output "id" {
 output "client_ids" {
   value = module.cognito_user_pool.client_ids
 }
+
+output "arn" {
+  value = module.cognito_user_pool.arn
+}

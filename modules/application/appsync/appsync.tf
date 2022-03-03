@@ -29,10 +29,12 @@ module "appsync" {
 
   schema = file("${var.SCHEMA_FILE}")
 
-  api_keys = {
-    default = null # such key will expire in 7 days
-  }
   authentication_type = "AMAZON_COGNITO_USER_POOLS"
+  additional_authentication_provider = {
+    api_key = {
+      authentication_type = "API_KEY"
+    }
+  }
   user_pool_config = {
     aws_region     = var.AWS_REGION
     default_action = "ALLOW"
@@ -45,6 +47,11 @@ module "appsync" {
   domain_name_association_enabled = true
   certificate_arn                 = var.ACM
   tags                            = var.TAGS
+}
+
+resource "aws_appsync_api_key" "api_key" {
+  api_id  = module.appsync.appsync_graphql_api_id
+  expires = "2023-03-03T00:00:00Z"
 }
 
 resource "aws_route53_record" "record" {
@@ -61,4 +68,16 @@ output "domain" {
 
 output "id" {
   value = module.appsync.appsync_graphql_api_id
+}
+
+output "api_key" {
+  value = aws_appsync_api_key.api_key.key
+}
+
+output "graphql_endpoint" {
+  value = "https://${module.appsync.appsync_domain_id}/graphql"
+}
+
+output "realtime_endpoint" {
+  value = "https://${module.appsync.appsync_domain_id}/graphql/realtime"
 }

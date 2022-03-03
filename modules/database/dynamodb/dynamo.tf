@@ -41,3 +41,7 @@ module "dynamodb_table" {
 output "arn" {
   value = module.dynamodb_table.dynamodb_table_arn
 }
+
+output "db_name" {
+  value = "${var.ENV}-sale_chat"
+}

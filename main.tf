@@ -1,4 +1,6 @@
 locals {
+  fb_token               = "1CDFFB13226C9AC1C58D2F59D8B65"
+  fb_graph_endpoint      = "https://graph.facebook.com/v13.0"
   hosted_zone_id         = "Z0837421MRKFPV1O1ZCI"
   acm                    = "arn:aws:acm:us-east-1:249593777629:certificate/20027980-d231-448a-930d-b37a515342dd"
   marketing_feature_name = "marketing-backend"
@@ -220,12 +222,18 @@ module "marketing_secret_manager" {
   ENV          = var.ENV
   FEATURE_NAME = local.marketing_feature_name
   STORE_DATA = {
-    "RDS_WRITER_ENDPOINT" = module.marketing_postgresql.writer_endpoint
-    "RDS_READER_ENDPOINT" = module.marketing_postgresql.reader_endpoint
-    "RDS_NAME"            = local.marketing_feature_name
-    "RDS_PORT"            = module.marketing_postgresql.port
-    "RDS_USERNAME"        = var.RDS_USERNAME
-    "RDS_PASSWORD"        = module.marketing_postgresql.cluster_password
+    "RDS_WRITER_ENDPOINT"              = module.marketing_postgresql.writer_endpoint
+    "RDS_READER_ENDPOINT"              = module.marketing_postgresql.reader_endpoint
+    "RDS_NAME"                         = local.marketing_feature_name
+    "RDS_PORT"                         = module.marketing_postgresql.port
+    "RDS_USERNAME"                     = var.RDS_USERNAME
+    "RDS_PASSWORD"                     = module.marketing_postgresql.cluster_password
+    "CHAT_APPSYNC_API_KEY"             = module.chat_appsync.api_key
+    "CHAT_APPSYNC_GRAPHQL_ENDPOINT"    = module.chat_appsync.graphql_endpoint
+    "CHAT_APPSYNC_REALTIME_ENDPOINT"   = module.chat_appsync.realtime_endpoint
+    "SALE_CHAT_TABLE"                  = module.sale_chat_dynamodb.db_name
+    "FB_MESSAGE_PLATFORM_VERIFY_TOKEN" = local.fb_token
+    "FB_GRAPH_ENDPOINT"                = local.fb_graph_endpoint
   }
   TAGS = local.marketing_tags
 }

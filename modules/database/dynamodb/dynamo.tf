@@ -14,6 +14,9 @@ variable "READ_CAPACITY" {
 }
 variable "TAGS" {}
 
+locals {
+  is_ondemand = var.BILLING_MODE == "PAY_PER_REQUEST"
+}
 module "dynamodb_table" {
   source = "terraform-aws-modules/dynamodb-table/aws"
 
@@ -29,10 +32,24 @@ module "dynamodb_table" {
     {
       name = "sk"
       type = "S"
+    },
+    {
+      name = "id"
+      type = "S"
     }
   ]
-  write_capacity      = var.WRITE_CAPACITY
-  read_capacity       = var.READ_CAPACITY
+  global_secondary_indexes = [
+    {
+      hash_key           = "id"
+      name               = "PageIdIndex"
+      non_key_attributes = []
+      projection_type    = "ALL"
+      read_capacity      = local.is_ondemand ? null : var.READ_CAPACITY
+      write_capacity     = local.is_ondemand ? null : var.WRITE_CAPACITY
+    }
+  ]
+  write_capacity      = local.is_ondemand ? null : var.WRITE_CAPACITY
+  read_capacity       = local.is_ondemand ? null : var.READ_CAPACITY
   autoscaling_enabled = var.AUTOSCALING_ENABLED
   billing_mode        = var.BILLING_MODE
   tags                = var.TAGS

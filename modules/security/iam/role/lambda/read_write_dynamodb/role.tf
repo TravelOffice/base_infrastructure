@@ -48,7 +48,10 @@ resource "aws_iam_policy" "policy" {
           "dynamodb:Query",
           "dynamodb:UpdateItem"
         ],
-        "Resource" : "${var.DYNAMO_TABLE_ARN}"
+        "Resource" : [
+          "${var.DYNAMO_TABLE_ARN}",
+          "${var.DYNAMO_TABLE_ARN}/index/*"
+        ]
       }
     ]
   })

@@ -1,6 +1,7 @@
 locals {
   fb_token               = "1CDFFB13226C9AC1C58D2F59D8B65"
   fb_graph_endpoint      = "https://graph.facebook.com/v13.0"
+  zalo_app_id            = "1364765243717231492"
   hosted_zone_id         = "Z0837421MRKFPV1O1ZCI"
   acm                    = "arn:aws:acm:us-east-1:249593777629:certificate/20027980-d231-448a-930d-b37a515342dd"
   marketing_feature_name = "marketing-backend"
@@ -52,7 +53,7 @@ locals {
       },
       {
         name  = "REACT_APP_APPSYNC_API_ENDPOINT"
-        value = module.chat_appsync.domain
+        value = "${module.chat_appsync.domain}/graphql"
       },
       {
         name  = "REACT_APP_AWS_REGION"
@@ -60,7 +61,7 @@ locals {
       },
       {
         name  = "REACT_APP_APPSYNC_REALTIME_ENDPOINT"
-        value = "${module.chat_appsync.domain}/realtime"
+        value = "${module.chat_appsync.domain}/graphql/realtime"
       }
     ]
   }
@@ -234,6 +235,7 @@ module "marketing_secret_manager" {
     "SALE_CHAT_TABLE"                  = module.sale_chat_dynamodb.db_name
     "FB_MESSAGE_PLATFORM_VERIFY_TOKEN" = local.fb_token
     "FB_GRAPH_ENDPOINT"                = local.fb_graph_endpoint
+    "ZALO_MESSAGE_PLATFORM_APP_ID"     = local.zalo_app_id
   }
   TAGS = local.marketing_tags
 }

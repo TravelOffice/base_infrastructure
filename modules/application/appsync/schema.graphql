@@ -14,6 +14,8 @@ type Message @aws_api_key {
 	#  Abtraction object which contains all the conversation data
 	################  Each third-party messaging provider has difference schema definition
 	messageData: AWSJSON
+	#  Chat plaform type
+	chatPlatform: String!
 }
 
 type MessageMutationResponse implements ResolverResponse @aws_api_key {
@@ -32,7 +34,8 @@ type Mutation @aws_api_key {
 		sender: String!,
 		recipient: String!,
 		customerId: String!,
-		messageData: AWSJSON
+		messageData: AWSJSON,
+		chatPlatform: String!
 	): MessageMutationResponse
 	receivedMessage(
 		sender: String!,
@@ -52,9 +55,9 @@ type Query {
 	#  Get my user/page.
 	me: AWSJSON
 	# Get all messages for given conversation id of a page
-	allMessages(pageId: String!, conversationId: String!, before: String): MessagesQueryResponse
+	allMessages(chatPlatform: String!, pageId: String!, conversationId: String!, before: String): MessagesQueryResponse
 	# Get conversations for given page
-	allConversations(pageId: String!): MessagesQueryResponse
+	allConversations(chatPlatform: String!, pageId: String!): MessagesQueryResponse
 }
 
 interface ResolverResponse {

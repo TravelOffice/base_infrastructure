@@ -50,7 +50,7 @@ module "cognito_user_pool" {
   sms_authentication_message                            = var.SMS_AUTHENTICATION_MESSAGE
   admin_create_user_config_allow_admin_create_user_only = var.ALLOW_ADMIN_CREATE_USER_ONLY
   client_name                                           = "${var.ENV}-app-client"
-  client_explicit_auth_flows                            = ["ALLOW_USER_SRP_AUTH", "ALLOW_CUSTOM_AUTH", "ALLOW_REFRESH_TOKEN_AUTH"]
+  client_explicit_auth_flows                            = ["ALLOW_USER_SRP_AUTH", "ALLOW_CUSTOM_AUTH", "ALLOW_REFRESH_TOKEN_AUTH", "ALLOW_USER_PASSWORD_AUTH"]
   client_prevent_user_existence_errors                  = "ENABLED"
   client_callback_urls                                  = ["http://localhost:3000"]
   client_default_redirect_uri                           = "http://localhost:3000"

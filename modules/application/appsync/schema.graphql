@@ -43,7 +43,8 @@ type Mutation @aws_api_key {
 		customerId: String!,
 		messageData: AWSJSON,
 		timestamp: AWSTimestamp,
-		id: String!
+		id: String!,
+		chatPlatform: String!
 	): MessageMutationResponse
 }
 

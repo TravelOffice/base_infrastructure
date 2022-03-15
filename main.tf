@@ -2,6 +2,7 @@ locals {
   fb_token               = "1CDFFB13226C9AC1C58D2F59D8B65"
   fb_graph_endpoint      = "https://graph.facebook.com/v13.0"
   zalo_app_id            = "1364765243717231492"
+  zalo_secret_key        = "N2Mh4JDI2IETV1IW9U24"
   hosted_zone_id         = "Z0837421MRKFPV1O1ZCI"
   acm                    = "arn:aws:acm:us-east-1:249593777629:certificate/20027980-d231-448a-930d-b37a515342dd"
   marketing_feature_name = "marketing-backend"
@@ -236,6 +237,7 @@ module "marketing_secret_manager" {
     "FB_MESSAGE_PLATFORM_VERIFY_TOKEN" = local.fb_token
     "FB_GRAPH_ENDPOINT"                = local.fb_graph_endpoint
     "ZALO_MESSAGE_PLATFORM_APP_ID"     = local.zalo_app_id
+    "ZALO_MESSAGE_PLATFORM_SECRET_KEY" = local.zalo_secret_key
   }
   TAGS = local.marketing_tags
 }

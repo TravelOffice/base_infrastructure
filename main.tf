@@ -62,7 +62,7 @@ locals {
       },
       {
         name  = "REACT_APP_APPSYNC_REALTIME_ENDPOINT"
-        value = "${module.chat_appsync.domain}/graphql/realtime"
+        value = "wss://${module.chat_appsync.domain}/graphql/realtime"
       }
     ]
   }

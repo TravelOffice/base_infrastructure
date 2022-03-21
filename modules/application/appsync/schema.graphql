@@ -1,4 +1,4 @@
-﻿#  Refer to 
+﻿#  Refer to
 ################  - Facebook Message API: https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/messages
 type Message @aws_api_key @aws_cognito_user_pools{
 	#  A unique identifier for the Message.
@@ -56,7 +56,7 @@ type Query {
 	#  Get my user/page.
 	me: AWSJSON
 	# Get all Facebook messages for given conversation id of a page
-	allFbMessages(pageId: String!, conversationId: String!, before: String): MessagesQueryResponse
+	allFbMessages(pageId: String!, conversationId: String!, after: String, limit: Int): MessagesQueryResponse
 	# Get Facebook conversations for given page
 	allFbConversations(pageId: String!): MessagesQueryResponse
 	# Get all Zalo messages for given conversation id of a page

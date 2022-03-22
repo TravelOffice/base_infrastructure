@@ -258,4 +258,10 @@ module "sale_chat_dynamodb" {
   ENV    = var.ENV
   TAGS   = local.marketing_tags
 }
+
+module "sale_chat_attachment_bucket" {
+  source        = "../../modules/storage/s3"
+  BUCKET_PREFIX = "${var.ENV}-${local.sale_frontend_name}-attachments"
+  TAGS          = local.marketing_tags
+}
 # Marketing Infrastructure: END

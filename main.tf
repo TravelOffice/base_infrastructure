@@ -258,4 +258,33 @@ module "sale_chat_dynamodb" {
   ENV    = var.ENV
   TAGS   = local.marketing_tags
 }
+
+module "sale_chat_attachment_bucket" {
+  source        = "../../modules/storage/s3"
+  BUCKET_PREFIX = "${var.ENV}-${local.sale_frontend_name}-attachments"
+  TAGS          = local.marketing_tags
+}
+
+resource "aws_s3_bucket_policy" "sale_chat_attachment_bucket_policy" {
+  bucket = module.sale_chat_attachment_bucket.id
+  policy = <<EOF
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+          {
+              "Sid": "1",
+              "Effect": "Allow",
+              "Principal": "*",
+              "Action": [
+                  "s3:PutObject",
+                  "s3:GetObject",
+                  "s3:PutObjectACL"
+              ],
+              "Resource": "arn:aws:s3:::dev-sale-frontend-attachments20220323105348750200000001/*"
+          }
+      ]
+  }
+  EOF
+}
+
 # Marketing Infrastructure: END

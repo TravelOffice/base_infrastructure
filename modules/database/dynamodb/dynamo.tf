@@ -13,6 +13,7 @@ variable "READ_CAPACITY" {
   default = 1
 }
 variable "TAGS" {}
+variable "DB_NAME" {}
 
 locals {
   is_ondemand = var.BILLING_MODE == "PAY_PER_REQUEST"
@@ -20,7 +21,7 @@ locals {
 module "dynamodb_table" {
   source = "terraform-aws-modules/dynamodb-table/aws"
 
-  name      = "${var.ENV}-sale_chat"
+  name      = "${var.ENV}-${var.DB_NAME}"
   hash_key  = "pk"
   range_key = "sk"
 
@@ -60,5 +61,5 @@ output "arn" {
 }
 
 output "db_name" {
-  value = "${var.ENV}-sale_chat"
+  value = "${var.ENV}-${var.DB_NAME}"
 }

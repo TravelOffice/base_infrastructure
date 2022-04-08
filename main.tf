@@ -233,7 +233,7 @@ module "marketing_secret_manager" {
     "CHAT_APPSYNC_API_KEY"             = module.chat_appsync.api_key
     "CHAT_APPSYNC_GRAPHQL_ENDPOINT"    = module.chat_appsync.graphql_endpoint
     "CHAT_APPSYNC_REALTIME_ENDPOINT"   = module.chat_appsync.realtime_endpoint
-    "SALE_CHAT_TABLE"                  = module.sale_chat_dynamodb.db_name
+    "DYNAMO_TRAVEL_TABLE"              = module.sale_chat_dynamodb.db_name
     "FB_MESSAGE_PLATFORM_VERIFY_TOKEN" = local.fb_token
     "FB_GRAPH_ENDPOINT"                = local.fb_graph_endpoint
     "ZALO_MESSAGE_PLATFORM_APP_ID"     = local.zalo_app_id
@@ -254,9 +254,10 @@ module "chat_appsync" {
 }
 
 module "sale_chat_dynamodb" {
-  source = "../../modules/database/dynamodb"
-  ENV    = var.ENV
-  TAGS   = local.marketing_tags
+  source  = "../../modules/database/dynamodb"
+  ENV     = var.ENV
+  DB_NAME = "travel_table"
+  TAGS    = local.marketing_tags
 }
 
 module "sale_chat_attachment_bucket" {

@@ -58,6 +58,12 @@ module "cognito_user_pool" {
   client_allowed_oauth_flows                            = ["code", "implicit"]
   client_generate_secret                                = false
   tags                                                  = var.TAGS
+  schema {
+    name                        = "role"
+    attribute_data_type         = "String"
+    required                    = "true"
+    mutable                     = "true"
+  }
 }
 
 output "id" {

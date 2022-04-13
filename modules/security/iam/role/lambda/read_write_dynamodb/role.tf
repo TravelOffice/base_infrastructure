@@ -53,6 +53,13 @@ resource "aws_iam_policy" "policy" {
           "${var.DYNAMO_TABLE_ARN}",
           "${var.DYNAMO_TABLE_ARN}/index/*"
         ]
+      },
+      {
+        Action = [
+          "ses:SendMail"
+        ]
+        Effect   = "Allow"
+        Resource = "*",
       }
     ]
   })

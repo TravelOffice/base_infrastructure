@@ -154,6 +154,7 @@ module "base_backend_secret_manager" {
     "TF_BUCKET"                 = var.TF_BUCKET
     "NOTIFICATION_SENDER_EMAIL" = "anh93.nguyentuan@gmail.com"
     "ADMIN_EMAIL"               = "anh93.nguyentuan@gmail.com"
+    "DYNAMO_TRAVEL_TABLE"       = module.sale_chat_dynamodb.db_name
   }
   TAGS = local.base_backend_tags
 }

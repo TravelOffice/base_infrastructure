@@ -54,7 +54,7 @@ resource "aws_iam_policy" "policy" {
       },
       {
         Action = [
-          "ses:SendMail"
+          "ses:*"
         ]
         Effect   = "Allow"
         Resource = "*",

@@ -64,7 +64,7 @@ module "cognito_user_pool" {
       developer_only_attribute = false
       mutable                  = true
       name                     = "role"
-      required                 = true
+      required                 = false
       string_attribute_constraints = {
         min_length = 0
         max_length = 100

@@ -1,0 +1,10 @@
+version: 0.2
+phases:
+  post_build:
+    commands:
+      - for pipeline in ${TRIGGER_PIPELINES};
+        do
+            echo "Trigger code pipeline ${pipeline}";
+            aws codepipeline start-pipeline-execution --name ${pipeline};
+        done
+

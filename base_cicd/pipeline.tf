@@ -54,6 +54,17 @@ locals {
       configuration = {
         ProjectName = aws_codebuild_project.cicd_apply.name
       }
+    },
+    {
+      name            = "TriggerSubPipeline"
+      category        = "Build"
+      provider        = "CodeBuild"
+      version         = "1"
+      owner           = "AWS"
+      input_artifacts = ["tf_code"]
+      configuration = {
+        ProjectName = aws_codebuild_project.cicd_trigger_sub_pipeline.name
+      }
     }
   ]
 }
@@ -153,6 +164,36 @@ resource "aws_codebuild_project" "cicd_apply" {
   source {
     type      = "CODEPIPELINE"
     buildspec = "buildspecs/apply-buildspec.yml"
+  }
+
+  tags = local.tags
+}
+
+resource "aws_codebuild_project" "cicd_trigger_sub_pipeline" {
+  name         = "${var.ENV}-base-cicd-trigger-sub-pipeline"
+  description  = "Apply stage for terraform"
+  service_role = module.iam.codebuild_role_arn
+
+  artifacts {
+    type = "CODEPIPELINE"
+  }
+
+  environment {
+    compute_type                = "BUILD_GENERAL1_SMALL"
+    image                       = var.IMAGE
+    type                        = "LINUX_CONTAINER"
+    image_pull_credentials_type = "CODEBUILD"
+
+    environment_variable {
+      name  = "TRIGGER_PIPELINES"
+      value = "${var.ENV}-base-backend-cicd-pipeline"
+      type  = "PLAINTEXT"
+    }
+
+  }
+  source {
+    type      = "CODEPIPELINE"
+    buildspec = "buildspecs/trigger-sub-pipeline-buildspec.yml"
   }
 
   tags = local.tags

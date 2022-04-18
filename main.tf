@@ -1,6 +1,8 @@
 locals {
   fb_token               = "1CDFFB13226C9AC1C58D2F59D8B65"
   fb_graph_endpoint      = "https://graph.facebook.com/v13.0"
+  fb_client_id           = "636976117412979"
+  fb_client_secret       = "f34df5c9c4609da6f354db565229d67e"
   zalo_app_id            = "1364765243717231492"
   zalo_secret_key        = "N2Mh4JDI2IETV1IW9U24"
   hosted_zone_id         = "Z0837421MRKFPV1O1ZCI"
@@ -237,6 +239,8 @@ module "marketing_secret_manager" {
     "DYNAMO_TRAVEL_TABLE"              = module.sale_chat_dynamodb.db_name
     "FB_MESSAGE_PLATFORM_VERIFY_TOKEN" = local.fb_token
     "FB_GRAPH_ENDPOINT"                = local.fb_graph_endpoint
+    "FACEBOOK_CLIENT_ID"               = local.fb_client_id
+    "FACEBOOK_CLIENT_SECRET"           = local.fb_client_secret
     "ZALO_MESSAGE_PLATFORM_APP_ID"     = local.zalo_app_id
     "ZALO_MESSAGE_PLATFORM_SECRET_KEY" = local.zalo_secret_key
   }

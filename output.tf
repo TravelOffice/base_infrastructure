@@ -56,12 +56,7 @@ output "COMMON_CONFIG" {
     }
     iam = {
       roles = {
-        standard_lambda_role                = module.standard_lambda_role.arn
         provision_tenant_infa_ecs_task_role = module.provisioning_tenant_infra_ecs_task_role.arn
-        cognito_power_user_lambda_role      = module.cognito_power_user_lambda_role.arn
-        execute_ecs_task_lambda_role        = module.execute_ecs_task_lambda_role.arn
-        send_mail_lambda_role               = module.send_mail_lambda_role.arn
-        read_write_dynamodb_lambda_role     = module.read_write_dynamodb_lambda_role.arn
       }
     }
     route53 = {

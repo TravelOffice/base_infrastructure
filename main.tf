@@ -99,51 +99,12 @@ module "base_backend_vpc" {
   ONE_NAT_GATEWAY_PER_AZ = local.is_prod ? true : false
   TAGS                   = local.base_backend_tags
 }
-module "standard_lambda_role" {
-  source = "../../modules/security/iam/role/lambda/standard"
-
-  TAGS         = local.marketing_tags
-  ENV          = var.ENV
-  FEATURE_NAME = local.marketing_feature_name
-}
-module "send_mail_lambda_role" {
-  source = "../../modules/security/iam/role/lambda/send_mail"
-
-  TAGS         = local.marketing_tags
-  ENV          = var.ENV
-  FEATURE_NAME = local.marketing_feature_name
-}
-module "cognito_power_user_lambda_role" {
-  source = "../../modules/security/iam/role/lambda/cognito_power_user"
-
-  TAGS         = local.base_backend_tags
-  ENV          = var.ENV
-  FEATURE_NAME = local.base_backend_name
-}
 module "provisioning_tenant_infra_ecs_task_role" {
   source = "../../modules/security/iam/role/ecs/task"
 
   TAGS         = local.base_backend_tags
   ENV          = var.ENV
   FEATURE_NAME = local.base_backend_name
-}
-
-module "execute_ecs_task_lambda_role" {
-  source = "../../modules/security/iam/role/lambda/execute_ecs_task"
-
-  TAGS          = local.base_backend_tags
-  ENV           = var.ENV
-  FEATURE_NAME  = local.base_backend_name
-  ECS_TASK_ROLE = module.provisioning_tenant_infra_ecs_task_role.arn
-}
-
-module "read_write_dynamodb_lambda_role" {
-  source = "../../modules/security/iam/role/lambda/read_write_dynamodb"
-
-  TAGS             = local.base_backend_tags
-  ENV              = var.ENV
-  FEATURE_NAME     = local.base_backend_name
-  DYNAMO_TABLE_ARN = module.sale_chat_dynamodb.arn
 }
 
 module "base_backend_secret_manager" {

@@ -47,6 +47,15 @@ module "dynamodb_table" {
       projection_type    = "ALL"
       read_capacity      = local.is_ondemand ? null : var.READ_CAPACITY
       write_capacity     = local.is_ondemand ? null : var.WRITE_CAPACITY
+    },
+    {
+      hash_key           = "sk"
+      range_key          = "pk"
+      name               = "ReverseIndex"
+      non_key_attributes = []
+      projection_type    = "ALL"
+      read_capacity      = local.is_ondemand ? null : var.READ_CAPACITY
+      write_capacity     = local.is_ondemand ? null : var.WRITE_CAPACITY
     }
   ]
   write_capacity      = local.is_ondemand ? null : var.WRITE_CAPACITY

@@ -37,8 +37,22 @@ module "dynamodb_table" {
     {
       name = "id"
       type = "S"
+    },
+    {
+      name = "typeLsi"
+      type = "S"
     }
   ]
+
+  local_secondary_indexes = [
+    {
+      name               = "TypeIndex"
+      projection_type    = "ALL"
+      range_key          = "typeLsi"
+      non_key_attributes = []
+    }
+  ]
+
   global_secondary_indexes = [
     {
       hash_key           = "id"

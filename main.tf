@@ -6,6 +6,7 @@ locals {
   zalo_app_id            = "1364765243717231492"
   zalo_secret_key        = "N2Mh4JDI2IETV1IW9U24"
   hosted_zone_id         = "Z0837421MRKFPV1O1ZCI"
+  hosted_domain_name     = "traveloffice.shop"
   acm                    = "arn:aws:acm:us-east-1:249593777629:certificate/20027980-d231-448a-930d-b37a515342dd"
   marketing_feature_name = "marketing-backend"
   sale_frontend_name     = "sale-frontend"
@@ -48,15 +49,15 @@ locals {
     sale_web = [
       {
         name  = "REACT_APP_BASE_URL"
-        value = "localhost:5000/"
+        value = "https://${var.ENV}-${local.marketing_feature_name}.${local.hosted_domain_name}"
       },
       {
         name  = "REACT_APP_SSO_PAGE"
-        value = "https://sso.traveloffice.shop"
+        value = "https://sso.${local.hosted_domain_name}"
       },
       {
         name  = "REACT_APP_APPSYNC_API_ENDPOINT"
-        value = "${module.chat_appsync.domain}/graphql"
+        value = "https://${module.chat_appsync.domain}/graphql"
       },
       {
         name  = "REACT_APP_AWS_REGION"

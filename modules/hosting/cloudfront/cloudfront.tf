@@ -3,6 +3,7 @@ variable "ACM" {}
 
 module "cdn" {
   source = "terraform-aws-modules/cloudfront/aws"
+  version = "2.9.3"
 
   aliases                       = ["*.traveloffice.shop"]
   default_root_object           = "index.html"

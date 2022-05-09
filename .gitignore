@@ -9,3 +9,4 @@
 *.lock*
 environments/dev/main.tf
 environments/dev/output.tf
+environments/dev/provider.tf

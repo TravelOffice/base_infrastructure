@@ -38,7 +38,7 @@ variable "TAGS" {}
 
 module "cognito_user_pool" {
   source                                                = "lgallard/cognito-user-pool/aws"
-  version                                               = "0.14.2"
+  version                                               = "0.15.2"
   user_pool_name                                        = "${var.ENV}-user-pool"
   password_policy                                       = var.PASSWORD_POLICY
   sms_verification_message                              = var.SMS_VERIFICATION_SUBJECT

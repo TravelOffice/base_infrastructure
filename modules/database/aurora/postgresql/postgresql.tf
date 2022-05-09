@@ -65,7 +65,7 @@ locals {
 
 module "cluster" {
   source  = "terraform-aws-modules/rds-aurora/aws"
-  version = "6.1.4"
+  version = "7.1.0"
 
   name           = "${var.ENV}-${var.FEATURE_NAME}-aurora-db-postgresql"
   engine         = var.ENGINE

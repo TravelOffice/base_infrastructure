@@ -23,6 +23,7 @@ fi
 cd ./environments/${ENV}
 ln -sf ../../main.tf .
 ln -sf ../../output.tf .
+ln -sf ../../provider.tf .
 cd ${CUR_DIR}
 
 terraform -chdir="./environments/${ENV}" ${TF_COMAND}

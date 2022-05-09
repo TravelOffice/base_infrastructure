@@ -9,11 +9,18 @@ variable "ACL" {
 }
 
 resource "aws_s3_bucket" "tf_bucket" {
-  acl           = var.ACL
   bucket_prefix = var.BUCKET_PREFIX
+}
 
-  versioning {
-    enabled = false
+resource "aws_s3_bucket_acl" "bucket_acl" {
+  bucket = aws_s3_bucket.tf_bucket.id
+  acl    = var.ACL
+}
+
+resource "aws_s3_bucket_versioning" "bucket_versioning" {
+  bucket = aws_s3_bucket.tf_bucket.id
+  versioning_configuration {
+    status = "Enabled"
   }
 }
 

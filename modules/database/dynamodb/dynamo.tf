@@ -42,6 +42,10 @@ module "dynamodb_table" {
     {
       name = "typeLsi"
       type = "S"
+    },
+    {
+      name = "typeGsi"
+      type = "S"
     }
   ]
 
@@ -71,7 +75,16 @@ module "dynamodb_table" {
       projection_type    = "ALL"
       read_capacity      = local.is_ondemand ? null : var.READ_CAPACITY
       write_capacity     = local.is_ondemand ? null : var.WRITE_CAPACITY
-    }
+    },
+    {
+      hash_key           = "typeGsi"
+      range_key          = "sk"
+      name               = "TypeGSI"
+      non_key_attributes = []
+      projection_type    = "ALL"
+      read_capacity      = local.is_ondemand ? null : var.READ_CAPACITY
+      write_capacity     = local.is_ondemand ? null : var.WRITE_CAPACITY
+    },
   ]
   write_capacity      = local.is_ondemand ? null : var.WRITE_CAPACITY
   read_capacity       = local.is_ondemand ? null : var.READ_CAPACITY

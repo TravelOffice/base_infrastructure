@@ -100,6 +100,21 @@ module "base_backend_vpc" {
   ONE_NAT_GATEWAY_PER_AZ = local.is_prod ? true : false
   TAGS                   = local.base_backend_tags
 }
+
+resource "aws_security_group" "base_backend_lambda_sg" {
+  name_prefix = "lambda_sg"
+  description = "Allow all outbound traffic"
+  vpc_id      = module.base_backend_vpc.id
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+  tags = local.base_backend_tags
+}
 module "provisioning_tenant_infra_ecs_task_role" {
   source = "../../modules/security/iam/role/ecs/task"
 

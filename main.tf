@@ -139,6 +139,21 @@ module "marketing_vpc" {
   TAGS                   = local.marketing_tags
 }
 
+resource "aws_security_group" "marketing_lambda_sg" {
+  name_prefix = "lambda_sg"
+  description = "Allow all outbound traffic"
+  vpc_id      = module.marketing_vpc.id
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+  tags = local.marketing_tags
+}
+
 module "sale_frontend_pipeline" {
   source                         = "../../modules/cicd"
   ENV                            = var.ENV

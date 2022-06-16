@@ -21,6 +21,9 @@ output "MARKETING" {
         public_subnets   = module.marketing_vpc.public_subnets
         private_subnets  = module.marketing_vpc.private_subnets
         database_subnets = module.marketing_vpc.database_subnets
+        security_groups = {
+          lambda_sg = aws_security_group.marketing_lambda_sg.id
+        }
       }
       secret_manager = {
         id = module.marketing_secret_manager.id

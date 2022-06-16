@@ -5,6 +5,9 @@ output "BASE_INFRASTRUCTURE" {
         id              = module.base_backend_vpc.id
         private_subnets = module.base_backend_vpc.private_subnets
         public_subnets  = module.base_backend_vpc.public_subnets
+        security_groups = {
+          lambda_sg = aws_security_group.base_backend_lambda_sg.id
+        }
       }
       secret_manager = {
         id = module.base_backend_secret_manager.id

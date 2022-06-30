@@ -235,6 +235,8 @@ module "marketing_secret_manager" {
     "FACEBOOK_CLIENT_SECRET"           = local.fb_client_secret
     "ZALO_MESSAGE_PLATFORM_APP_ID"     = local.zalo_app_id
     "ZALO_MESSAGE_PLATFORM_SECRET_KEY" = local.zalo_secret_key
+    "COGNITO_USER_POOL_ID"             = module.cognito_user_pool.id
+    "COGNITO_CLIENT_ID"                = module.cognito_user_pool.client_ids[0]
   }
   TAGS = local.marketing_tags
 }

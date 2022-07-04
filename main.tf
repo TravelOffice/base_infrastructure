@@ -66,6 +66,10 @@ locals {
       {
         name  = "REACT_APP_APPSYNC_REALTIME_ENDPOINT"
         value = "wss://${module.chat_appsync.domain}/graphql/realtime"
+      },
+      {
+        name  = "REACT_APP_FACEBOOK_APP_ID"
+        value = local.fb_client_id
       }
     ]
   }

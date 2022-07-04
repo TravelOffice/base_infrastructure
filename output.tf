@@ -37,6 +37,7 @@ output "MARKETING" {
       }
       dynamodb = {
         arn = module.sale_chat_dynamodb.arn
+        name = module.sale_chat_dynamodb.db_name
       }
     }
     frontend = {

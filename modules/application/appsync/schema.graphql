@@ -62,6 +62,8 @@ type Query {
 	allZaloMessages(pageId: String!, userId: String!, offset: Int, count: Int): MessagesQueryResponse
 	# Get Zalo conversations for given page
 	allZaloConversations(pageId: String!, offset: Int, count: Int): MessagesQueryResponse
+	# Get Telegram conversations for given bot id
+	allTelegramConversations(botId: String!): MessagesQueryResponse
 	# Get user profile information
 	userProfile(platform: String!, pageId: String!, pageUserId: String!): MessagesQueryResponse
 }

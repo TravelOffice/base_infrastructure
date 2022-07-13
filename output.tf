@@ -36,8 +36,14 @@ output "MARKETING" {
         domain = module.chat_appsync.domain
       }
       dynamodb = {
-        arn = module.sale_chat_dynamodb.arn
-        name = module.sale_chat_dynamodb.db_name
+        travel_table = {
+          arn  = module.travel_table_dynamodb.arn
+          name = module.travel_table_dynamodb.db_name
+        }
+        chat_table = {
+          arn  = module.chat_table_dynamodb.arn
+          name = module.chat_table_dynamodb.db_name
+        }
       }
     }
     frontend = {

@@ -19,7 +19,7 @@ locals {
   is_ondemand = var.BILLING_MODE == "PAY_PER_REQUEST"
 }
 module "dynamodb_table" {
-  source = "terraform-aws-modules/dynamodb-table/aws"
+  source  = "terraform-aws-modules/dynamodb-table/aws"
   version = "1.2.2"
 
   name      = "${var.ENV}-${var.DB_NAME}"

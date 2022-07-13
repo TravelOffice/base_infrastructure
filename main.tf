@@ -137,7 +137,7 @@ module "base_backend_secret_manager" {
     "TF_BUCKET"                 = var.TF_BUCKET
     "NOTIFICATION_SENDER_EMAIL" = "anh93.nguyentuan@gmail.com"
     "ADMIN_EMAIL"               = "anh93.nguyentuan@gmail.com"
-    "DYNAMO_TRAVEL_TABLE"       = module.sale_chat_dynamodb.db_name
+    "DYNAMO_TRAVEL_TABLE"       = module.travel_table_dynamodb.db_name
   }
   TAGS = local.base_backend_tags
 }
@@ -232,7 +232,8 @@ module "marketing_secret_manager" {
     "CHAT_APPSYNC_API_KEY"             = module.chat_appsync.api_key
     "CHAT_APPSYNC_GRAPHQL_ENDPOINT"    = module.chat_appsync.graphql_endpoint
     "CHAT_APPSYNC_REALTIME_ENDPOINT"   = module.chat_appsync.realtime_endpoint
-    "DYNAMO_TRAVEL_TABLE"              = module.sale_chat_dynamodb.db_name
+    "DYNAMO_TRAVEL_TABLE"              = module.travel_table_dynamodb.db_name
+    "DYNAMO_CHAT_TABLE"                = module.chat_table_dynamodb.db_name
     "FB_MESSAGE_PLATFORM_VERIFY_TOKEN" = local.fb_token
     "FB_GRAPH_ENDPOINT"                = local.fb_graph_endpoint
     "FACEBOOK_CLIENT_ID"               = local.fb_client_id
@@ -256,10 +257,17 @@ module "chat_appsync" {
   TAGS                 = local.marketing_tags
 }
 
-module "sale_chat_dynamodb" {
-  source  = "../../modules/database/dynamodb"
+module "travel_table_dynamodb" {
+  source  = "../../modules/database/dynamodb/travel_table"
   ENV     = var.ENV
   DB_NAME = "travel_table"
+  TAGS    = local.marketing_tags
+}
+
+module "chat_table_dynamodb" {
+  source  = "../../modules/database/dynamodb/chat_table"
+  ENV     = var.ENV
+  DB_NAME = "chat_table"
   TAGS    = local.marketing_tags
 }
 

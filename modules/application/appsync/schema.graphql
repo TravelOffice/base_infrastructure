@@ -65,7 +65,7 @@ type Query {
 	# Get Telegram conversations for given bot id
 	allTelegramConversations(pageId: String!): MessagesQueryResponse
 	# Get Telegram messages for given conversation
-	allTelegramMessages(pageId: String!, conversationId: String!): MessagesQueryResponse
+	allTelegramMessages(pageId: String!, conversationId: String!, nextToken: String, limit: Int): MessagesQueryResponse
 	# Get user profile information
 	userProfile(platform: String!, pageId: String!, pageUserId: String!): MessagesQueryResponse
 }

@@ -66,6 +66,8 @@ type Query {
 	allTelegramConversations(pageId: String!): MessagesQueryResponse
 	# Get Telegram messages for given conversation
 	allTelegramMessages(pageId: String!, conversationId: String!, nextToken: String, limit: Int): MessagesQueryResponse
+	# Get telegram file information
+	getTelegramFileInfo(pageId: String!, conversationId: String!, fileId: String!): MessagesQueryResponse
 	# Get user profile information
 	userProfile(platform: String!, pageId: String!, pageUserId: String!): MessagesQueryResponse
 }

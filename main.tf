@@ -242,6 +242,8 @@ module "marketing_secret_manager" {
     "ZALO_MESSAGE_PLATFORM_SECRET_KEY" = local.zalo_secret_key
     "COGNITO_USER_POOL_ID"             = module.cognito_user_pool.id
     "COGNITO_CLIENT_ID"                = module.cognito_user_pool.client_ids[0]
+    "CHAT_FILE_BUCKET"                 = module.sale_chat_attachment_bucket.id
+    "CHAT_FILE_BUCKET_URL"             = module.sale_chat_attachment_bucket.bucket_regional_domain_name
   }
   TAGS = local.marketing_tags
 }

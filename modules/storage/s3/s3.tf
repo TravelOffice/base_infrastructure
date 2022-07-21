@@ -58,3 +58,7 @@ output "domain" {
 output "id" {
   value = aws_s3_bucket.tf_bucket.id
 }
+
+output "bucket_regional_domain_name" {
+  value = "https://${aws_s3_bucket.tf_bucket.bucket_regional_domain_name}"
+}

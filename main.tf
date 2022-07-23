@@ -11,6 +11,7 @@ locals {
   marketing_feature_name = "marketing-backend"
   sale_frontend_name     = "sale-frontend"
   base_backend_name      = "base-backend"
+  chat_file_cdn          = "cdn.traveloffice.shop"
   marketing_tags = {
     Env       = var.ENV
     Terraform = true
@@ -189,6 +190,7 @@ module "sale_frontend_hosting" {
   source        = "../../modules/hosting"
   BUCKET_PREFIX = "${var.ENV}-${local.sale_frontend_name}"
   ACM           = local.acm
+  ALIASES       = ["*.traveloffice.shop"]
   TAGS          = local.sale_frontend_tags
 }
 
@@ -203,32 +205,12 @@ module "marketing_backend_pipeline" {
   FEATURE_NAME                   = local.marketing_feature_name
   TAGS                           = local.marketing_tags
 }
-module "marketing_postgresql" {
-  source              = "../../modules/database/aurora/postgresql"
-  ENV                 = var.ENV
-  VPC_ID              = module.marketing_vpc.id
-  DATABASE_SUBNETS    = module.marketing_vpc.database_subnets
-  ALLOWED_CIDR_BLOCKS = [var.MARKETING_VPC_CIDR]
-  FEATURE_NAME        = local.marketing_feature_name
-  USERNAME            = var.RDS_USERNAME
-  DATABASE_NAME       = "marketing"
-  ENGINE_MODE         = var.ENV == "dev" ? "serverless" : "provisioned"
-  ENGINE_VERSION      = var.RDS_ENGINE_VERSION
-  FAMILY              = var.RDS_FAMILY
-  TAGS                = local.marketing_tags
-}
 
 module "marketing_secret_manager" {
   source       = "../../modules/security/secret_manager"
   ENV          = var.ENV
   FEATURE_NAME = local.marketing_feature_name
   STORE_DATA = {
-    "RDS_WRITER_ENDPOINT"              = module.marketing_postgresql.writer_endpoint
-    "RDS_READER_ENDPOINT"              = module.marketing_postgresql.reader_endpoint
-    "RDS_NAME"                         = local.marketing_feature_name
-    "RDS_PORT"                         = module.marketing_postgresql.port
-    "RDS_USERNAME"                     = var.RDS_USERNAME
-    "RDS_PASSWORD"                     = module.marketing_postgresql.cluster_password
     "CHAT_APPSYNC_API_KEY"             = module.chat_appsync.api_key
     "CHAT_APPSYNC_GRAPHQL_ENDPOINT"    = module.chat_appsync.graphql_endpoint
     "CHAT_APPSYNC_REALTIME_ENDPOINT"   = module.chat_appsync.realtime_endpoint
@@ -244,6 +226,7 @@ module "marketing_secret_manager" {
     "COGNITO_CLIENT_ID"                = module.cognito_user_pool.client_ids[0]
     "CHAT_FILE_BUCKET"                 = module.sale_chat_attachment_bucket.id
     "CHAT_FILE_BUCKET_URL"             = module.sale_chat_attachment_bucket.bucket_regional_domain_name
+    "CHAT_FILE_CDN"                    = "https://${local.chat_file_cdn}"
   }
   TAGS = local.marketing_tags
 }
@@ -279,26 +262,15 @@ module "sale_chat_attachment_bucket" {
   TAGS          = local.marketing_tags
 }
 
-resource "aws_s3_bucket_policy" "sale_chat_attachment_bucket_policy" {
-  bucket = module.sale_chat_attachment_bucket.id
-  policy = <<EOF
-    {
-      "Version": "2012-10-17",
-      "Statement": [
-          {
-              "Sid": "1",
-              "Effect": "Allow",
-              "Principal": "*",
-              "Action": [
-                  "s3:PutObject",
-                  "s3:GetObject",
-                  "s3:PutObjectACL"
-              ],
-              "Resource": "arn:aws:s3:::dev-sale-frontend-attachments20220323105348750200000001/*"
-          }
-      ]
-  }
-  EOF
+module "sale_chat_cdn" {
+  source              = "../../modules/cdn"
+  S3_BUCKET           = module.sale_chat_attachment_bucket
+  ACM                 = local.acm
+  ALIASES             = [local.chat_file_cdn]
+  HOSTED_ZONE_ID      = local.hosted_zone_id
+  DEFAULT_ROOT_OBJECT = ""
+  RECORD_NAME         = "cdn"
+  TAGS                = local.marketing_tags
 }
 
 # Marketing Infrastructure: END

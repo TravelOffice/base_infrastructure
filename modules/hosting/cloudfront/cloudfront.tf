@@ -1,11 +1,16 @@
 variable "S3_BUCKET" {}
 variable "ACM" {}
+variable "ALIASES" {}
+variable "DEFAULT_ROOT_OBJECT" {
+  default = "index.html"
+}
+variable "TAGS" {}
 
 module "cdn" {
-  source = "terraform-aws-modules/cloudfront/aws"
+  source  = "terraform-aws-modules/cloudfront/aws"
   version = "2.9.3"
 
-  aliases                       = ["*.traveloffice.shop"]
+  aliases                       = var.ALIASES
   default_root_object           = "index.html"
   enabled                       = true
   create_origin_access_identity = true
@@ -58,6 +63,8 @@ module "cdn" {
       response_page_path    = "/index.html"
     }
   ]
+
+  tags = var.TAGS
 }
 
 resource "aws_s3_bucket_policy" "allow_access_from_cloudfront_to_s3" {

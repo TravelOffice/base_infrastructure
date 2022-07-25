@@ -25,6 +25,27 @@ module "cdn" {
   TAGS                = var.TAGS
 }
 
+resource "aws_s3_bucket_policy" "allow_access_from_cloudfront_to_s3" {
+  bucket = module.s3_bucket.id
+  policy = <<EOF
+    {
+      "Version": "2008-10-17",
+      "Id": "PolicyForCloudFrontPrivateContent",
+      "Statement": [
+        {
+          "Sid": "1",
+          "Effect": "Allow",
+          "Principal": {
+              "AWS": "${module.cdn.arn}"
+          },
+          "Action": "s3:GetObject",
+          "Resource": "${module.s3_bucket.arn}/*"
+        }
+      ]
+    }
+  EOF
+}
+
 output "s3_id" {
   value = module.s3_bucket.id
 }

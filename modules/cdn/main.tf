@@ -19,6 +19,34 @@ module "sale_chat_attachment_cdn" {
   TAGS                = var.TAGS
 }
 
+resource "aws_s3_bucket_policy" "allow_access_from_cloudfront_to_s3" {
+  bucket = var.S3_BUCKET.id
+  policy = <<EOF
+    {
+      "Version": "2008-10-17",
+      "Id": "PolicyForCloudFrontPrivateContent",
+      "Statement": [
+        {
+          "Sid": "1",
+          "Effect": "Allow",
+          "Principal": {
+              "AWS": "${module.sale_chat_attachment_cdn.arn}"
+          },
+          "Action": "s3:GetObject",
+          "Resource": "${var.S3_BUCKET.arn}/*"
+        },
+        {
+          "Sid": "2",
+          "Effect": "Allow",
+          "Principal": "*",
+          "Action": "s3:PutObject",
+          "Resource": "${var.S3_BUCKET.arn}/*"
+        }
+      ]
+    }
+  EOF
+}
+
 // Add DNS record for Cloudfront
 resource "aws_route53_record" "www" {
   zone_id = var.HOSTED_ZONE_ID

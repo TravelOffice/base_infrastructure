@@ -70,26 +70,10 @@ module "cdn" {
   tags = var.TAGS
 }
 
-data "aws_iam_policy_document" "allow_access_from_cloudfront_to_s3" {
-  statement {
-    principals {
-      type        = "AWS"
-      identifiers = ["${module.cdn.cloudfront_origin_access_identity_iam_arns[0]}"]
-    }
-
-    actions = var.ALLOW_S3_ACTION
-
-    resources = [
-      "${var.S3_BUCKET.arn}/*",
-    ]
-  }
-}
-
-resource "aws_s3_bucket_policy" "allow_access_from_cloudfront_to_s3" {
-  bucket = var.S3_BUCKET.id
-  policy = data.aws_iam_policy_document.allow_access_from_cloudfront_to_s3.json
-}
-
 output "domain" {
   value = module.cdn.cloudfront_distribution_domain_name
+}
+
+output "arn" {
+  value = module.cdn.cloudfront_origin_access_identity_iam_arns[0]
 }

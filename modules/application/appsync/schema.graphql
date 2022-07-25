@@ -10,16 +10,20 @@ type Message @aws_api_key @aws_cognito_user_pools{
 	recipient: String!
 	# Customer id
 	customerId: String!
-	# Abtraction object which contains all the conversation data
+	# Abstract object which contains all the conversation data
 	# Each third-party messaging provider has difference schema definition
 	messageData: AWSJSON
-	#  Chat plaform type
+	#  Chat platform type
 	chatPlatform: String!
 }
 
-type MessageMutationResponse implements ResolverResponse @aws_api_key @aws_cognito_user_pools{
+type MessageMutationResponse implements ResolverResponse @aws_api_key @aws_cognito_user_pools {
+	# (Optional) Result message
 	message: String
+	# (Optional) Message data returned from platform or DynamoDB
 	data: Message
+	# (Optional) Username identifier to filter subscription
+	username: String
 }
 
 type MessagesQueryResponse implements ResolverResponse {
@@ -43,7 +47,8 @@ type Mutation @aws_api_key @aws_cognito_user_pools {
 		messageData: AWSJSON,
 		timestamp: AWSTimestamp,
 		id: String!,
-		chatPlatform: String!
+		chatPlatform: String!,
+		username: String!
 	): MessageMutationResponse
 }
 

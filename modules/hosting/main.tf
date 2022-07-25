@@ -4,6 +4,9 @@ variable "ALIASES" {}
 variable "DEFAULT_ROOT_OBJECT" {
   default = "index.html"
 }
+variable "ALLOW_S3_ACTION" {
+  default = ["s3:GetObject"]
+}
 variable "TAGS" {}
 
 module "s3_bucket" {
@@ -18,6 +21,7 @@ module "cdn" {
   ACM                 = var.ACM
   ALIASES             = var.ALIASES
   DEFAULT_ROOT_OBJECT = var.DEFAULT_ROOT_OBJECT
+  ALLOW_S3_ACTION     = var.ALLOW_S3_ACTION
   TAGS                = var.TAGS
 }
 

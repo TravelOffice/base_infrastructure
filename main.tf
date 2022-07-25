@@ -270,6 +270,7 @@ module "sale_chat_cdn" {
   HOSTED_ZONE_ID      = local.hosted_zone_id
   DEFAULT_ROOT_OBJECT = ""
   RECORD_NAME         = "cdn"
+  ALLOW_S3_ACTION     = ["s3:GetObject", "s3:PutObject"]
   TAGS                = local.marketing_tags
 }
 

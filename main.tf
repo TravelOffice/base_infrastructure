@@ -257,9 +257,10 @@ module "chat_table_dynamodb" {
 }
 
 module "sale_chat_attachment_bucket" {
-  source        = "../../modules/storage/s3"
-  BUCKET_PREFIX = "${var.ENV}-${local.sale_frontend_name}-attachments"
-  TAGS          = local.marketing_tags
+  source              = "../../modules/storage/s3"
+  BUCKET_PREFIX       = "${var.ENV}-${local.sale_frontend_name}-attachments"
+  BLOCK_PUBLIC_ACCESS = false
+  TAGS                = local.marketing_tags
 }
 
 module "sale_chat_cdn" {
@@ -270,7 +271,6 @@ module "sale_chat_cdn" {
   HOSTED_ZONE_ID      = local.hosted_zone_id
   DEFAULT_ROOT_OBJECT = ""
   RECORD_NAME         = "cdn"
-  ALLOW_S3_ACTION     = ["s3:GetObject", "s3:PutObject"]
   TAGS                = local.marketing_tags
 }
 

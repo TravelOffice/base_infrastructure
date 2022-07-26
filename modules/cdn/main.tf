@@ -6,7 +6,6 @@ variable "DEFAULT_ROOT_OBJECT" {
 variable "ALIASES" {}
 variable "HOSTED_ZONE_ID" {}
 variable "RECORD_NAME" {}
-variable "ALLOW_S3_ACTION" {}
 variable "TAGS" {}
 
 module "sale_chat_attachment_cdn" {
@@ -14,9 +13,30 @@ module "sale_chat_attachment_cdn" {
   S3_BUCKET           = var.S3_BUCKET
   ACM                 = var.ACM
   DEFAULT_ROOT_OBJECT = var.DEFAULT_ROOT_OBJECT
-  ALLOW_S3_ACTION     = var.ALLOW_S3_ACTION
   ALIASES             = var.ALIASES
   TAGS                = var.TAGS
+}
+
+resource "aws_s3_bucket_policy" "sale_chat_attachment_bucket_policy" {
+  bucket = var.S3_BUCKET.id
+  policy = <<EOF
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+          {
+              "Sid": "1",
+              "Effect": "Allow",
+              "Principal": "*",
+              "Action": [
+                  "s3:PutObject",
+                  "s3:GetObject",
+                  "s3:PutObjectACL"
+              ],
+              "Resource": "${var.S3_BUCKET.arn}/*"
+          }
+      ]
+  }
+  EOF
 }
 
 // Add DNS record for Cloudfront

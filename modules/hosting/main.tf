@@ -4,9 +4,7 @@ variable "ALIASES" {}
 variable "DEFAULT_ROOT_OBJECT" {
   default = "index.html"
 }
-variable "ALLOW_S3_ACTION" {
-  default = ["s3:GetObject"]
-}
+
 variable "TAGS" {}
 
 module "s3_bucket" {
@@ -21,8 +19,27 @@ module "cdn" {
   ACM                 = var.ACM
   ALIASES             = var.ALIASES
   DEFAULT_ROOT_OBJECT = var.DEFAULT_ROOT_OBJECT
-  ALLOW_S3_ACTION     = var.ALLOW_S3_ACTION
   TAGS                = var.TAGS
+}
+
+data "aws_iam_policy_document" "allow_access_from_cloudfront_to_s3" {
+  statement {
+    principals {
+      type        = "AWS"
+      identifiers = ["${module.cdn.arn}"]
+    }
+
+    actions = ["s3:GetObject"]
+
+    resources = [
+      "${module.s3_bucket.arn}/*",
+    ]
+  }
+}
+
+resource "aws_s3_bucket_policy" "allow_access_from_cloudfront_to_s3" {
+  bucket = module.s3_bucket.id
+  policy = data.aws_iam_policy_document.allow_access_from_cloudfront_to_s3.json
 }
 
 output "s3_id" {

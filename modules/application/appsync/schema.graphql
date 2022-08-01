@@ -78,7 +78,7 @@ type Query {
 	getTelegramFileInfo(pageId: String!, conversationId: String!, fileId: String!): MessagesQueryResponse
 	# Get user profile information
 	# Chat id is only for Telegram platform
-	userProfile(platform: String!, pageId: String!, pageUserId: String!, chatId: String): MessagesQueryResponse
+	userProfile(chatPlatform: String!, pageId: String!, pageUserId: String!, chatId: String): MessagesQueryResponse
 
 	# Admin queries
 	# Get Facebook conversations for given page

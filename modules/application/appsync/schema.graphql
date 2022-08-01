@@ -79,6 +79,14 @@ type Query {
 	# Get user profile information
 	# Chat id is only for Telegram platform
 	userProfile(platform: String!, pageId: String!, pageUserId: String!, chatId: String): MessagesQueryResponse
+
+	# Admin queries
+	# Get Facebook conversations for given page
+	adminAllFbConversations(pageId: String!): MessagesQueryResponse
+	# Get Zalo conversations for given page
+	adminAllZaloConversations(pageId: String!, offset: Int, count: Int): MessagesQueryResponse
+	# Get Telegram conversations for given bot id
+	adminAllTelegramConversations(pageId: String!): MessagesQueryResponse
 }
 
 interface ResolverResponse {

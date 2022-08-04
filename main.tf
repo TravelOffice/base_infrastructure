@@ -216,6 +216,7 @@ module "marketing_secret_manager" {
     "CHAT_APPSYNC_REALTIME_ENDPOINT"   = module.chat_appsync.realtime_endpoint
     "DYNAMO_TRAVEL_TABLE"              = module.travel_table_dynamodb.db_name
     "DYNAMO_CHAT_TABLE"                = module.chat_table_dynamodb.db_name
+    "DYNAMO_ROLE_PERMISSION_TABLE"     = module.role_permission_table_dynamodb.db_name
     "FB_MESSAGE_PLATFORM_VERIFY_TOKEN" = local.fb_token
     "FB_GRAPH_ENDPOINT"                = local.fb_graph_endpoint
     "FACEBOOK_CLIENT_ID"               = local.fb_client_id
@@ -253,6 +254,13 @@ module "chat_table_dynamodb" {
   source  = "../../modules/database/dynamodb/chat_table"
   ENV     = var.ENV
   DB_NAME = "chat_table"
+  TAGS    = local.marketing_tags
+}
+
+module "role_permission_table_dynamodb" {
+  source  = "../../modules/database/dynamodb/role_permission_table"
+  ENV     = var.ENV
+  DB_NAME = "role_permission_table"
   TAGS    = local.marketing_tags
 }
 

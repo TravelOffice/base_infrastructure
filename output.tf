@@ -44,6 +44,10 @@ output "MARKETING" {
           arn  = module.chat_table_dynamodb.arn
           name = module.chat_table_dynamodb.db_name
         }
+        role_permission_table = {
+          arn  = module.role_permission_table_dynamodb.arn
+          name = module.role_permission_table_dynamodb.db_name
+        }
       }
     }
     frontend = {

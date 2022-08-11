@@ -133,12 +133,13 @@ module "base_backend_secret_manager" {
   ENV          = var.ENV
   FEATURE_NAME = local.base_backend_name
   STORE_DATA = {
-    "COGNITO_USER_POOL_ID"      = module.cognito_user_pool.id
-    "COGNITO_CLIENT_ID"         = module.cognito_user_pool.client_ids[0]
-    "TF_BUCKET"                 = var.TF_BUCKET
-    "NOTIFICATION_SENDER_EMAIL" = "anh93.nguyentuan@gmail.com"
-    "ADMIN_EMAIL"               = "anh93.nguyentuan@gmail.com"
-    "DYNAMO_TRAVEL_TABLE"       = module.travel_table_dynamodb.db_name
+    "COGNITO_USER_POOL_ID"          = module.cognito_user_pool.id
+    "COGNITO_CLIENT_ID"             = module.cognito_user_pool.client_ids[0]
+    "TF_BUCKET"                     = var.TF_BUCKET
+    "NOTIFICATION_SENDER_EMAIL"     = "anh93.nguyentuan@gmail.com"
+    "ADMIN_EMAIL"                   = "anh93.nguyentuan@gmail.com"
+    "DYNAMO_TRAVEL_TABLE"           = module.travel_table_dynamodb.db_name
+    "DYNAMO_ROLE_PERMISSION_TABLE	" = module.role_permission_table_dynamodb.db_name
   }
   TAGS = local.base_backend_tags
 }

@@ -60,7 +60,7 @@ module "cognito_user_pool" {
   client_allowed_oauth_scopes                           = ["phone", "email", "openid", "profile"]
   client_allowed_oauth_flows                            = ["code", "implicit"]
   client_generate_secret                                = false
-  client_id_token_validity	                            = var.ID_TOKEN_EXPIRATION
+  client_id_token_validity                              = var.ID_TOKEN_EXPIRATION
   tags                                                  = var.TAGS
   string_schemas = [
     {

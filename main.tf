@@ -283,4 +283,10 @@ module "sale_chat_cdn" {
   TAGS                = local.marketing_tags
 }
 
+module "queue" {
+  source              = "../../modules/queue"
+  ENV                 = var.ENV
+  TAGS                = local.marketing_tags
+}
+
 # Marketing Infrastructure: END

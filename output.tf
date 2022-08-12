@@ -57,6 +57,9 @@ output "MARKETING" {
         cdn_domain           = module.sale_frontend_hosting.cdn_domain
       }
     }
+    queue = {
+      auto_assign_chat_queue = module.queue.new_conversation_queue_arn
+    }
   }
 }
 

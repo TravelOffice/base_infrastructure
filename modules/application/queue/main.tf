@@ -25,3 +25,7 @@ resource "aws_sqs_queue" "new_conversation_queue" {
 output "new_conversation_queue_arn" {
   value = aws_sqs_queue.new_conversation_queue.arn
 }
+
+output "new_conversation_queue_url" {
+  value = aws_sqs_queue.new_conversation_queue.url
+}

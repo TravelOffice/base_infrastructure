@@ -229,6 +229,7 @@ module "marketing_secret_manager" {
     "CHAT_FILE_BUCKET"                 = module.sale_chat_attachment_bucket.id
     "CHAT_FILE_BUCKET_URL"             = module.sale_chat_attachment_bucket.bucket_regional_domain_name
     "CHAT_FILE_CDN"                    = "https://${local.chat_file_cdn}"
+    "NEW_CONVERSATION_QUEUE_ENDPOINT"  = module.queue.new_conversation_queue_url
   }
   TAGS = local.marketing_tags
 }

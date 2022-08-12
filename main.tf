@@ -284,7 +284,7 @@ module "sale_chat_cdn" {
 }
 
 module "queue" {
-  source              = "../../modules/queue"
+  source              = "../../modules/application/queue"
   ENV                 = var.ENV
   TAGS                = local.marketing_tags
 }

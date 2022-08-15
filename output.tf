@@ -33,6 +33,8 @@ output "MARKETING" {
       }
       appsync = {
         id     = module.chat_appsync.id
+        arn    = module.chat_appsync.arn
+        name   = module.chat_appsync.name
         domain = module.chat_appsync.domain
       }
       dynamodb = {

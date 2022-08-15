@@ -21,11 +21,15 @@ variable "DOMAIN_NAME" {
 variable "HOSTED_ZONE_ID" {}
 variable "TAGS" {}
 
+locals {
+  appsync_name = "${var.ENV}-${var.FEATURE_NAME}-appsync"
+}
+
 module "appsync" {
   source  = "terraform-aws-modules/appsync/aws"
   version = "1.4.0"
 
-  name = "${var.ENV}-${var.FEATURE_NAME}-appsync"
+  name = local.appsync_name
 
   schema = file("${var.SCHEMA_FILE}")
 
@@ -68,6 +72,14 @@ output "domain" {
 
 output "id" {
   value = module.appsync.appsync_graphql_api_id
+}
+
+output "arn" {
+  value = module.appsync.appsync_graphql_api_arn
+}
+
+output "name" {
+  value = local.appsync_name
 }
 
 output "api_key" {

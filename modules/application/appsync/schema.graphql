@@ -36,11 +36,12 @@ type MessagesQueryResponse implements ResolverResponse {
 type Mutation @aws_api_key @aws_cognito_user_pools {
 	#  Send a message to customer. The message is send from Sales Web Application
 	sendMessage(
+		chatPlatform: String!,
+		conversationId: String!,
 		sender: String!,
 		recipient: String!,
 		customerId: String!,
-		messageData: AWSJSON,
-		chatPlatform: String!
+		messageData: AWSJSON
 	): MessageMutationResponse
 	receivedMessage(
 		sender: String!,

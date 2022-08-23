@@ -18,3 +18,4 @@ phases:
     commands:
       - ./scripts/execute_terraform.sh $BUILD_ENV apply --auto-approve
       - ./scripts/execute_terraform.sh $BUILD_ENV output
+      - node ./seeding_data/index.js

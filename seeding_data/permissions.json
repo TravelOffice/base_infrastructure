@@ -1,0 +1,151 @@
+{
+    "table": "role_permission_table",
+    "permissions": [
+        {
+            "name": "fb_link.create.any",
+            "title": "Connections",
+            "action": "POST",
+            "path": "/facebook/link"
+        },
+        {
+            "name": "fb_conversation.read.any",
+            "title": "Admin facebook conversation",
+            "path": "adminAllFbConversations"
+        },
+        {
+            "name": "fb_conversation.read.own",
+            "title": "Faceboook conversation",
+            "path": "allFbConversations"
+        },
+        {
+            "name": "fb_message.read.own",
+            "title": "Facebook message",
+            "path": "allFbMessages"
+        },
+        {
+            "name": "zalo_link.read.any",
+            "title": "Zalo connection",
+            "action": "GET",
+            "path": "/zalo/link"
+        },
+        {
+            "name": "zalo_link.create.any",
+            "title": "Zalo connection",
+            "action": "POST",
+            "path": "/zalo/link"
+        },
+        {
+            "name": "zalo_conversation.read.any",
+            "title": "Admin zalo conversation",
+            "path": "adminAllZaloConversations"
+        },
+        {
+            "name": "zalo_message.read.own",
+            "title": "Zalo messsage",
+            "path": "allZaloMessages"
+        },
+        {
+            "name": "zalo_conversation.read.own",
+            "title": "Zalo conversation",
+            "path": "allZaloConversations"
+        },
+        {
+            "name": "tele_link.create.any",
+            "title": "Telegram connection",
+            "action": "POST",
+            "path": "/telegram/link"
+        },
+        {
+            "name": "tele_conversation.read.any",
+            "title": "Admin telegram conversation",
+            "path": "adminAllTelegramConversations"
+        },
+        {
+            "name": "tele_conversation.read.own",
+            "title": "Telegram conversations",
+            "path": "allTelegramConversations"
+        },
+        {
+            "name": "tele_message.read.own",
+            "title": "Telegram message",
+            "path": "allTelegramMessages"
+        },
+        {
+            "name": "tele_file.read.own",
+            "title": "Telegram file",
+            "path": "getTelegramFileInfo"
+        },
+        {
+            "name": "message.send.own",
+            "title": "Sending message",
+            "path": "sendMessage"
+        },
+        {
+            "name": "presigned_url.create.any",
+            "title": "Pre-signed url",
+            "action": "GET",
+            "path": "/presigned-url"
+        },
+        {
+            "name": "file_upload.create.any",
+            "title": "Upload file",
+            "action": "GET",
+            "path": "/upload-file-to-chat-platform"
+        },
+        {
+            "name": "assign_chat.update.any",
+            "title": "Assign chat",
+            "action": "POST",
+            "path": "/admin/assign-chat"
+        },
+        {
+            "name": "linked_pages.get.any",
+            "title": "Platform connection",
+            "action": "GET",
+            "path": "/admin/linked_pages"
+        },
+        {
+            "name": "user.read.list",
+            "title": "Users",
+            "action": "GET",
+            "path": "/users"
+        },
+        {
+            "name": "user.create.any",
+            "title": "Users",
+            "action": "POST",
+            "path": "/users"
+        },
+        {
+            "name": "user.delete.any",
+            "title": "Users",
+            "action": "DELETE",
+            "path": "/users/{userId}"
+        },
+        {
+            "name": "user.update.any",
+            "title": "Users",
+            "action": "PUT",
+            "path": "/users/{userId}"
+        },
+        {
+            "name": "user.read.any",
+            "title": "Users",
+            "action": "GET",
+            "path": "/users/{userId}"
+        },
+        {
+            "name": "me.read.own",
+            "service": "User",
+            "actionTitle": "",
+            "action": "GET",
+            "path": "/me"
+        },
+        {
+            "name": "me.update.own",
+            "title": "User profile",
+            "action": "PUT",
+            "path": "/me"
+        }
+    ]
+}

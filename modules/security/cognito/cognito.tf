@@ -41,7 +41,7 @@ variable "TAGS" {}
 
 module "cognito_user_pool" {
   source                                                = "lgallard/cognito-user-pool/aws"
-  version                                               = "0.15.2"
+  version                                               = "0.18.2"
   user_pool_name                                        = "${var.ENV}-user-pool"
   password_policy                                       = var.PASSWORD_POLICY
   sms_verification_message                              = var.SMS_VERIFICATION_SUBJECT
@@ -62,19 +62,6 @@ module "cognito_user_pool" {
   client_generate_secret                                = false
   client_id_token_validity                              = var.ID_TOKEN_EXPIRATION
   tags                                                  = var.TAGS
-  string_schemas = [
-    {
-      attribute_data_type      = "String"
-      developer_only_attribute = false
-      mutable                  = true
-      name                     = "role"
-      required                 = false
-      string_attribute_constraints = {
-        min_length = 0
-        max_length = 100
-      }
-    }
-  ]
 }
 
 output "id" {

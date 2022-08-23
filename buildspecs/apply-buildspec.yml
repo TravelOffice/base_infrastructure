@@ -6,6 +6,7 @@ phases:
       - curl -s -qL -o terraform_install.zip https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip
       - unzip terraform_install.zip -d /usr/bin/
       - chmod +x /usr/bin/terraform
+      - n 14.19.0
     finally:
       - terraform --version
 
@@ -13,8 +14,12 @@ phases:
     commands:
       - chmod +x ./scripts/execute_terraform.sh
       - ./scripts/execute_terraform.sh $BUILD_ENV init
+      - cd seeding_data
+      - npm i
+      - cd ..
   
   build:
     commands:
       - ./scripts/execute_terraform.sh $BUILD_ENV apply --auto-approve
       - ./scripts/execute_terraform.sh $BUILD_ENV output
+      - node ./seeding_data/index.js

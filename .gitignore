@@ -10,3 +10,6 @@
 environments/dev/main.tf
 environments/dev/output.tf
 environments/dev/provider.tf
+
+# node
+node_modules

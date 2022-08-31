@@ -1,5 +1,5 @@
-﻿#  Refer to - Facebook Message API: https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/messages
-type Message @aws_api_key @aws_lambda{
+﻿type Message @aws_api_key
+@aws_lambda {
 	#  A unique identifier for the Message.
 	id: String!
 	#  Created at as timestamp
@@ -11,7 +11,7 @@ type Message @aws_api_key @aws_lambda{
 	# Customer id
 	customerId: String!
 	# Abstract object which contains all the conversation data
-	# Each third-party messaging provider has difference schema definition
+	### Each third-party messaging provider has difference schema definition
 	messageData: AWSJSON
 	#  Chat platform type
 	chatPlatform: String!
@@ -19,7 +19,8 @@ type Message @aws_api_key @aws_lambda{
 	conversationId: String!
 }
 
-type MessageMutationResponse implements ResolverResponse @aws_api_key @aws_lambda {
+type MessageMutationResponse implements ResolverResponse @aws_api_key
+@aws_lambda {
 	# (Optional) Result message
 	message: String
 	# (Optional) Message data returned from platform or DynamoDB
@@ -35,7 +36,8 @@ type MessagesQueryResponse implements ResolverResponse {
 	data: AWSJSON
 }
 
-type Mutation @aws_api_key @aws_lambda {
+type Mutation @aws_api_key
+@aws_lambda {
 	#  Send a message to customer. The message is send from Sales Web Application
 	sendMessage(
 		chatPlatform: String!,
@@ -56,6 +58,27 @@ type Mutation @aws_api_key @aws_lambda {
 		username: String!,
 		tenant: String!
 	): MessageMutationResponse
+	sendNotification(
+		type: String,
+		timestamp: AWSTimestamp,
+		data: AWSJSON,
+		tenant: String,
+		username: String
+	): Notification
+}
+
+type Notification @aws_api_key
+@aws_lambda {
+	# Tenant to filter subscription
+	tenant: String
+	# Username identifier to filter subscription
+	username: String
+	# Notification type
+	type: String!
+	# Timestamp
+	timestamp: AWSTimestamp!
+	# Notification data
+	data: AWSJSON
 }
 
 type Query {
@@ -66,25 +89,44 @@ type Query {
 	#  Get my user/page.
 	me: AWSJSON
 	# Get all Facebook messages for given conversation id of a page
-	allFbMessages(pageId: String!, conversationId: String!, after: String, limit: Int): MessagesQueryResponse
+	allFbMessages(
+		pageId: String!,
+		conversationId: String!,
+		after: String,
+		limit: Int
+	): MessagesQueryResponse
 	# Get Facebook conversations for given page
 	allFbConversations(pageId: String!): MessagesQueryResponse
 	# Get all Zalo messages for given conversation id of a page
-	allZaloMessages(pageId: String!, userId: String!, offset: Int, count: Int): MessagesQueryResponse
+	allZaloMessages(
+		pageId: String!,
+		userId: String!,
+		offset: Int,
+		count: Int
+	): MessagesQueryResponse
 	# Get Zalo conversations for given page
 	allZaloConversations(pageId: String!, offset: Int, count: Int): MessagesQueryResponse
 	# Get Telegram conversations for given bot id
 	allTelegramConversations(pageId: String!): MessagesQueryResponse
 	# Get Telegram messages for given conversation
-	allTelegramMessages(pageId: String!, conversationId: String!, nextToken: String, limit: Int): MessagesQueryResponse
+	allTelegramMessages(
+		pageId: String!,
+		conversationId: String!,
+		nextToken: String,
+		limit: Int
+	): MessagesQueryResponse
 	# Get telegram file information
 	getTelegramFileInfo(pageId: String!, conversationId: String!, fileId: String!): MessagesQueryResponse
 	# Get user profile information
-	# Chat id is only for Telegram platform
-	userProfile(chatPlatform: String!, pageId: String!, pageUserId: String!, chatId: String): MessagesQueryResponse
-
+	### Chat id is only for Telegram platform
+	userProfile(
+		chatPlatform: String!,
+		pageId: String!,
+		pageUserId: String!,
+		chatId: String
+	): MessagesQueryResponse
 	# Admin queries
-	# Get Facebook conversations for given page
+	### Get Facebook conversations for given page
 	adminAllFbConversations(pageId: String!): MessagesQueryResponse
 	# Get Zalo conversations for given page
 	adminAllZaloConversations(pageId: String!, offset: Int, count: Int): MessagesQueryResponse
@@ -92,6 +134,7 @@ type Query {
 	adminAllTelegramConversations(pageId: String!): MessagesQueryResponse
 }
 
+#  Refer to - Facebook Message API: https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/messages
 interface ResolverResponse {
 	message: String
 }
@@ -100,6 +143,9 @@ type Subscription {
 	#  Subscribes to message received event. Means user send message to page
 	onNewMessageReceived: MessageMutationResponse
 		@aws_subscribe(mutations: ["receivedMessage"])
+	#  Subscribes to receive new notification from system
+	onNewNotificationReceived: Notification
+		@aws_subscribe(mutations: ["sendNotification"])
 }
 
 schema {

@@ -11,7 +11,7 @@
 	# Customer id
 	customerId: String!
 	# Abstract object which contains all the conversation data
-	### Each third-party messaging provider has difference schema definition
+	# Each third-party messaging provider has difference schema definition
 	messageData: AWSJSON
 	#  Chat platform type
 	chatPlatform: String!
@@ -126,7 +126,7 @@ type Query {
 		chatId: String
 	): MessagesQueryResponse
 	# Admin queries
-	### Get Facebook conversations for given page
+	# Get Facebook conversations for given page
 	adminAllFbConversations(pageId: String!): MessagesQueryResponse
 	# Get Zalo conversations for given page
 	adminAllZaloConversations(pageId: String!, offset: Int, count: Int): MessagesQueryResponse
@@ -134,7 +134,6 @@ type Query {
 	adminAllTelegramConversations(pageId: String!): MessagesQueryResponse
 }
 
-#  Refer to - Facebook Message API: https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/messages
 interface ResolverResponse {
 	message: String
 }

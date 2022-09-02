@@ -74,9 +74,9 @@ type Notification @aws_api_key
 	# Username identifier to filter subscription
 	username: String
 	# Notification type
-	type: String!
+	type: String
 	# Timestamp
-	timestamp: AWSTimestamp!
+	timestamp: AWSTimestamp
 	# Notification data
 	data: AWSJSON
 }
@@ -118,7 +118,7 @@ type Query {
 	# Get telegram file information
 	getTelegramFileInfo(pageId: String!, conversationId: String!, fileId: String!): MessagesQueryResponse
 	# Get user profile information
-	### Chat id is only for Telegram platform
+	# Chat id is only for Telegram platform
 	userProfile(
 		chatPlatform: String!,
 		pageId: String!,

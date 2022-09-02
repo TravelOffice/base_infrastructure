@@ -538,12 +538,11 @@ export const DEFAULT_WHITELIST = {
       name: "Common",
       permissions: [
         {
-          name: "subscribeNewNotification",
-          title: "Subscribe new notification",
+          name: "sendAndSubscribeNewNotification",
+          title: "Send / subscribe new notification",
           statements: [
-            {
-              path: "onNewNotificationReceived",
-            },
+            { path: "onNewNotificationReceived" },
+            { path: "sendNotification" },
           ],
         },
       ],

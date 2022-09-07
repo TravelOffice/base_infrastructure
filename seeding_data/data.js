@@ -153,7 +153,7 @@ export const DEFAULT_ROLES = {
           ],
         },
         {
-          name: "get_role",
+          name: "get_roles",
           title: "View Roles",
           statements: [
             {
@@ -190,8 +190,128 @@ export const DEFAULT_ROLES = {
               path: "/admin/roles/{roleName}",
               action: "DELETE",
             },
-          ],
+          ]
         },
+        {
+          name: 'get_leads',
+          title: 'View All Leads',
+          statements: [
+            {
+              path: '/leads',
+              action: 'GET'
+            },
+          ]
+        },
+        {
+          name: 'create_lead',
+          title: 'Create Lead',
+          statements: [
+            {
+              path: '/leads',
+              action: 'POST'
+            },
+          ]
+        },
+        {
+          name: 'update_lead',
+          title: 'Update Lead',
+          statements: [
+            {
+              path: '/leads',
+              action: 'PUT'
+            },
+          ]
+        },
+        {
+          name: 'get_lead',
+          title: 'View Lead',
+          statements: [
+            {
+              path: '/leads/{leadID}',
+              action: 'GET'
+            },
+          ]
+        },
+        {
+          name: 'get_bookings',
+          title: 'View All Bookings',
+          statements: [
+            {
+              path: '/leads/{leadID}/bookings',
+              action: 'GET'
+            },
+          ]
+        },
+        {
+          name: 'view_opportunities_of_lead',
+          title: 'View All Opportunities of Lead',
+          statements: [
+            {
+              path: '/leads/{leadID}/opportunities',
+              action: 'GET'
+            },
+          ]
+        },
+        {
+          name: 'create_opportunity',
+          title: 'Create Opportunity',
+          statements: [
+            {
+              path: '/leads/{leadID}/opportunities',
+              action: 'POST'
+            },
+          ]
+        },
+        {
+          name: 'view_opportunity',
+          title: 'View Opportunity',
+          statements: [
+            {
+              path: '/leads/{leadID}/opportunities/{opportunityID}',
+              action: 'GET'
+            },
+          ]
+        },
+        {
+          name: 'update_opportunity',
+          title: 'Update Opportunity',
+          statements: [
+            {
+              path: '/leads/{leadID}/opportunities/{opportunityID}',
+              action: 'PUT'
+            },
+          ]
+        },
+        {
+          name: 'view_quotes',
+          title: 'View All Quotes',
+          statements: [
+            {
+              path: '/leads/{leadID}/opportunities/{opportunityID}/quotes',
+              action: 'GET'
+            },
+          ]
+        },
+        {
+          name: 'view_opportunities_of_tenant',
+          title: 'View All Opportunities of Tenant',
+          statements: [
+            {
+              path: '/opportunities',
+              action: 'GET'
+            },
+          ]
+        },
+        {
+          name: 'delete_opportunity',
+          title: 'Delete Opportunity',
+          statements: [
+            {
+              path: '/opportunities/{id}',
+              action: 'DELETE'
+            },
+          ]
+        }
       ],
     },
     {
@@ -258,6 +378,126 @@ export const DEFAULT_ROLES = {
             },
           ],
         },
+        {
+          name: 'get_leads',
+          title: 'View All Leads',
+          statements: [
+            {
+              path: '/leads',
+              action: 'GET'
+            },
+          ]
+        },
+        {
+          name: 'create_lead',
+          title: 'Create Lead',
+          statements: [
+            {
+              path: '/leads',
+              action: 'POST'
+            },
+          ]
+        },
+        {
+          name: 'update_lead',
+          title: 'Update Lead',
+          statements: [
+            {
+              path: '/leads',
+              action: 'PUT'
+            },
+          ]
+        },
+        {
+          name: 'get_lead',
+          title: 'View Lead',
+          statements: [
+            {
+              path: '/leads/{leadID}',
+              action: 'GET'
+            },
+          ]
+        },
+        {
+          name: 'get_bookings',
+          title: 'View All Bookings',
+          statements: [
+            {
+              path: '/leads/{leadID}/bookings',
+              action: 'GET'
+            },
+          ]
+        },
+        {
+          name: 'view_opportunities_of_lead',
+          title: 'View All Opportunities of Lead',
+          statements: [
+            {
+              path: '/leads/{leadID}/opportunities',
+              action: 'GET'
+            },
+          ]
+        },
+        {
+          name: 'create_opportunity',
+          title: 'Create Opportunity',
+          statements: [
+            {
+              path: '/leads/{leadID}/opportunities',
+              action: 'POST'
+            },
+          ]
+        },
+        {
+          name: 'view_opportunity',
+          title: 'View Opportunity',
+          statements: [
+            {
+              path: '/leads/{leadID}/opportunities/{opportunityID}',
+              action: 'GET'
+            },
+          ]
+        },
+        {
+          name: 'update_opportunity',
+          title: 'Update Opportunity',
+          statements: [
+            {
+              path: '/leads/{leadID}/opportunities/{opportunityID}',
+              action: 'PUT'
+            },
+          ]
+        },
+        {
+          name: 'view_quotes',
+          title: 'View All Quotes',
+          statements: [
+            {
+              path: '/leads/{leadID}/opportunities/{opportunityID}/quotes',
+              action: 'GET'
+            },
+          ]
+        },
+        {
+          name: 'view_opportunities_of_tenant',
+          title: 'View All Opportunities of Tenant',
+          statements: [
+            {
+              path: '/opportunities',
+              action: 'GET'
+            },
+          ]
+        },
+        {
+          name: 'delete_opportunity',
+          title: 'Delete Opportunity',
+          statements: [
+            {
+              path: '/opportunities/{id}',
+              action: 'DELETE'
+            },
+          ]
+        }
       ],
     },
   ],
@@ -499,12 +739,152 @@ export const DEFAULT_PERMISSIONS = {
               path: "/admin/roles/{roleName}",
               action: "DELETE",
             },
-          ],
-        },
-      ],
+          ]
+        }
+      ]
     },
-  ],
-};
+    {
+      name: 'Lead',
+      permissions: [
+        {
+          name: 'get_leads',
+          title: 'View All Leads',
+          statements: [
+            {
+              path: '/leads',
+              action: 'GET'
+            },
+          ]
+        },
+        {
+          name: 'create_lead',
+          title: 'Create Lead',
+          statements: [
+            {
+              path: '/leads',
+              action: 'POST'
+            },
+          ]
+        },
+        {
+          name: 'update_lead',
+          title: 'Update Lead',
+          statements: [
+            {
+              path: '/leads',
+              action: 'PUT'
+            },
+          ]
+        },
+        {
+          name: 'get_lead',
+          title: 'View Lead',
+          statements: [
+            {
+              path: '/leads/{leadID}',
+              action: 'GET'
+            },
+          ]
+        }
+      ]
+    },
+    {
+      name: 'Booking',
+      permissions: [
+        {
+          name: 'get_bookings',
+          title: 'View All Bookings',
+          statements: [
+            {
+              path: '/leads/{leadID}/bookings',
+              action: 'GET'
+            },
+          ]
+        },
+      ]
+    },
+    {
+      name: 'Quotes',
+      permissions: [
+        {
+          name: 'view_quotes',
+          title: 'View All Quotes',
+          statements: [
+            {
+              path: '/leads/{leadID}/opportunities/{opportunityID}/quotes',
+              action: 'GET'
+            },
+          ]
+        }
+      ]
+    },
+    {
+      name: 'Opportunities',
+      permissions: [
+        {
+          name: 'view_opportunities_of_tenant',
+          title: 'View All Opportunities of Tenant',
+          statements: [
+            {
+              path: '/opportunities',
+              action: 'GET'
+            },
+          ]
+        },
+        {
+          name: 'view_opportunities_of_lead',
+          title: 'View All Opportunities of Lead',
+          statements: [
+            {
+              path: '/leads/{leadID}/opportunities',
+              action: 'GET'
+            },
+          ]
+        },
+        {
+          name: 'create_opportunity',
+          title: 'Create Opportunity',
+          statements: [
+            {
+              path: '/leads/{leadID}/opportunities',
+              action: 'POST'
+            },
+          ]
+        },
+        {
+          name: 'view_opportunity',
+          title: 'View Opportunity',
+          statements: [
+            {
+              path: '/leads/{leadID}/opportunities/{opportunityID}',
+              action: 'GET'
+            },
+          ]
+        },
+        {
+          name: 'update_opportunity',
+          title: 'Update Opportunity',
+          statements: [
+            {
+              path: '/leads/{leadID}/opportunities/{opportunityID}',
+              action: 'PUT'
+            },
+          ]
+        },
+        {
+          name: 'delete_opportunity',
+          title: 'Delete Opportunity',
+          statements: [
+            {
+              path: '/opportunities/{id}',
+              action: 'DELETE'
+            },
+          ]
+        }
+      ]
+    }
+  ]
+}
 
 export const DEFAULT_WHITELIST = {
   table: "role_permission_table",

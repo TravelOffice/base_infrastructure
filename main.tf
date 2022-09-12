@@ -266,6 +266,13 @@ module "role_permission_table_dynamodb" {
   TAGS    = local.marketing_tags
 }
 
+module "mail_table_dynamodb" {
+  source  = "../../modules/database/dynamodb/mail_table"
+  ENV     = var.ENV
+  DB_NAME = "mail_table"
+  TAGS    = local.marketing_tags
+}
+
 module "sale_chat_attachment_bucket" {
   source              = "../../modules/storage/s3"
   BUCKET_PREFIX       = "${var.ENV}-${local.sale_frontend_name}-attachments"
@@ -285,9 +292,9 @@ module "sale_chat_cdn" {
 }
 
 module "queue" {
-  source              = "../../modules/application/queue"
-  ENV                 = var.ENV
-  TAGS                = local.marketing_tags
+  source = "../../modules/application/queue"
+  ENV    = var.ENV
+  TAGS   = local.marketing_tags
 }
 
 # Marketing Infrastructure: END

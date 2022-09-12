@@ -218,6 +218,7 @@ module "marketing_secret_manager" {
     "DYNAMO_TRAVEL_TABLE"              = module.travel_table_dynamodb.db_name
     "DYNAMO_CHAT_TABLE"                = module.chat_table_dynamodb.db_name
     "DYNAMO_ROLE_PERMISSION_TABLE"     = module.role_permission_table_dynamodb.db_name
+    "DYNAMO_MAIL_TABLE"                = module.mail_table_dynamodb.db_name
     "FB_MESSAGE_PLATFORM_VERIFY_TOKEN" = local.fb_token
     "FB_GRAPH_ENDPOINT"                = local.fb_graph_endpoint
     "FACEBOOK_CLIENT_ID"               = local.fb_client_id

@@ -132,6 +132,8 @@ type Query {
 	adminAllZaloConversations(pageId: String!, offset: Int, count: Int): MessagesQueryResponse
 	# Get Telegram conversations for given bot id
 	adminAllTelegramConversations(pageId: String!): MessagesQueryResponse
+	# Sync Email query
+	syncEmail(mailAccount: String!, mailbox: String!): MessagesQueryResponse
 }
 
 interface ResolverResponse {

@@ -11,6 +11,7 @@ locals {
   marketing_feature_name = "marketing-backend"
   sale_frontend_name     = "sale-frontend"
   base_backend_name      = "base-backend"
+  mail_feature_name      = "mail-backend"
   encryption_secret_key  = "dAt$bAsE9#765@32"
 
   marketing_tags = {
@@ -27,6 +28,11 @@ locals {
     Env       = var.ENV
     Terraform = true
     Feature   = local.base_backend_name
+  }
+  mail_tags = {
+    Env       = var.ENV
+    Terraform = true
+    Feature   = local.mail_feature_name
   }
   is_prod = var.ENV == "prod"
   code_build_env = {
@@ -270,6 +276,18 @@ module "role_permission_table_dynamodb" {
   ENV     = var.ENV
   DB_NAME = "role_permission_table"
   TAGS    = local.marketing_tags
+}
+
+module "mail_pipeline" {
+  source                         = "../../modules/cicd"
+  ENV                            = var.ENV
+  BRANCH_NAME                    = var.BRANCH_NAME
+  CODESTAR_CONNECTOR_CREDENTIALS = var.CODESTAR_CONNECTOR_CREDENTIALS
+  ENV_VARS                       = local.code_build_env.common
+  CODEPIPELINE_BUCKET            = var.CODEPIPELINE_BUCKET
+  GITHUB_REPO                    = "TravelOffice/mail"
+  FEATURE_NAME                   = local.mail_feature_name
+  TAGS                           = local.mail_tags
 }
 
 module "mail_table_dynamodb" {

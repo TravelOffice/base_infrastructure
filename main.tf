@@ -11,7 +11,8 @@ locals {
   marketing_feature_name = "marketing-backend"
   sale_frontend_name     = "sale-frontend"
   base_backend_name      = "base-backend"
-  chat_file_cdn          = "cdn.traveloffice.shop"
+  encryption_secret_key  = "dAt$bAsE9#765@32"
+
   marketing_tags = {
     Env       = var.ENV
     Terraform = true
@@ -229,8 +230,12 @@ module "marketing_secret_manager" {
     "COGNITO_CLIENT_ID"                = module.cognito_user_pool.client_ids[0]
     "CHAT_FILE_BUCKET"                 = module.sale_chat_attachment_bucket.id
     "CHAT_FILE_BUCKET_URL"             = module.sale_chat_attachment_bucket.bucket_regional_domain_name
-    "CHAT_FILE_CDN"                    = "https://${local.chat_file_cdn}"
+    "CHAT_FILE_CDN"                    = "https://${var.CHAT_CDN}"
+    "MAIL_BUCKET"                      = module.mail_bucket.id
+    "MAIL_BUCKET_URL"                  = module.mail_bucket.bucket_regional_domain_name
+    "MAIL_CDN"                         = "https://${var.MAIL_CDN}"
     "NEW_CONVERSATION_QUEUE_ENDPOINT"  = module.queue.new_conversation_queue_url
+    "ENCRYPT_SECRET_KEY"               = local.encryption_secret_key
   }
   TAGS = local.marketing_tags
 }
@@ -277,7 +282,7 @@ module "mail_table_dynamodb" {
 module "sale_chat_attachment_bucket" {
   source              = "../../modules/storage/s3"
   BUCKET_PREFIX       = "${var.ENV}-${local.sale_frontend_name}-attachments"
-  BLOCK_PUBLIC_ACCESS = false
+  BLOCK_PUBLIC_ACCESS = true
   TAGS                = local.marketing_tags
 }
 
@@ -285,10 +290,28 @@ module "sale_chat_cdn" {
   source              = "../../modules/cdn"
   S3_BUCKET           = module.sale_chat_attachment_bucket
   ACM                 = local.acm
-  ALIASES             = [local.chat_file_cdn]
+  ALIASES             = [var.CHAT_CDN]
   HOSTED_ZONE_ID      = local.hosted_zone_id
   DEFAULT_ROOT_OBJECT = ""
-  RECORD_NAME         = "cdn"
+  RECORD_NAME         = "chatcdn"
+  TAGS                = local.marketing_tags
+}
+
+module "mail_bucket" {
+  source              = "../../modules/storage/s3"
+  BUCKET_PREFIX       = "${var.ENV}-mail"
+  BLOCK_PUBLIC_ACCESS = true
+  TAGS                = local.marketing_tags
+}
+
+module "mail_cdn" {
+  source              = "../../modules/cdn"
+  S3_BUCKET           = module.mail_bucket
+  ACM                 = local.acm
+  ALIASES             = [var.MAIL_CDN]
+  HOSTED_ZONE_ID      = local.hosted_zone_id
+  DEFAULT_ROOT_OBJECT = ""
+  RECORD_NAME         = "mailcdn"
   TAGS                = local.marketing_tags
 }
 

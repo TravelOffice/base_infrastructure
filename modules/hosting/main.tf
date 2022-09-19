@@ -8,9 +8,10 @@ variable "DEFAULT_ROOT_OBJECT" {
 variable "TAGS" {}
 
 module "s3_bucket" {
-  source        = "../storage/s3"
-  BUCKET_PREFIX = var.BUCKET_PREFIX
-  TAGS          = var.TAGS
+  source              = "../storage/s3"
+  BUCKET_PREFIX       = var.BUCKET_PREFIX
+  BLOCK_PUBLIC_ACCESS = true
+  TAGS                = var.TAGS
 }
 
 module "cdn" {
@@ -22,24 +23,36 @@ module "cdn" {
   TAGS                = var.TAGS
 }
 
-data "aws_iam_policy_document" "allow_access_from_cloudfront_to_s3" {
-  statement {
-    principals {
-      type        = "AWS"
-      identifiers = ["${module.cdn.arn}"]
-    }
-
-    actions = ["s3:GetObject"]
-
-    resources = [
-      "${module.s3_bucket.arn}/*",
-    ]
-  }
-}
-
-resource "aws_s3_bucket_policy" "allow_access_from_cloudfront_to_s3" {
+resource "aws_s3_bucket_policy" "bucket_policy" {
   bucket = module.s3_bucket.id
-  policy = data.aws_iam_policy_document.allow_access_from_cloudfront_to_s3.json
+  policy = <<EOF
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Sid": "AllowPublicUpload",
+          "Effect": "Allow",
+          "Principal": "*",
+          "Action": "s3:PutObject",
+          "Resource": "${module.s3_bucket.arn}/*"
+        },
+        {
+          "Sid": "AllowCloudFrontServicePrincipal",
+          "Effect": "Allow",
+          "Principal": {
+              "Service": "cloudfront.amazonaws.com"
+          },
+          "Action": "s3:GetObject",
+          "Resource": "${module.s3_bucket.arn}/*",
+          "Condition": {
+            "StringEquals": {
+              "AWS:SourceArn": "${module.cdn.arn}"
+            }
+          }
+        }
+      ]
+    }
+  EOF
 }
 
 output "s3_id" {

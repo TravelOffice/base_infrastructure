@@ -21,9 +21,6 @@ module "cdn" {
   origin = {
     s3_one = {
       domain_name = var.S3_BUCKET.domain
-      s3_origin_config = {
-        origin_access_identity = "s3_bucket_one"
-      }
     }
   }
 
@@ -71,5 +68,5 @@ output "domain" {
   value = module.cdn.cloudfront_distribution_domain_name
 }
 output "arn" {
-  value = module.cdn.cloudfront_origin_access_identity_iam_arns[0]
+  value = module.cdn.cloudfront_distribution_arn
 }

@@ -8,7 +8,7 @@ variable "HOSTED_ZONE_ID" {}
 variable "RECORD_NAME" {}
 variable "TAGS" {}
 
-module "sale_chat_attachment_cdn" {
+module "cloudfront_distribution" {
   source              = "../hosting/cloudfront"
   S3_BUCKET           = var.S3_BUCKET
   ACM                 = var.ACM
@@ -17,25 +17,35 @@ module "sale_chat_attachment_cdn" {
   TAGS                = var.TAGS
 }
 
-resource "aws_s3_bucket_policy" "sale_chat_attachment_bucket_policy" {
+resource "aws_s3_bucket_policy" "bucket_policy" {
   bucket = var.S3_BUCKET.id
   policy = <<EOF
     {
       "Version": "2012-10-17",
       "Statement": [
-          {
-              "Sid": "1",
-              "Effect": "Allow",
-              "Principal": "*",
-              "Action": [
-                  "s3:PutObject",
-                  "s3:GetObject",
-                  "s3:PutObjectACL"
-              ],
-              "Resource": "${var.S3_BUCKET.arn}/*"
+        {
+          "Sid": "AllowPublicUpload",
+          "Effect": "Allow",
+          "Principal": "*",
+          "Action": "s3:PutObject",
+          "Resource": "${var.S3_BUCKET.arn}/*"
+        },
+        {
+          "Sid": "AllowCloudFrontServicePrincipal",
+          "Effect": "Allow",
+          "Principal": {
+              "Service": "cloudfront.amazonaws.com"
+          },
+          "Action": "s3:GetObject",
+          "Resource": "${var.S3_BUCKET.arn}/*",
+          "Condition": {
+            "StringEquals": {
+              "AWS:SourceArn": "${module.cloudfront_distribution.arn}"
+            }
           }
+        }
       ]
-  }
+    }
   EOF
 }
 
@@ -45,5 +55,5 @@ resource "aws_route53_record" "www" {
   name    = var.RECORD_NAME
   type    = "CNAME"
   ttl     = "300"
-  records = [module.sale_chat_attachment_cdn.domain]
+  records = [module.cloudfront_distribution.domain]
 }

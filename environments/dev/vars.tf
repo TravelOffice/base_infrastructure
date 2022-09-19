@@ -68,3 +68,10 @@ variable "RDS_FAMILY" {
 variable "RDS_ENGINE_VERSION" {
   default = "10.14"
 }
+variable "CHAT_CDN" {
+  default = "chatcdn.traveloffice.shop"
+}
+
+variable "MAIL_CDN" {
+  default = "mailcdn.traveloffice.shop"
+}

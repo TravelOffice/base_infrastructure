@@ -78,6 +78,10 @@ locals {
       {
         name  = "REACT_APP_FACEBOOK_APP_ID"
         value = local.fb_client_id
+      },
+      {
+        name  = "REACT_APP_MAIL_API_ENDPOINT"
+        value = "https://${var.ENV}-mail.${local.hosted_domain_name}"
       }
     ]
   }

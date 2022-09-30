@@ -1,6 +1,6 @@
 variable "ENV" {}
 variable "AUTOSCALING_ENABLED" {
-  default = false
+  default = true
 }
 
 variable "BILLING_MODE" {
@@ -9,8 +9,14 @@ variable "BILLING_MODE" {
 variable "WRITE_CAPACITY" {
   default = 1
 }
+variable "MAX_WRITE_CAPACITY" {
+  default = 10
+}
 variable "READ_CAPACITY" {
   default = 1
+}
+variable "MAX_READ_CAPACITY" {
+  default = 10
 }
 variable "TAGS" {}
 variable "DB_NAME" {}
@@ -89,19 +95,21 @@ module "dynamodb_table" {
       non_key_attributes = []
     }
   ]
+  write_capacity = local.is_ondemand ? null : var.WRITE_CAPACITY
+  autoscaling_write = {
+    scale_in_cooldown  = 60
+    scale_out_cooldown = 60
+    target_value       = 70
+    max_capacity       = var.MAX_WRITE_CAPACITY
+  }
 
-  global_secondary_indexes = [
-    {
-      hash_key           = "sk"
-      range_key          = "pk"
-      name               = "ReverseIndex"
-      non_key_attributes = []
-      projection_type    = "ALL"
-      read_capacity      = local.is_ondemand ? null : var.READ_CAPACITY
-      write_capacity     = local.is_ondemand ? null : var.WRITE_CAPACITY
-    }
-  ]
-  write_capacity      = local.is_ondemand ? null : var.WRITE_CAPACITY
+  autoscaling_read = {
+    scale_in_cooldown  = 60
+    scale_out_cooldown = 60
+    target_value       = 70
+    max_capacity       = var.MAX_READ_CAPACITY
+  }
+
   read_capacity       = local.is_ondemand ? null : var.READ_CAPACITY
   autoscaling_enabled = var.AUTOSCALING_ENABLED
   billing_mode        = var.BILLING_MODE

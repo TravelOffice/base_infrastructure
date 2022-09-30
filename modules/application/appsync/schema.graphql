@@ -133,7 +133,7 @@ type Query {
 	# Get Telegram conversations for given bot id
 	adminAllTelegramConversations(pageId: String!): MessagesQueryResponse
 	# Sync Email query
-	syncEmail(mailAccount: String!, mailbox: String!): MessagesQueryResponse
+	syncEmail(email: String!, mailbox: String!): MessagesQueryResponse
 }
 
 interface ResolverResponse {

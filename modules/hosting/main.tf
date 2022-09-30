@@ -4,7 +4,6 @@ variable "ALIASES" {}
 variable "DEFAULT_ROOT_OBJECT" {
   default = "index.html"
 }
-
 variable "TAGS" {}
 
 module "s3_bucket" {

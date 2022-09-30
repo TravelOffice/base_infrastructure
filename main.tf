@@ -316,6 +316,7 @@ module "sale_chat_cdn" {
   HOSTED_ZONE_ID      = local.hosted_zone_id
   DEFAULT_ROOT_OBJECT = ""
   RECORD_NAME         = "chatcdn"
+  CUSTOM_HEADER_ID    = aws_cloudfront_response_headers_policy.custom_header.id
   TAGS                = local.marketing_tags
 }
 
@@ -334,6 +335,7 @@ module "mail_cdn" {
   HOSTED_ZONE_ID      = local.hosted_zone_id
   DEFAULT_ROOT_OBJECT = ""
   RECORD_NAME         = "mailcdn"
+  CUSTOM_HEADER_ID    = aws_cloudfront_response_headers_policy.custom_header.id
   TAGS                = local.marketing_tags
 }
 
@@ -341,6 +343,18 @@ module "queue" {
   source = "../../modules/application/queue"
   ENV    = var.ENV
   TAGS   = local.marketing_tags
+}
+
+resource "aws_cloudfront_response_headers_policy" "custom_header" {
+  name = "cache-control-headers-policy"
+
+  custom_headers_config {
+    items {
+      header   = "Cache-Control"
+      override = true
+      value    = "private, max-age=31536000, immutable"
+    }
+  }
 }
 
 # Marketing Infrastructure: END

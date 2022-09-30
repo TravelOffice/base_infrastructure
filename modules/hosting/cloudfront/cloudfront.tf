@@ -5,68 +5,69 @@ variable "DEFAULT_ROOT_OBJECT" {
   default = "index.html"
 }
 variable "TAGS" {}
+variable "CUSTOM_HEADER_ID" {
+  default = null
+}
+variable "S3_ORIGIN" {
+  default = "s3_ogirin"
+}
 
-module "cdn" {
-  source  = "terraform-aws-modules/cloudfront/aws"
-  version = "2.9.3"
+resource "aws_cloudfront_origin_access_control" "s3_access_control" {
+  name                              = var.S3_BUCKET.id
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
+}
 
-  aliases                       = var.ALIASES
-  default_root_object           = "index.html"
-  enabled                       = true
-  create_origin_access_identity = true
-  origin_access_identities = {
-    s3_bucket_one = "CloudFront can access to s3 bucket"
+resource "aws_cloudfront_distribution" "s3_distribution" {
+  origin {
+    domain_name = var.S3_BUCKET.domain
+    origin_id   = var.S3_ORIGIN
+    origin_access_control_id = aws_cloudfront_origin_access_control.s3_access_control.id
   }
 
-  origin = {
-    s3_one = {
-      domain_name = var.S3_BUCKET.domain
+  enabled             = true
+  is_ipv6_enabled     = true
+  default_root_object = "index.html"
+
+  aliases = var.ALIASES
+
+  default_cache_behavior {
+    allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = var.S3_ORIGIN
+
+    forwarded_values {
+      query_string = false
+
+      cookies {
+        forward = "none"
+      }
     }
-  }
 
-  default_cache_behavior = {
-    target_origin_id       = "s3_one"
     viewer_protocol_policy = "allow-all"
-
-    allowed_methods = ["GET", "HEAD", "OPTIONS"]
-    cached_methods  = ["GET", "HEAD"]
-    compress        = true
-    query_string    = true
+    min_ttl                = 0
+    default_ttl            = 3600
+    max_ttl                = 86400
   }
 
-  ordered_cache_behavior = [
-    {
-      path_pattern           = "/static/*"
-      target_origin_id       = "s3_one"
-      viewer_protocol_policy = "redirect-to-https"
-
-      allowed_methods = ["GET", "HEAD", "OPTIONS"]
-      cached_methods  = ["GET", "HEAD"]
-      compress        = true
-      query_string    = true
+  restrictions {
+    geo_restriction {
+      restriction_type = "none"
     }
-  ]
+  }
 
-  viewer_certificate = {
+  tags = var.TAGS
+
+  viewer_certificate {
     acm_certificate_arn = var.ACM
     ssl_support_method  = "sni-only"
   }
-
-  custom_error_response = [
-    {
-      error_caching_min_ttl = 10
-      error_code            = 403
-      response_code         = 200
-      response_page_path    = "/index.html"
-    }
-  ]
-
-  tags = var.TAGS
 }
 
 output "domain" {
-  value = module.cdn.cloudfront_distribution_domain_name
+  value = aws_cloudfront_distribution.s3_distribution.domain_name
 }
 output "arn" {
-  value = module.cdn.cloudfront_distribution_arn
+  value = aws_cloudfront_distribution.s3_distribution.arn
 }

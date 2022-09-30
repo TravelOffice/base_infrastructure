@@ -6,6 +6,7 @@ variable "DEFAULT_ROOT_OBJECT" {
 variable "ALIASES" {}
 variable "HOSTED_ZONE_ID" {}
 variable "RECORD_NAME" {}
+variable "CUSTOM_HEADER_ID" {}
 variable "TAGS" {}
 
 module "cloudfront_distribution" {
@@ -14,6 +15,7 @@ module "cloudfront_distribution" {
   ACM                 = var.ACM
   DEFAULT_ROOT_OBJECT = var.DEFAULT_ROOT_OBJECT
   ALIASES             = var.ALIASES
+  CUSTOM_HEADER_ID    = var.CUSTOM_HEADER_ID
   TAGS                = var.TAGS
 }
 

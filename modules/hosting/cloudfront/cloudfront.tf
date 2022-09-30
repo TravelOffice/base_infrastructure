@@ -21,8 +21,8 @@ resource "aws_cloudfront_origin_access_control" "s3_access_control" {
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
-    domain_name = var.S3_BUCKET.domain
-    origin_id   = var.S3_ORIGIN
+    domain_name              = var.S3_BUCKET.domain
+    origin_id                = var.S3_ORIGIN
     origin_access_control_id = aws_cloudfront_origin_access_control.s3_access_control.id
   }
 
@@ -33,9 +33,10 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   aliases = var.ALIASES
 
   default_cache_behavior {
-    allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
-    cached_methods   = ["GET", "HEAD"]
-    target_origin_id = var.S3_ORIGIN
+    allowed_methods            = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
+    cached_methods             = ["GET", "HEAD"]
+    target_origin_id           = var.S3_ORIGIN
+    response_headers_policy_id = var.CUSTOM_HEADER_ID
 
     forwarded_values {
       query_string = false
@@ -62,6 +63,13 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   viewer_certificate {
     acm_certificate_arn = var.ACM
     ssl_support_method  = "sni-only"
+  }
+
+  custom_error_response {
+    error_caching_min_ttl = 10
+    error_code            = 403
+    response_code         = 200
+    response_page_path    = "/index.html"
   }
 }
 

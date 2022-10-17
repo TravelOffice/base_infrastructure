@@ -186,7 +186,7 @@ resource "aws_codebuild_project" "cicd_trigger_sub_pipeline" {
 
     environment_variable {
       name  = "TRIGGER_PIPELINES"
-      value = "${var.ENV}-base-backend-cicd-pipeline ${var.ENV}-marketing-backend-cicd-pipeline"
+      value = "${var.ENV}-base-backend-cicd-pipeline ${var.ENV}-marketing-backend-cicd-pipeline ${var.ENV}-mail-backend-cicd-pipeline"
       type  = "PLAINTEXT"
     }
 

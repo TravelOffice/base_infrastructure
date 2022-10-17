@@ -357,4 +357,11 @@ resource "aws_cloudfront_response_headers_policy" "custom_header" {
   }
 }
 
+module "search" {
+  source     = "../../modules/search"
+  AWS_REGION = var.AWS_REGION
+  ENV        = var.ENV
+  TAGS       = local.marketing_tags
+}
+
 # Marketing Infrastructure: END

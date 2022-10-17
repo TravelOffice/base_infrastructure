@@ -62,6 +62,9 @@ output "MARKETING" {
     queue = {
       auto_assign_chat_queue = module.queue.new_conversation_queue_arn
     }
+    search = {
+      volume_id = module.search.volume_id
+    }
   }
 }
 

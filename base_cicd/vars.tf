@@ -11,7 +11,7 @@ variable "CODEPIPELINE_BUCKET" {
 }
 
 variable "TF_VERSION" {
-  default = "4.33.0"
+  default = "1.3.2"
 }
 
 variable "TF_LOG" {

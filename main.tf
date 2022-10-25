@@ -82,6 +82,10 @@ locals {
       {
         name  = "REACT_APP_MAIL_API_ENDPOINT"
         value = "https://${var.ENV}-mail.${local.hosted_domain_name}"
+      },
+      {
+        name  = "REACT_APP_SEARCH_BASE_URL"
+        value = "https://${var.ENV}-mail.${local.hosted_domain_name}/search"
       }
     ]
   }

@@ -110,6 +110,10 @@ module "dynamodb_table" {
     max_capacity       = var.MAX_READ_CAPACITY
   }
 
+  // ttl config
+  ttl_enabled        = true
+  ttl_attribute_name = "ttl"
+
   read_capacity       = local.is_ondemand ? null : var.READ_CAPACITY
   autoscaling_enabled = var.AUTOSCALING_ENABLED
   billing_mode        = var.BILLING_MODE

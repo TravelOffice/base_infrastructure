@@ -923,7 +923,7 @@ export const DEFAULT_WHITELIST = {
           statements: [
             { path: "onNewNotificationReceived" },
             { path: "sendNotification" },
-            { path: "syncMail" }
+            { path: "syncEmail" }
           ],
         },
       ],

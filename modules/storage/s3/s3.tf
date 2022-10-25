@@ -12,6 +12,10 @@ variable "BLOCK_PUBLIC_ACCESS" {
   default = true
 }
 
+variable "ENABLE_VERSIONING" {
+  default = "Enabled"
+}
+
 resource "aws_s3_bucket" "tf_bucket" {
   bucket_prefix = var.BUCKET_PREFIX
 }
@@ -24,7 +28,7 @@ resource "aws_s3_bucket_acl" "bucket_acl" {
 resource "aws_s3_bucket_versioning" "bucket_versioning" {
   bucket = aws_s3_bucket.tf_bucket.id
   versioning_configuration {
-    status = "Enabled"
+    status = var.ENABLE_VERSIONING
   }
 }
 

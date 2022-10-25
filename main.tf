@@ -324,6 +324,7 @@ module "mail_bucket" {
   source              = "../../modules/storage/s3"
   BUCKET_PREFIX       = "${var.ENV}-mail"
   BLOCK_PUBLIC_ACCESS = true
+  ENABLE_VERSIONING   = "Suspended"
   TAGS                = local.marketing_tags
 }
 

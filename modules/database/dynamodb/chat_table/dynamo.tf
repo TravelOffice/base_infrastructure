@@ -60,6 +60,15 @@ module "dynamodb_table" {
       read_capacity      = local.is_ondemand ? null : var.READ_CAPACITY
       write_capacity     = local.is_ondemand ? null : var.WRITE_CAPACITY
     },
+    {
+      hash_key           = "typeLsi"
+      range_key          = "pk"
+      name               = "ConversationAsssigneeIndex"
+      non_key_attributes = []
+      projection_type    = "KEYS_ONLY"
+      read_capacity      = local.is_ondemand ? null : var.READ_CAPACITY
+      write_capacity     = local.is_ondemand ? null : var.WRITE_CAPACITY
+    },
   ]
   write_capacity      = local.is_ondemand ? null : var.WRITE_CAPACITY
   read_capacity       = local.is_ondemand ? null : var.READ_CAPACITY

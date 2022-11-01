@@ -12,7 +12,7 @@ resource "aws_ebs_volume" "volume" {
   tags = merge(
     var.TAGS,
     {
-      Name = "EBS-1"
+      Name = "EBS-Search-Service"
     }
   )
 }
@@ -28,7 +28,7 @@ resource "aws_backup_plan" "backup" {
   rule {
     rule_name         = "rule-bk-ebs"
     target_vault_name = aws_backup_vault.vault.name
-    schedule          = "cron(0 12 1 * *)"
+    schedule          = var.SCHEDULE_BACKUP_PLAN
     lifecycle {
       cold_storage_after = 0
       delete_after       = 30
@@ -63,9 +63,9 @@ resource "aws_backup_selection" "selection" {
   name    = "selection-EBS"
   plan_id = aws_backup_plan.backup.id
   selection_tag {
-    type  = "STRINGEQUALS"
-    key   = "Name"
-    value = "EBS-1"
+    type  = var.BACKUP_SELECTION_RESOURCE.type
+    key   = var.BACKUP_SELECTION_RESOURCE.key
+    value = var.BACKUP_SELECTION_RESOURCE.value
   }
   iam_role_arn = aws_iam_role.backup-role.arn
 }

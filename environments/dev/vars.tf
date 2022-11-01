@@ -75,3 +75,4 @@ variable "CHAT_CDN" {
 variable "MAIL_CDN" {
   default = "mailcdn.traveloffice.shop"
 }
+

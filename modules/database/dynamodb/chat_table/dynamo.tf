@@ -72,6 +72,11 @@ module "dynamodb_table" {
   ]
   write_capacity      = local.is_ondemand ? null : var.WRITE_CAPACITY
   read_capacity       = local.is_ondemand ? null : var.READ_CAPACITY
+
+  // ttl config
+  ttl_enabled        = true
+  ttl_attribute_name = "ttl"
+
   autoscaling_enabled = var.AUTOSCALING_ENABLED
   billing_mode        = var.BILLING_MODE
   tags                = var.TAGS

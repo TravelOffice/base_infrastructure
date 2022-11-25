@@ -21,6 +21,10 @@ export const DEFAULT_ROLES = {
             },
             {
               path: "/zalo/link",
+              action: "GET",
+            },
+            {
+              path: "/zalo/link",
               action: "POST",
             },
             {
@@ -516,6 +520,10 @@ export const DEFAULT_PERMISSIONS = {
             {
               path: "/facebook/link",
               action: "POST",
+            },
+            {
+              path: "/zalo/link",
+              action: "GET",
             },
             {
               path: "/zalo/link",

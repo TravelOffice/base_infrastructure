@@ -100,7 +100,7 @@ type Query {
 	# Get all Zalo messages for given conversation id of a page
 	allZaloMessages(
 		pageId: String!,
-		userId: String!,
+		conversationId: String!,
 		offset: Int,
 		count: Int
 	): MessagesQueryResponse

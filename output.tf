@@ -70,9 +70,9 @@ output "MARKETING" {
 
 output "COMMON_CONFIG" {
   value = {
-    region                         = "ap-southeast-1"
-    codestar_connector_credentials = "arn:aws:codestar-connections:ap-southeast-1:249593777629:connection/f7623ad7-387d-4abc-ae08-7b83cd464851"
-    tf_bucket                      = var.TF_BUCKET
+    region                         = var.AWS_REGION
+    codestar_connector_credentials = local.codestar_connector_credentials
+    tf_bucket                      = local.tf_state_bucket
     cognito = {
       user_pool = {
         id  = module.cognito_user_pool.id
@@ -86,11 +86,11 @@ output "COMMON_CONFIG" {
     }
     route53 = {
       hosted_zone = {
-        id = "Z0837421MRKFPV1O1ZCI"
+        id = local.hosted_zone_id
         domain = {
-          name = "traveloffice.shop"
+          name = local.hosted_domain_name
           certificate = {
-            arn = "arn:aws:acm:ap-southeast-1:249593777629:certificate/2b282e8a-acad-4b69-aca0-9a6906e62c5f"
+            arn = local.acm
           }
         }
       }

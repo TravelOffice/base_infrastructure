@@ -7,6 +7,9 @@ variable "ALIASES" {}
 variable "HOSTED_ZONE_ID" {}
 variable "RECORD_NAME" {}
 variable "CUSTOM_HEADER_ID" {}
+variable "BLOCK_PUBLIC_ACCESS" {
+  default = true
+}
 variable "TAGS" {}
 
 module "cloudfront_distribution" {
@@ -49,6 +52,18 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
       ]
     }
   EOF
+}
+
+resource "aws_s3_bucket_public_access_block" "allow_public_access" {
+  bucket = var.S3_BUCKET.id
+
+  block_public_acls       = var.BLOCK_PUBLIC_ACCESS
+  block_public_policy     = var.BLOCK_PUBLIC_ACCESS
+  ignore_public_acls      = var.BLOCK_PUBLIC_ACCESS
+  restrict_public_buckets = var.BLOCK_PUBLIC_ACCESS
+  depends_on = [
+    aws_s3_bucket_policy.bucket_policy
+  ]
 }
 
 // Add DNS record for Cloudfront

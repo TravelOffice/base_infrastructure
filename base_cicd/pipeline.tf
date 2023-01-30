@@ -1,9 +1,18 @@
+data "http" "infra" {
+  url = "https://raw.githubusercontent.com/TravelOffice/infrastructure-constant/master/infrastructure.json"
+}
+
 variable "ENV" {}
 variable "BRANCH_NAME" {}
 variable "IMAGE" {
   default = "aws/codebuild/amazonlinux2-x86_64-standard:3.0"
 }
 locals {
+  constants                      = jsondecode(data.http.infra.body)
+  codestar_connector_credentials = local.constants["CODESTAR_CONNECTOR_CREDENTIALS"]
+  tf_state_bucket                = local.constants["TF_STATE_BUCKET"]
+  codepipeline_bucket            = local.constants["CODEPIPELINE_BUCKET"]
+
   tags = {
     Terraform = true
     ENV       = var.ENV
@@ -22,7 +31,7 @@ locals {
       configuration = {
         FullRepositoryId     = "TravelOffice/base_infrastructure"
         BranchName           = var.BRANCH_NAME
-        ConnectionArn        = var.CODESTAR_CONNECTOR_CREDENTIALS
+        ConnectionArn        = local.codestar_connector_credentials
         OutputArtifactFormat = "CODE_ZIP"
       }
     },
@@ -92,7 +101,7 @@ resource "aws_codebuild_project" "cicd_plan" {
 
     environment_variable {
       name  = "TF_BUCKET"
-      value = var.TF_BUCKET
+      value = local.tf_state_bucket
       type  = "PLAINTEXT"
     }
 
@@ -139,7 +148,7 @@ resource "aws_codebuild_project" "cicd_apply" {
 
     environment_variable {
       name  = "TF_BUCKET"
-      value = var.TF_BUCKET
+      value = local.tf_state_bucket
       type  = "PLAINTEXT"
     }
 
@@ -207,7 +216,7 @@ resource "aws_codepipeline" "tf_cicd_pipeline" {
 
   artifact_store {
     type     = "S3"
-    location = var.CODEPIPELINE_BUCKET
+    location = local.codepipeline_bucket
   }
 
   dynamic "stage" {

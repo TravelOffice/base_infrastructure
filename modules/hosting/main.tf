@@ -4,13 +4,15 @@ variable "ALIASES" {}
 variable "DEFAULT_ROOT_OBJECT" {
   default = "index.html"
 }
+variable "BLOCK_PUBLIC_ACCESS" {
+  default = true
+}
 variable "TAGS" {}
 
 module "s3_bucket" {
-  source              = "../storage/s3"
-  BUCKET_PREFIX       = var.BUCKET_PREFIX
-  BLOCK_PUBLIC_ACCESS = true
-  TAGS                = var.TAGS
+  source        = "../storage/s3"
+  BUCKET_PREFIX = var.BUCKET_PREFIX
+  TAGS          = var.TAGS
 }
 
 module "cdn" {
@@ -52,6 +54,18 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
       ]
     }
   EOF
+}
+
+resource "aws_s3_bucket_public_access_block" "allow_public_access" {
+  bucket = module.s3_bucket.id
+
+  block_public_acls       = var.BLOCK_PUBLIC_ACCESS
+  block_public_policy     = var.BLOCK_PUBLIC_ACCESS
+  ignore_public_acls      = var.BLOCK_PUBLIC_ACCESS
+  restrict_public_buckets = var.BLOCK_PUBLIC_ACCESS
+  depends_on = [
+    aws_s3_bucket_policy.bucket_policy
+  ]
 }
 
 output "s3_id" {

@@ -70,8 +70,8 @@ module "dynamodb_table" {
       write_capacity     = local.is_ondemand ? null : var.WRITE_CAPACITY
     },
   ]
-  write_capacity      = local.is_ondemand ? null : var.WRITE_CAPACITY
-  read_capacity       = local.is_ondemand ? null : var.READ_CAPACITY
+  write_capacity = local.is_ondemand ? null : var.WRITE_CAPACITY
+  read_capacity  = local.is_ondemand ? null : var.READ_CAPACITY
 
   // ttl config
   ttl_enabled        = true

@@ -1,45 +1,56 @@
+data "http" "infra" {
+  url = "https://raw.githubusercontent.com/TravelOffice/infrastructure-constant/master/infrastructure.json"
+}
 locals {
-  fb_token               = "1CDFFB13226C9AC1C58D2F59D8B65"
-  fb_graph_endpoint      = "https://graph.facebook.com/v13.0"
-  fb_client_id           = "636976117412979"
-  fb_client_secret       = "f34df5c9c4609da6f354db565229d67e"
-  zalo_app_id            = "1364765243717231492"
-  zalo_secret_key        = "N2Mh4JDI2IETV1IW9U24"
-  hosted_zone_id         = "Z0837421MRKFPV1O1ZCI"
-  hosted_domain_name     = "traveloffice.shop"
-  acm                    = "arn:aws:acm:us-east-1:249593777629:certificate/20027980-d231-448a-930d-b37a515342dd"
-  marketing_feature_name = "marketing-backend"
-  sale_frontend_name     = "sale-frontend"
-  base_backend_name      = "base-backend"
-  mail_feature_name      = "mail-backend"
-  encryption_secret_key  = "dAt$bAsE9#765@32"
+  constants                      = jsondecode(data.http.infra.body)
+  tf_version                     = local.constants["TF_VERSION"]
+  fb_token                       = local.constants["FB_TOKEN"]
+  fb_graph_endpoint              = local.constants["FB_GRAPH_ENDPOINT"]
+  fb_client_id                   = local.constants["FB_CLIENT_ID"]
+  fb_client_secret               = local.constants["FB_CLIENT_SECRET"]
+  zalo_app_id                    = local.constants["ZALO_APP_ID"]
+  zalo_secret_key                = local.constants["ZALO_SECRET_KEY"]
+  hosted_zone_id                 = local.constants["HOSTED_ZONE_ID"]
+  hosted_domain_name             = local.constants["HOSTED_DOMAIN_NAME"]
+  cloudfront_acm                 = local.constants["CLOUDFRONT_ACM"]
+  api_gateway_acm                = local.constants["API_GATEWAY_ACM"]
+  marketing_backend              = local.constants["MARKETING_BACKEND"]
+  sale_frontend                  = local.constants["SALE_FRONTEND"]
+  base_backend                   = local.constants["BASE_BACKEND"]
+  mail_backend                   = local.constants["MAIL_BACKEND"]
+  encryption_secret_key          = local.constants["ENCRYPTION_SECRET_KEY"]
+  codepipeline_bucket            = local.constants["CODEPIPELINE_BUCKET"]
+  mail_cdn                       = local.constants["MAIL_CDN"]
+  chat_cdn                       = local.constants["CHAT_CDN"]
+  tf_state_bucket                = local.constants["TF_STATE_BUCKET"]
+  codestar_connector_credentials = local.constants["CODESTAR_CONNECTOR_CREDENTIALS"]
 
   marketing_tags = {
     Env       = var.ENV
     Terraform = true
-    Feature   = local.marketing_feature_name
+    Feature   = local.marketing_backend
   }
   sale_frontend_tags = {
     Env       = var.ENV
     Terraform = true
-    Feature   = local.sale_frontend_name
+    Feature   = local.sale_frontend
   }
   base_backend_tags = {
     Env       = var.ENV
     Terraform = true
-    Feature   = local.base_backend_name
+    Feature   = local.base_backend
   }
   mail_tags = {
     Env       = var.ENV
     Terraform = true
-    Feature   = local.mail_feature_name
+    Feature   = local.mail_backend
   }
   is_prod = var.ENV == "prod"
   code_build_env = {
     common = [
       {
         name  = "TF_BUCKET"
-        value = var.TF_BUCKET
+        value = local.tf_state_bucket
       },
       {
         name  = "BUILD_ENV"
@@ -47,7 +58,7 @@ locals {
       },
       {
         name  = "TF_VERSION"
-        value = var.TF_VERSION
+        value = local.tf_version
       },
       {
         name  = "TF_LOG"
@@ -57,7 +68,7 @@ locals {
     sale_web = [
       {
         name  = "REACT_APP_BASE_URL"
-        value = "https://${var.ENV}-${local.marketing_feature_name}.${local.hosted_domain_name}"
+        value = "https://${var.ENV}-${local.marketing_backend}.${local.hosted_domain_name}"
       },
       {
         name  = "REACT_APP_SSO_PAGE"
@@ -101,17 +112,17 @@ module "base_backend_pipeline" {
   source                         = "../../modules/cicd"
   ENV                            = var.ENV
   BRANCH_NAME                    = var.BRANCH_NAME
-  CODESTAR_CONNECTOR_CREDENTIALS = var.CODESTAR_CONNECTOR_CREDENTIALS
+  CODESTAR_CONNECTOR_CREDENTIALS = local.codestar_connector_credentials
   ENV_VARS                       = local.code_build_env.common
-  CODEPIPELINE_BUCKET            = var.CODEPIPELINE_BUCKET
+  CODEPIPELINE_BUCKET            = local.codepipeline_bucket
   GITHUB_REPO                    = "TravelOffice/base_backend"
-  FEATURE_NAME                   = local.base_backend_name
+  FEATURE_NAME                   = local.base_backend
   TAGS                           = local.base_backend_tags
 }
-module "base_backend_vpc" {
+/* module "base_backend_vpc" {
   source                 = "../../modules/network/vpc"
   ENV                    = var.ENV
-  FEATURE_NAME           = local.base_backend_name
+  FEATURE_NAME           = local.base_backend
   AWS_REGION             = var.AWS_REGION
   VPC_CIDR               = var.BASE_BACKEND_VPC_CIDR
   PUBLIC_SUBNETS_CIDR    = var.BASE_BACKEND_PUBLIC_SUBNETS_CIDR
@@ -119,9 +130,9 @@ module "base_backend_vpc" {
   SINGLE_NAT_GATEWAY     = local.is_prod ? false : true
   ONE_NAT_GATEWAY_PER_AZ = local.is_prod ? true : false
   TAGS                   = local.base_backend_tags
-}
+} */
 
-resource "aws_security_group" "base_backend_lambda_sg" {
+/* resource "aws_security_group" "base_backend_lambda_sg" {
   name_prefix = "lambda_sg"
   description = "Allow all outbound traffic"
   vpc_id      = module.base_backend_vpc.id
@@ -134,27 +145,28 @@ resource "aws_security_group" "base_backend_lambda_sg" {
     ipv6_cidr_blocks = ["::/0"]
   }
   tags = local.base_backend_tags
-}
+} */
 module "provisioning_tenant_infra_ecs_task_role" {
   source = "../../modules/security/iam/role/ecs/task"
 
   TAGS         = local.base_backend_tags
   ENV          = var.ENV
-  FEATURE_NAME = local.base_backend_name
+  FEATURE_NAME = local.base_backend
 }
 
 module "base_backend_secret_manager" {
   source       = "../../modules/security/secret_manager"
   ENV          = var.ENV
-  FEATURE_NAME = local.base_backend_name
+  FEATURE_NAME = local.base_backend
   STORE_DATA = {
     "COGNITO_USER_POOL_ID"         = module.cognito_user_pool.id
     "COGNITO_CLIENT_ID"            = module.cognito_user_pool.client_ids[0]
-    "TF_BUCKET"                    = var.TF_BUCKET
-    "NOTIFICATION_SENDER_EMAIL"    = "anh93.nguyentuan@gmail.com"
-    "ADMIN_EMAIL"                  = "anh93.nguyentuan@gmail.com"
+    "TF_BUCKET"                    = local.tf_state_bucket
+    "NOTIFICATION_SENDER_EMAIL"    = local.constants["NOTIFICATION_SENDER_EMAIL"]
+    "ADMIN_EMAIL"                  = local.constants["ADMIN_EMAIL"]
     "DYNAMO_TRAVEL_TABLE"          = module.travel_table_dynamodb.db_name
     "DYNAMO_ROLE_PERMISSION_TABLE" = module.role_permission_table_dynamodb.db_name
+    "DOMAIN_NAME"                  = local.hosted_domain_name
   }
   TAGS = local.base_backend_tags
 }
@@ -162,17 +174,15 @@ module "base_backend_secret_manager" {
 
 # Marketing Infrastructure: START
 module "marketing_vpc" {
-  source                 = "../../modules/network/vpc"
-  ENV                    = var.ENV
-  FEATURE_NAME           = local.marketing_feature_name
-  AWS_REGION             = var.AWS_REGION
-  VPC_CIDR               = var.MARKETING_VPC_CIDR
-  PUBLIC_SUBNETS_CIDR    = var.MARKETING_PUBLIC_SUBNETS_CIDR
-  PRIVATE_SUBNETS_CIDR   = var.MARKETING_PRIVATE_SUBNETS_CIDR
-  DATABASE_SUBNETS_CIDR  = var.MARKETING_DATABASE_SUBNETS_CIDR
-  SINGLE_NAT_GATEWAY     = local.is_prod ? false : true
-  ONE_NAT_GATEWAY_PER_AZ = local.is_prod ? true : false
-  TAGS                   = local.marketing_tags
+  source                = "../../modules/network/vpc"
+  ENV                   = var.ENV
+  FEATURE_NAME          = local.marketing_backend
+  AWS_REGION            = var.AWS_REGION
+  VPC_CIDR              = var.MARKETING_VPC_CIDR
+  PUBLIC_SUBNETS_CIDR   = var.MARKETING_PUBLIC_SUBNETS_CIDR
+  PRIVATE_SUBNETS_CIDR  = var.MARKETING_PRIVATE_SUBNETS_CIDR
+  DATABASE_SUBNETS_CIDR = var.MARKETING_DATABASE_SUBNETS_CIDR
+  TAGS                  = local.marketing_tags
 }
 
 resource "aws_security_group" "marketing_lambda_sg" {
@@ -194,19 +204,19 @@ module "sale_frontend_pipeline" {
   source                         = "../../modules/cicd"
   ENV                            = var.ENV
   BRANCH_NAME                    = var.BRANCH_NAME
-  CODESTAR_CONNECTOR_CREDENTIALS = var.CODESTAR_CONNECTOR_CREDENTIALS
+  CODESTAR_CONNECTOR_CREDENTIALS = local.codestar_connector_credentials
   ENV_VARS                       = concat(local.code_build_env.common, local.code_build_env.sale_web)
-  CODEPIPELINE_BUCKET            = var.CODEPIPELINE_BUCKET
+  CODEPIPELINE_BUCKET            = local.codepipeline_bucket
   GITHUB_REPO                    = "TravelOffice/sale_web"
-  FEATURE_NAME                   = local.sale_frontend_name
+  FEATURE_NAME                   = local.sale_frontend
   TAGS                           = local.sale_frontend_tags
 }
 
 module "sale_frontend_hosting" {
   source        = "../../modules/hosting"
-  BUCKET_PREFIX = "${var.ENV}-${local.sale_frontend_name}"
-  ACM           = local.acm
-  ALIASES       = ["*.traveloffice.shop"]
+  BUCKET_PREFIX = "${var.ENV}-${local.sale_frontend}"
+  ACM           = local.cloudfront_acm
+  ALIASES       = ["*.${local.hosted_domain_name}"]
   TAGS          = local.sale_frontend_tags
 }
 
@@ -214,18 +224,18 @@ module "marketing_backend_pipeline" {
   source                         = "../../modules/cicd"
   ENV                            = var.ENV
   BRANCH_NAME                    = var.BRANCH_NAME
-  CODESTAR_CONNECTOR_CREDENTIALS = var.CODESTAR_CONNECTOR_CREDENTIALS
+  CODESTAR_CONNECTOR_CREDENTIALS = local.codestar_connector_credentials
   ENV_VARS                       = local.code_build_env.common
-  CODEPIPELINE_BUCKET            = var.CODEPIPELINE_BUCKET
+  CODEPIPELINE_BUCKET            = local.codepipeline_bucket
   GITHUB_REPO                    = "TravelOffice/marketing_backend"
-  FEATURE_NAME                   = local.marketing_feature_name
+  FEATURE_NAME                   = local.marketing_backend
   TAGS                           = local.marketing_tags
 }
 
 module "marketing_secret_manager" {
   source       = "../../modules/security/secret_manager"
   ENV          = var.ENV
-  FEATURE_NAME = local.marketing_feature_name
+  FEATURE_NAME = local.marketing_backend
   STORE_DATA = {
     "CHAT_APPSYNC_API_KEY"             = module.chat_appsync.api_key
     "CHAT_APPSYNC_GRAPHQL_ENDPOINT"    = module.chat_appsync.graphql_endpoint
@@ -244,10 +254,10 @@ module "marketing_secret_manager" {
     "COGNITO_CLIENT_ID"                = module.cognito_user_pool.client_ids[0]
     "CHAT_FILE_BUCKET"                 = module.sale_chat_attachment_bucket.id
     "CHAT_FILE_BUCKET_URL"             = module.sale_chat_attachment_bucket.bucket_regional_domain_name
-    "CHAT_FILE_CDN"                    = "https://${var.CHAT_CDN}"
+    "CHAT_FILE_CDN"                    = "https://${local.chat_cdn}"
     "MAIL_BUCKET"                      = module.mail_bucket.id
     "MAIL_BUCKET_URL"                  = module.mail_bucket.bucket_regional_domain_name
-    "MAIL_CDN"                         = "https://${var.MAIL_CDN}"
+    "MAIL_CDN"                         = "https://${local.mail_cdn}"
     "NEW_CONVERSATION_QUEUE_ENDPOINT"  = module.queue.new_conversation_queue_url
     "ENCRYPT_SECRET_KEY"               = local.encryption_secret_key
   }
@@ -258,10 +268,11 @@ module "chat_appsync" {
   source               = "../../modules/application/appsync"
   AWS_REGION           = var.AWS_REGION
   ENV                  = var.ENV
-  FEATURE_NAME         = local.marketing_feature_name
+  FEATURE_NAME         = local.marketing_backend
   COGNITO_USER_POOL_ID = module.cognito_user_pool.id
-  ACM                  = local.acm
+  ACM                  = local.cloudfront_acm
   HOSTED_ZONE_ID       = local.hosted_zone_id
+  DOMAIN_NAME          = "appsync.${local.hosted_domain_name}"
   TAGS                 = local.marketing_tags
 }
 
@@ -290,11 +301,11 @@ module "mail_pipeline" {
   source                         = "../../modules/cicd"
   ENV                            = var.ENV
   BRANCH_NAME                    = var.BRANCH_NAME
-  CODESTAR_CONNECTOR_CREDENTIALS = var.CODESTAR_CONNECTOR_CREDENTIALS
+  CODESTAR_CONNECTOR_CREDENTIALS = local.codestar_connector_credentials
   ENV_VARS                       = local.code_build_env.common
-  CODEPIPELINE_BUCKET            = var.CODEPIPELINE_BUCKET
+  CODEPIPELINE_BUCKET            = local.codepipeline_bucket
   GITHUB_REPO                    = "TravelOffice/mail"
-  FEATURE_NAME                   = local.mail_feature_name
+  FEATURE_NAME                   = local.mail_backend
   TAGS                           = local.mail_tags
 }
 
@@ -306,17 +317,16 @@ module "mail_table_dynamodb" {
 }
 
 module "sale_chat_attachment_bucket" {
-  source              = "../../modules/storage/s3"
-  BUCKET_PREFIX       = "${var.ENV}-${local.sale_frontend_name}-attachments"
-  BLOCK_PUBLIC_ACCESS = true
-  TAGS                = local.marketing_tags
+  source        = "../../modules/storage/s3"
+  BUCKET_PREFIX = "${var.ENV}-${local.sale_frontend}-attachments"
+  TAGS          = local.marketing_tags
 }
 
 module "sale_chat_cdn" {
   source              = "../../modules/cdn"
   S3_BUCKET           = module.sale_chat_attachment_bucket
-  ACM                 = local.acm
-  ALIASES             = [var.CHAT_CDN]
+  ACM                 = local.cloudfront_acm
+  ALIASES             = [local.chat_cdn]
   HOSTED_ZONE_ID      = local.hosted_zone_id
   DEFAULT_ROOT_OBJECT = ""
   RECORD_NAME         = "chatcdn"
@@ -325,18 +335,17 @@ module "sale_chat_cdn" {
 }
 
 module "mail_bucket" {
-  source              = "../../modules/storage/s3"
-  BUCKET_PREFIX       = "${var.ENV}-mail"
-  BLOCK_PUBLIC_ACCESS = true
-  ENABLE_VERSIONING   = "Suspended"
-  TAGS                = local.marketing_tags
+  source            = "../../modules/storage/s3"
+  BUCKET_PREFIX     = "${var.ENV}-mail"
+  ENABLE_VERSIONING = "Suspended"
+  TAGS              = local.marketing_tags
 }
 
 module "mail_cdn" {
   source              = "../../modules/cdn"
   S3_BUCKET           = module.mail_bucket
-  ACM                 = local.acm
-  ALIASES             = [var.MAIL_CDN]
+  ACM                 = local.cloudfront_acm
+  ALIASES             = [local.mail_cdn]
   HOSTED_ZONE_ID      = local.hosted_zone_id
   DEFAULT_ROOT_OBJECT = ""
   RECORD_NAME         = "mailcdn"
@@ -369,4 +378,15 @@ module "search" {
   TAGS       = local.marketing_tags
 }
 
+resource "aws_vpc_endpoint" "s3" {
+  vpc_id       = module.marketing_vpc.id
+  service_name = "com.amazonaws.${var.AWS_REGION}.s3"
+  tags         = local.marketing_tags
+}
+
+resource "aws_vpc_endpoint" "dynamodb" {
+  vpc_id       = module.marketing_vpc.id
+  service_name = "com.amazonaws.${var.AWS_REGION}.dynamodb"
+  tags         = local.marketing_tags
+}
 # Marketing Infrastructure: END

@@ -8,10 +8,6 @@ variable "ACL" {
   default = "private"
 }
 
-variable "BLOCK_PUBLIC_ACCESS" {
-  default = true
-}
-
 variable "ENABLE_VERSIONING" {
   default = "Enabled"
 }
@@ -32,15 +28,6 @@ resource "aws_s3_bucket_versioning" "bucket_versioning" {
   }
 }
 
-
-resource "aws_s3_bucket_public_access_block" "allow_public_access" {
-  bucket = aws_s3_bucket.tf_bucket.id
-
-  block_public_acls       = var.BLOCK_PUBLIC_ACCESS
-  block_public_policy     = var.BLOCK_PUBLIC_ACCESS
-  ignore_public_acls      = var.BLOCK_PUBLIC_ACCESS
-  restrict_public_buckets = var.BLOCK_PUBLIC_ACCESS
-}
 
 resource "aws_s3_bucket_cors_configuration" "allow_cors_s3" {
   bucket = aws_s3_bucket.tf_bucket.id

@@ -1,6 +1,6 @@
 # Local testing
 ## Set teraform remote state
-`export TF_BUCKET=terraform-state20220108143755951900000001`
+`export TF_BUCKET=suni-terraform-state`
 ## Set ENV
 `export BUILD_ENV=dev`
 ## Init terraform modules

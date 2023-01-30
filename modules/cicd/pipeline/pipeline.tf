@@ -14,7 +14,7 @@ variable "CODEPIPELINE_BUCKET" {}
 
 variable "FEATURE_NAME" {}
 variable "IMAGE" {
-  default = "aws/codebuild/amazonlinux2-x86_64-standard:3.0"
+  default = "aws/codebuild/standard:6.0"
 }
 variable "ENV_VARS" {
   default = []

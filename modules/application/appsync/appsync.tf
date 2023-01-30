@@ -15,9 +15,7 @@ variable "LOG_LEVEL" {
   default = "ALL"
 }
 variable "ACM" {}
-variable "DOMAIN_NAME" {
-  default = "chat"
-}
+variable "DOMAIN_NAME" {}
 variable "HOSTED_ZONE_ID" {}
 variable "TAGS" {}
 
@@ -47,7 +45,7 @@ module "appsync" {
   logging_enabled                 = var.LOGGING_ENABLED
   xray_enabled                    = var.XRAY_ENABLED
   log_field_log_level             = var.LOG_LEVEL
-  domain_name                     = "${var.DOMAIN_NAME}.traveloffice.shop"
+  domain_name                     = var.DOMAIN_NAME
   domain_name_association_enabled = true
   certificate_arn                 = var.ACM
   tags                            = var.TAGS

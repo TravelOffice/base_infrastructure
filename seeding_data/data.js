@@ -94,6 +94,9 @@ export const DEFAULT_ROLES = {
             {
               path: "onNewMessageReceived",
             },
+            {
+              path: "getZaloAudio"
+            }
           ],
         },
         {
@@ -363,6 +366,9 @@ export const DEFAULT_ROLES = {
             {
               path: "onNewMessageReceived",
             },
+            {
+              path: "getZaloAudio"
+            }
           ],
         },
         {
@@ -620,6 +626,9 @@ export const DEFAULT_PERMISSIONS = {
             {
               path: "onNewMessageReceived",
             },
+            {
+              path: "getZaloAudio"
+            }
           ],
         },
         {

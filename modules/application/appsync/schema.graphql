@@ -92,7 +92,7 @@ type Query {
 	allFbMessages(
 		pageId: String!,
 		conversationId: String!,
-		after: String,
+		nextToken: String,
 		limit: Int
 	): MessagesQueryResponse
 	# Get Facebook conversations for given page

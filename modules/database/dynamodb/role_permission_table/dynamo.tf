@@ -36,16 +36,56 @@ module "dynamodb_table" {
       type = "S"
     },
     {
-      name = "typeLsi"
+      name = "lsi1"
       type = "S"
     },
+    {
+      name = "lsi2"
+      type = "S"
+    },
+    {
+      name = "lsi3"
+      type = "S"
+    },
+    {
+      name = "lsi4"
+      type = "S"
+    },
+    {
+      name = "lsi5"
+      type = "S"
+    }
   ]
 
   local_secondary_indexes = [
     {
-      name               = "TypeIndex"
+      name               = "Index1"
       projection_type    = "ALL"
-      range_key          = "typeLsi"
+      range_key          = "lsi1"
+      non_key_attributes = []
+    },
+    {
+      name               = "Index2"
+      projection_type    = "ALL"
+      range_key          = "lsi2"
+      non_key_attributes = []
+    },
+    {
+      name               = "Index3"
+      projection_type    = "ALL"
+      range_key          = "lsi3"
+      non_key_attributes = []
+    },
+    {
+      name               = "Index4"
+      projection_type    = "ALL"
+      range_key          = "lsi4"
+      non_key_attributes = []
+    },
+    {
+      name               = "Index5"
+      projection_type    = "ALL"
+      range_key          = "lsi5"
       non_key_attributes = []
     }
   ]

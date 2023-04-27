@@ -160,7 +160,7 @@ module "base_backend_secret_manager" {
   FEATURE_NAME = local.base_backend
   STORE_DATA = {
     "COGNITO_USER_POOL_ID"         = module.cognito_user_pool.id
-    "COGNITO_CLIENT_ID"            = module.cognito_user_pool.client_ids[0]
+    "COGNITO_CLIENT_ID"            = module.cognito_user_pool.client_id
     "TF_BUCKET"                    = local.tf_state_bucket
     "NOTIFICATION_SENDER_EMAIL"    = local.constants["NOTIFICATION_SENDER_EMAIL"]
     "ADMIN_EMAIL"                  = local.constants["ADMIN_EMAIL"]
@@ -251,7 +251,7 @@ module "marketing_secret_manager" {
     "ZALO_MESSAGE_PLATFORM_APP_ID"     = local.zalo_app_id
     "ZALO_MESSAGE_PLATFORM_SECRET_KEY" = local.zalo_secret_key
     "COGNITO_USER_POOL_ID"             = module.cognito_user_pool.id
-    "COGNITO_CLIENT_ID"                = module.cognito_user_pool.client_ids[0]
+    "COGNITO_CLIENT_ID"                = module.cognito_user_pool.client_id
     "CHAT_FILE_BUCKET"                 = module.sale_chat_attachment_bucket.id
     "CHAT_FILE_BUCKET_URL"             = module.sale_chat_attachment_bucket.bucket_regional_domain_name
     "CHAT_FILE_CDN"                    = "https://${local.chat_cdn}"
@@ -272,7 +272,7 @@ module "chat_appsync" {
   COGNITO_USER_POOL_ID = module.cognito_user_pool.id
   ACM                  = local.cloudfront_acm
   HOSTED_ZONE_ID       = local.hosted_zone_id
-  DOMAIN_NAME          = "appsync.${local.hosted_domain_name}"
+  DOMAIN_NAME          = "${var.ENV}-appsync.${local.hosted_domain_name}"
   TAGS                 = local.marketing_tags
 }
 

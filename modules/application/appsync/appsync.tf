@@ -53,7 +53,7 @@ module "appsync" {
 
 resource "aws_appsync_api_key" "api_key" {
   api_id  = module.appsync.appsync_graphql_api_id
-  expires = formatdate("YYYY-MM-DD'T'hh:mm:ssZ", timeadd(timestamp(), "8760h"))
+  expires = formatdate("YYYY-MM-DD'T'hh:mm:ssZ", timeadd(timestamp(), "8736h"))
 }
 
 resource "aws_route53_record" "record" {

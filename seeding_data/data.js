@@ -240,6 +240,46 @@ export const DEFAULT_ROLES = {
           ]
         },
         {
+          name: 'get_customers',
+          title: 'View All Customers',
+          statements: [
+            {
+              path: '/customers',
+              action: 'GET'
+            },
+          ]
+        },
+        {
+          name: 'create_customer',
+          title: 'Create Customer',
+          statements: [
+            {
+              path: '/customers',
+              action: 'POST'
+            },
+          ]
+        },
+        {
+          name: 'update_customer',
+          title: 'Update Customer',
+          statements: [
+            {
+              path: '/customers/{customerId}',
+              action: 'PUT'
+            },
+          ]
+        },
+        {
+          name: 'get_customer',
+          title: 'View Customer',
+          statements: [
+            {
+              path: '/customers/{customerId}',
+              action: 'GET'
+            },
+          ]
+        },
+        {
           name: 'get_bookings',
           title: 'View All Bookings',
           statements: [
@@ -249,76 +289,6 @@ export const DEFAULT_ROLES = {
             },
           ]
         },
-        {
-          name: 'view_opportunities_of_lead',
-          title: 'View All Opportunities of Lead',
-          statements: [
-            {
-              path: '/leads/{leadID}/opportunities',
-              action: 'GET'
-            },
-          ]
-        },
-        {
-          name: 'create_opportunity',
-          title: 'Create Opportunity',
-          statements: [
-            {
-              path: '/leads/{leadID}/opportunities',
-              action: 'POST'
-            },
-          ]
-        },
-        {
-          name: 'view_opportunity',
-          title: 'View Opportunity',
-          statements: [
-            {
-              path: '/leads/{leadID}/opportunities/{opportunityID}',
-              action: 'GET'
-            },
-          ]
-        },
-        {
-          name: 'update_opportunity',
-          title: 'Update Opportunity',
-          statements: [
-            {
-              path: '/leads/{leadID}/opportunities/{opportunityID}',
-              action: 'PUT'
-            },
-          ]
-        },
-        {
-          name: 'view_quotes',
-          title: 'View All Quotes',
-          statements: [
-            {
-              path: '/leads/{leadID}/opportunities/{opportunityID}/quotes',
-              action: 'GET'
-            },
-          ]
-        },
-        {
-          name: 'view_opportunities_of_tenant',
-          title: 'View All Opportunities of Tenant',
-          statements: [
-            {
-              path: '/opportunities',
-              action: 'GET'
-            },
-          ]
-        },
-        {
-          name: 'delete_opportunity',
-          title: 'Delete Opportunity',
-          statements: [
-            {
-              path: '/opportunities/{id}',
-              action: 'DELETE'
-            },
-          ]
-        }
       ],
     },
     {
@@ -429,6 +399,46 @@ export const DEFAULT_ROLES = {
           ]
         },
         {
+          name: 'get_customers',
+          title: 'View All Customers',
+          statements: [
+            {
+              path: '/customers',
+              action: 'GET'
+            },
+          ]
+        },
+        {
+          name: 'create_customer',
+          title: 'Create Customer',
+          statements: [
+            {
+              path: '/customers',
+              action: 'POST'
+            },
+          ]
+        },
+        {
+          name: 'update_customer',
+          title: 'Update Customer',
+          statements: [
+            {
+              path: '/customers/{customerId}',
+              action: 'PUT'
+            },
+          ]
+        },
+        {
+          name: 'get_customer',
+          title: 'View Customer',
+          statements: [
+            {
+              path: '/customers/{customerId}',
+              action: 'GET'
+            },
+          ]
+        },
+        {
           name: 'get_bookings',
           title: 'View All Bookings',
           statements: [
@@ -438,76 +448,6 @@ export const DEFAULT_ROLES = {
             },
           ]
         },
-        {
-          name: 'view_opportunities_of_lead',
-          title: 'View All Opportunities of Lead',
-          statements: [
-            {
-              path: '/leads/{leadID}/opportunities',
-              action: 'GET'
-            },
-          ]
-        },
-        {
-          name: 'create_opportunity',
-          title: 'Create Opportunity',
-          statements: [
-            {
-              path: '/leads/{leadID}/opportunities',
-              action: 'POST'
-            },
-          ]
-        },
-        {
-          name: 'view_opportunity',
-          title: 'View Opportunity',
-          statements: [
-            {
-              path: '/leads/{leadID}/opportunities/{opportunityID}',
-              action: 'GET'
-            },
-          ]
-        },
-        {
-          name: 'update_opportunity',
-          title: 'Update Opportunity',
-          statements: [
-            {
-              path: '/leads/{leadID}/opportunities/{opportunityID}',
-              action: 'PUT'
-            },
-          ]
-        },
-        {
-          name: 'view_quotes',
-          title: 'View All Quotes',
-          statements: [
-            {
-              path: '/leads/{leadID}/opportunities/{opportunityID}/quotes',
-              action: 'GET'
-            },
-          ]
-        },
-        {
-          name: 'view_opportunities_of_tenant',
-          title: 'View All Opportunities of Tenant',
-          statements: [
-            {
-              path: '/opportunities',
-              action: 'GET'
-            },
-          ]
-        },
-        {
-          name: 'delete_opportunity',
-          title: 'Delete Opportunity',
-          statements: [
-            {
-              path: '/opportunities/{id}',
-              action: 'DELETE'
-            },
-          ]
-        }
       ],
     },
   ],
@@ -654,18 +594,8 @@ export const DEFAULT_PERMISSIONS = {
       name: "User",
       permissions: [
         {
-          name: "read_user",
-          title: "Read",
-          statements: [
-            {
-              action: "GET",
-              path: "/users/{userId}",
-            },
-          ],
-        },
-        {
           name: "create_user",
-          title: "Create",
+          title: "Create User",
           statements: [
             {
               action: "POST",
@@ -675,7 +605,7 @@ export const DEFAULT_PERMISSIONS = {
         },
         {
           name: "update_user",
-          title: "Update",
+          title: "Update User",
           statements: [
             {
               action: "PUT",
@@ -685,7 +615,7 @@ export const DEFAULT_PERMISSIONS = {
         },
         {
           name: "delete_user",
-          title: "Delete",
+          title: "Delete User",
           statements: [
             {
               action: "DELETE",
@@ -695,11 +625,15 @@ export const DEFAULT_PERMISSIONS = {
         },
         {
           name: "view_all_users",
-          title: "View all",
+          title: "View All Users",
           statements: [
             {
               action: "GET",
               path: "/users",
+            },
+            {
+              action: "GET",
+              path: "/users/{userId}",
             },
           ],
         },
@@ -764,16 +698,6 @@ export const DEFAULT_PERMISSIONS = {
       name: 'Lead',
       permissions: [
         {
-          name: 'get_leads',
-          title: 'View All Leads',
-          statements: [
-            {
-              path: '/leads',
-              action: 'GET'
-            },
-          ]
-        },
-        {
           name: 'create_lead',
           title: 'Create Lead',
           statements: [
@@ -784,21 +708,124 @@ export const DEFAULT_PERMISSIONS = {
           ]
         },
         {
+          name: 'get_leads',
+          title: 'View All Leads',
+          statements: [
+            {
+              path: '/leads',
+              action: 'GET'
+            },
+            {
+              path: '/leads/{leadId}',
+              action: 'GET'
+            }
+          ]
+        },
+        {
+          name: 'get_my_leads',
+          title: 'View My Leads',
+          statements: [
+            {
+              path: '/me/leads',
+              action: 'GET'
+            },
+            {
+              path: '/leads/{leadId}',
+              action: 'GET'
+            }
+          ]
+        },
+        {
           name: 'update_lead',
           title: 'Update Lead',
           statements: [
             {
-              path: '/leads',
+              path: '/leads/{leadId}',
+              action: 'PUT'
+            },
+            {
+              path: '/leads/{leadId}/status',
+              action: 'PUT'
+            },
+            {
+              path: '/leads/{leadId}/cancel',
+              action: 'PUT'
+            },
+            {
+              path: '/leads/{leadId}/assignee',
+              action: 'PUT'
+            }
+          ]
+        },
+      ]
+    },
+    {
+      name: 'Customer',
+      permissions: [
+        {
+          name: 'create_customer',
+          title: 'Create Customer',
+          statements: [
+            {
+              path: '/customers',
+              action: 'POST'
+            },
+          ]
+        },
+        {
+          name: 'update_customer',
+          title: 'Update Customer',
+          statements: [
+            {
+              path: '/customers/{customerId}',
+              action: 'PUT'
+            },
+            {
+              path: '/customers/{customerId}/assignee',
               action: 'PUT'
             },
           ]
         },
         {
-          name: 'get_lead',
-          title: 'View Lead',
+          name: 'get_customers',
+          title: 'View All Customers',
           statements: [
             {
-              path: '/leads/{leadID}',
+              path: '/customers',
+              action: 'GET'
+            },
+            {
+              path: '/customers/{customerId}',
+              action: 'GET'
+            },
+            {
+              path: '/customers/{customerId}/leads',
+              action: 'GET'
+            },
+            {
+              path: '/customers/{customerId}/bookings',
+              action: 'GET'
+            },
+          ]
+        },
+        {
+          name: 'get_my_customers',
+          title: 'View My Customers',
+          statements: [
+            {
+              path: '/me/customers',
+              action: 'GET'
+            },
+            {
+              path: '/customers/{customerId}',
+              action: 'GET'
+            },
+            {
+              path: '/customers/{customerId}/leads',
+              action: 'GET'
+            },
+            {
+              path: '/customers/{customerId}/bookings',
               action: 'GET'
             },
           ]
@@ -809,97 +836,147 @@ export const DEFAULT_PERMISSIONS = {
       name: 'Booking',
       permissions: [
         {
-          name: 'get_bookings',
-          title: 'View All Bookings',
+          name: 'create_booking',
+          title: 'Create Booking',
           statements: [
             {
-              path: '/leads/{leadID}/bookings',
-              action: 'GET'
-            },
-          ]
-        },
-      ]
-    },
-    {
-      name: 'Quotes',
-      permissions: [
-        {
-          name: 'view_quotes',
-          title: 'View All Quotes',
-          statements: [
-            {
-              path: '/leads/{leadID}/opportunities/{opportunityID}/quotes',
-              action: 'GET'
-            },
-          ]
-        }
-      ]
-    },
-    {
-      name: 'Opportunities',
-      permissions: [
-        {
-          name: 'view_opportunities_of_tenant',
-          title: 'View All Opportunities of Tenant',
-          statements: [
-            {
-              path: '/opportunities',
-              action: 'GET'
-            },
-          ]
-        },
-        {
-          name: 'view_opportunities_of_lead',
-          title: 'View All Opportunities of Lead',
-          statements: [
-            {
-              path: '/leads/{leadID}/opportunities',
-              action: 'GET'
-            },
-          ]
-        },
-        {
-          name: 'create_opportunity',
-          title: 'Create Opportunity',
-          statements: [
-            {
-              path: '/leads/{leadID}/opportunities',
+              path: '/bookings',
               action: 'POST'
             },
           ]
         },
         {
-          name: 'view_opportunity',
-          title: 'View Opportunity',
+          name: 'update_booking',
+          title: 'Update Booking',
           statements: [
             {
-              path: '/leads/{leadID}/opportunities/{opportunityID}',
-              action: 'GET'
+              path: '/bookings/{Id}',
+              action: 'PUT'
             },
-          ]
-        },
-        {
-          name: 'update_opportunity',
-          title: 'Update Opportunity',
-          statements: [
             {
-              path: '/leads/{leadID}/opportunities/{opportunityID}',
+              path: '/bookings/{id}/cancel',
               action: 'PUT'
             },
           ]
         },
         {
-          name: 'delete_opportunity',
-          title: 'Delete Opportunity',
+          name: 'get_bookings',
+          title: 'View All Bookings',
           statements: [
             {
-              path: '/opportunities/{id}',
-              action: 'DELETE'
+              path: '/bookings',
+              action: 'GET'
+            },
+            {
+              path: '/bookings/{Id}',
+              action: 'GET'
+            },
+            {
+              path: '/bookings-by-status/{status}',
+              action: 'GET'
             },
           ]
         }
       ]
-    }
+    },
+    {
+      name: 'Departure tour',
+      permissions: [
+        {
+          name: 'create_departure_tour',
+          title: 'Create Departure Tour',
+          statements: [
+            {
+              path: '/departure-tours',
+              action: 'POST'
+            },
+          ]
+        },
+        {
+          name: 'update_departure_tour',
+          title: 'Update Departure Tour',
+          statements: [
+            {
+              path: '/departure-tours/{id}',
+              action: 'PUT'
+            }
+          ]
+        },
+        {
+          name: 'get_departure_tours',
+          title: 'View All Departure Tours',
+          statements: [
+            {
+              path: '/departure-tours',
+              action: 'GET'
+            },
+            {
+              path: '/departure-tours/{id}',
+              action: 'GET'
+            }
+          ]
+        },
+        {
+          name: 'delete_departure_tour',
+          title: 'Delete Departure Tour',
+          statements: [
+            {
+              path: '/departure-tours/{id}',
+              action: 'DELETE'
+            }
+          ]
+        },
+      ]
+    },
+    {
+      name: 'Tour Template',
+      permissions: [
+        {
+          name: 'create_tour_template',
+          title: 'Create Tour Template',
+          statements: [
+            {
+              path: '/tour-templates',
+              action: 'POST'
+            },
+          ]
+        },
+        {
+          name: 'update_tour_template',
+          title: 'Update Tour Template',
+          statements: [
+            {
+              path: '/tour-templates/{id}',
+              action: 'PUT'
+            }
+          ]
+        },
+        {
+          name: 'get_tour_templates',
+          title: 'View All Tour Templates',
+          statements: [
+            {
+              path: '/tour-templates',
+              action: 'GET'
+            },
+            {
+              path: '/tour-templates/{id}',
+              action: 'GET'
+            }
+          ]
+        },
+        {
+          name: 'delete_tour_template',
+          title: 'Delete Tour Template',
+          statements: [
+            {
+              path: '/tour-templates/{id}',
+              action: 'DELETE'
+            }
+          ]
+        },
+      ]
+    },
   ]
 }
 

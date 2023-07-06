@@ -425,11 +425,11 @@ export const DEFAULT_PERMISSIONS = {
           title: 'Update Customer',
           statements: [
             {
-              path: '/customers/{customerID}',
+              path: '/customers/{customerId}',
               action: 'PUT'
             },
             {
-              path: '/customers/{customerID}/assignee',
+              path: '/customers/{customerId}/assignee',
               action: 'PUT'
             },
           ]
@@ -443,15 +443,15 @@ export const DEFAULT_PERMISSIONS = {
               action: 'GET'
             },
             {
-              path: '/customers/{customerID}',
+              path: '/customers/{customerId}',
               action: 'GET'
             },
             {
-              path: '/customers/{customerID}/leads',
+              path: '/customers/{customerId}/leads',
               action: 'GET'
             },
             {
-              path: '/customers/{customerID}/bookings',
+              path: '/customers/{customerId}/bookings',
               action: 'GET'
             },
           ]
@@ -465,15 +465,15 @@ export const DEFAULT_PERMISSIONS = {
               action: 'GET'
             },
             {
-              path: '/customers/{customerID}',
+              path: '/customers/{customerId}',
               action: 'GET'
             },
             {
-              path: '/customers/{customerID}/leads',
+              path: '/customers/{customerId}/leads',
               action: 'GET'
             },
             {
-              path: '/customers/{customerID}/bookings',
+              path: '/customers/{customerId}/bookings',
               action: 'GET'
             },
           ]
@@ -619,6 +619,55 @@ export const DEFAULT_PERMISSIONS = {
           statements: [
             {
               path: '/tour-templates/{id}',
+              action: 'DELETE'
+            }
+          ]
+        },
+      ]
+    },
+    {
+      name: 'Tour Location',
+      permissions: [
+        {
+          name: 'create_tour_location',
+          title: 'Create Tour Location',
+          statements: [
+            {
+              path: '/tour-locations',
+              action: 'POST'
+            },
+          ]
+        },
+        {
+          name: 'update_tour_location',
+          title: 'Update Tour Location',
+          statements: [
+            {
+              path: '/tour-locations/{id}',
+              action: 'PUT'
+            }
+          ]
+        },
+        {
+          name: 'get_tour_locations',
+          title: 'View All Tour Locations',
+          statements: [
+            {
+              path: '/tour-locations',
+              action: 'GET'
+            },
+            {
+              path: '/tour-locaitons/{id}',
+              action: 'GET'
+            }
+          ]
+        },
+        {
+          name: 'delete_tour_location',
+          title: 'Delete Tour Location',
+          statements: [
+            {
+              path: '/tour-locations/{id}',
               action: 'DELETE'
             }
           ]

@@ -9,6 +9,7 @@ export const DEFAULT_ROLES = {
     },
     {
       name: "ADMIN",
+      extend: ["OPERATOR"],
       isDefault: true,
       permissions: [
         "link_page",
@@ -37,26 +38,15 @@ export const DEFAULT_ROLES = {
         'create_booking',
         'update_booking',
         'get_bookings',
-        'create_departure_tour',
-        'update_departure_tour',
-        'get_departure_tours',
-        'delete_departure_tour',
-        'create_tour_template',
-        'update_tour_template',
-        'get_tour_templates',
-        'delete_tour_template',
-        'create_tour_location',
-        'update_tour_location',
-        'get_tour_locations',
-        'delete_tour_location',
-        'create_receipt',
-        'update_receipt',
-        'get_receipts',
-        'delete_receipt',
-        'create_payment_voucher',
-        'update_payment_voucher',
-        'get_payment_voucher',
-        'delete_payment_voucher'
+        'create_source',
+        'update_source',
+        'get_sources',
+        'delete_source',
+        'create_supplier',
+        'get_suppliers',
+        'update_supplier',
+        'delete_supplier',
+        'delete_payment_voucher',
       ],
     },
     {
@@ -76,6 +66,16 @@ export const DEFAULT_ROLES = {
         'create_booking',
         'update_booking',
         'get_bookings',
+        'create_source',
+        'update_source',
+        'get_sources',
+        'delete_source'
+      ],
+    },
+    {
+      name: "OPERATOR",
+      isDefault: true,
+      permissions: [
         'create_departure_tour',
         'update_departure_tour',
         'get_departure_tours',
@@ -94,8 +94,22 @@ export const DEFAULT_ROLES = {
         'delete_receipt',
         'create_payment_voucher',
         'update_payment_voucher',
-        'get_payment_voucher',
-        'delete_payment_voucher'
+        'get_payment_vouchers',
+        'self_assign_tour_operator',
+        'view_tour_plan',
+        'update_tour_plan',
+        'view_tour_estimation',
+        'create_tour_estimation',
+        'update_tour_estimation',
+        'delete_tour_estimation'
+      ],
+    },
+    {
+      name: "OPERATOR_MANAGER",
+      extend: ["OPERATOR"],
+      isDefault: true,
+      permissions: [
+        'assign_tour_operator'
       ],
     },
   ],
@@ -311,7 +325,7 @@ export const DEFAULT_PERMISSIONS = {
           ],
         },
         {
-          name: "create_roles",
+          name: "create_role",
           title: "Create Role",
           statements: [
             {
@@ -491,6 +505,10 @@ export const DEFAULT_PERMISSIONS = {
               path: '/bookings',
               action: 'POST'
             },
+            {
+              path: '/bookings/create-from-lead',
+              action: 'POST'
+            },
           ]
         },
         {
@@ -498,12 +516,28 @@ export const DEFAULT_PERMISSIONS = {
           title: 'Update Booking',
           statements: [
             {
-              path: '/bookings/{Id}',
+              path: '/bookings/{id}',
               action: 'PUT'
             },
             {
               path: '/bookings/{id}/cancel',
               action: 'PUT'
+            },
+            {
+              path: '/bookings/{id}/confirm',
+              action: 'PUT'
+            },
+            {
+              path: '/bookings/{id}/notes',
+              action: 'POST'
+            },
+            {
+              path: '/bookings/{id}/notes/{noteId}',
+              action: 'PUT'
+            },
+            {
+              path: '/bookings/{id}/notes/{noteId}',
+              action: 'DELETE'
             },
           ]
         },
@@ -516,7 +550,7 @@ export const DEFAULT_PERMISSIONS = {
               action: 'GET'
             },
             {
-              path: '/bookings/{Id}',
+              path: '/bookings/{id}',
               action: 'GET'
             },
             {
@@ -547,7 +581,11 @@ export const DEFAULT_PERMISSIONS = {
             {
               path: '/departure-tours/{id}',
               action: 'PUT'
-            }
+            },
+            {
+              path: '/me/departure-tours',
+              action: 'PUT'
+            },
           ]
         },
         {
@@ -560,6 +598,10 @@ export const DEFAULT_PERMISSIONS = {
             },
             {
               path: '/departure-tours/{id}',
+              action: 'GET'
+            },
+            {
+              path: '/departure-tours/{id}/bookings',
               action: 'GET'
             }
           ]
@@ -574,6 +616,26 @@ export const DEFAULT_PERMISSIONS = {
             }
           ]
         },
+        {
+          name: 'assign_tour_operator',
+          title: 'Assign tour operator',
+          statements: [
+            {
+              path: '/departure-tours/{id}/assignee',
+              action: 'PUT'
+            }
+          ]
+        },
+        {
+          name: 'self_assign_tour_operator',
+          title: 'Self assign tour operator',
+          statements: [
+            {
+              path: '/me/take-care-tour',
+              action: 'PUT'
+            }
+          ]
+        }
       ]
     },
     {
@@ -747,7 +809,7 @@ export const DEFAULT_PERMISSIONS = {
           ]
         },
         {
-          name: 'get_payment_voucher',
+          name: 'get_payment_vouchers',
           title: 'View All Payment Vouchers',
           statements: [
             {
@@ -757,7 +819,11 @@ export const DEFAULT_PERMISSIONS = {
             {
               path: '/payment-vouchers/{id}',
               action: 'GET'
-            }
+            },
+            {
+              path: '/payment-vouchers/presigned-url',
+              action: 'GET'
+            },
           ]
         },
         {
@@ -768,6 +834,177 @@ export const DEFAULT_PERMISSIONS = {
               path: '/payment-vouchers/{id}',
               action: 'DELETE'
             }
+          ]
+        },
+      ]
+    },
+    {
+      name: 'Source',
+      permissions: [
+        {
+          name: 'create_source',
+          title: 'Create Source',
+          statements: [
+            {
+              path: '/sources',
+              action: 'POST'
+            },
+          ]
+        },
+        {
+          name: 'update_source',
+          title: 'Update Source',
+          statements: [
+            {
+              path: '/sources/{id}',
+              action: 'PUT'
+            }
+          ]
+        },
+        {
+          name: 'get_sources',
+          title: 'View All Sources',
+          statements: [
+            {
+              path: '/sources',
+              action: 'GET'
+            },
+            {
+              path: '/sources/{id}',
+              action: 'GET'
+            }
+          ]
+        },
+        {
+          name: 'delete_source',
+          title: 'Delete Source',
+          statements: [
+            {
+              path: '/sources/{id}',
+              action: 'DELETE'
+            }
+          ]
+        },
+      ]
+    },
+    {
+      name: 'Supplier',
+      permissions: [
+        {
+          name: 'create_supplier',
+          title: 'Create Supplier',
+          statements: [
+            {
+              path: '/suppliers',
+              action: 'POST'
+            },
+          ]
+        },
+        {
+          name: 'update_supplier',
+          title: 'Update Supplier',
+          statements: [
+            {
+              path: '/suppliers/{id}',
+              action: 'PUT'
+            }
+          ]
+        },
+        {
+          name: 'get_suppliers',
+          title: 'View All Suppliers',
+          statements: [
+            {
+              path: '/suppliers',
+              action: 'GET'
+            },
+            {
+              path: '/suppliers/{id}',
+              action: 'GET'
+            }
+          ]
+        },
+        {
+          name: 'delete_supplier',
+          title: 'Delete Supplier',
+          statements: [
+            {
+              path: '/suppliers/{id}',
+              action: 'DELETE'
+            }
+          ]
+        },
+      ]
+    },
+    {
+      name: 'Tour Operation',
+      permissions: [
+        {
+          name: 'view_tour_plan',
+          title: 'View Tour Plan',
+          statements: [
+            {
+              path: '/tours/{tourId}/operation/plan',
+              action: 'GET'
+            },
+          ]
+        },
+        {
+          name: 'update_tour_plan',
+          title: 'Update Tour Plan',
+          statements: [
+            {
+              path: '/tours/{tourId}/operation/plan',
+              action: 'PUT'
+            },
+          ]
+        },
+        {
+          name: 'view_tour_estimation',
+          title: 'View Tour Estimation',
+          statements: [
+            {
+              path: '/tours/{tourId}/estimations',
+              action: 'GET'
+            },
+            {
+              path: '/tours/{tourId}/estimations/{estimationId}',
+              action: 'GET'
+            },
+            {
+              path: '/tours/{tourId}/payment-vouchers',
+              action: 'GET'
+            },
+          ]
+        },
+        {
+          name: 'create_tour_estimation',
+          title: 'Create Tour Estimation',
+          statements: [
+            {
+              path: '/tours/{tourId}/estimations',
+              action: 'POST'
+            },
+          ]
+        },
+        {
+          name: 'update_tour_estimation',
+          title: 'Update Tour Estimation',
+          statements: [
+            {
+              path: '/tours/{tourId}/estimations/{estimationId}',
+              action: 'PUT'
+            },
+          ]
+        },
+        {
+          name: 'delete_tour_estimation',
+          title: 'Delete Tour Estimation',
+          statements: [
+            {
+              path: '/tours/{tourId}/estimations/{estimationId}',
+              action: 'Delete'
+            },
           ]
         },
       ]
@@ -789,6 +1026,10 @@ export const DEFAULT_WHITELIST = {
               action: "GET",
               path: "/me",
             },
+            {
+              action: "GET",
+              path: "/me/avatar/presigned-url"
+            }
           ],
         },
         {

@@ -55,7 +55,6 @@ const writePermissionToDynamo = async (table, records, pk, skPrefix) => {
 const writeRoleToDynamo = async () => {
   const requestItems = {};
   const defaultPermissions = listDefaultPermissions();
-  // console.log(defaultPermissions);
   requestItems[`${process.env.BUILD_ENV}-${DEFAULT_ROLES.table}`] =
     DEFAULT_ROLES.roles.map((role) => {
       let { permissions } = role;

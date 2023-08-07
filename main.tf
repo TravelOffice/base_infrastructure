@@ -244,6 +244,7 @@ module "marketing_secret_manager" {
     "DYNAMO_CHAT_TABLE"                = module.chat_table_dynamodb.db_name
     "DYNAMO_ROLE_PERMISSION_TABLE"     = module.role_permission_table_dynamodb.db_name
     "DYNAMO_MAIL_TABLE"                = module.mail_table_dynamodb.db_name
+    "DYNAMO_MARKETPLACE_TABLE"         = module.marketplace_table_dynamodb.db_name
     "FB_MESSAGE_PLATFORM_VERIFY_TOKEN" = local.fb_token
     "FB_GRAPH_ENDPOINT"                = local.fb_graph_endpoint
     "FACEBOOK_CLIENT_ID"               = local.fb_client_id
@@ -287,6 +288,13 @@ module "chat_table_dynamodb" {
   source  = "../../modules/database/dynamodb/chat_table"
   ENV     = var.ENV
   DB_NAME = "chat_table"
+  TAGS    = local.marketing_tags
+}
+
+module "marketplace_table_dynamodb" {
+  source  = "../../modules/database/dynamodb/marketplace_table"
+  ENV     = var.ENV
+  DB_NAME = "marketplace_table"
   TAGS    = local.marketing_tags
 }
 

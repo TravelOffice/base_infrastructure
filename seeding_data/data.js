@@ -1003,7 +1003,7 @@ export const DEFAULT_PERMISSIONS = {
           statements: [
             {
               path: '/tours/{tourId}/estimations/{estimationId}',
-              action: 'Delete'
+              action: 'DELETE'
             },
           ]
         },

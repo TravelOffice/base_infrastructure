@@ -206,6 +206,7 @@ module "sale_frontend_pipeline" {
   BRANCH_NAME                    = var.BRANCH_NAME
   CODESTAR_CONNECTOR_CREDENTIALS = local.codestar_connector_credentials
   ENV_VARS                       = concat(local.code_build_env.common, local.code_build_env.sale_web)
+  TF_PLAN_COMPUTE_TYPE           = "BUILD_GENERAL1_MEDIUM"
   CODEPIPELINE_BUCKET            = local.codepipeline_bucket
   GITHUB_REPO                    = "TravelOffice/sale_web"
   FEATURE_NAME                   = local.sale_frontend

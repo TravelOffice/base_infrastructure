@@ -6,6 +6,9 @@ variable "GITHUB_REPO" {}
 variable "FEATURE_NAME" {}
 variable "ENV_VARS" {}
 variable "TAGS" {}
+variable "TF_PLAN_COMPUTE_TYPE" {
+  default = "BUILD_GENERAL1_SMALL"
+}
 
 module "IAM" {
   source = "./iam"
@@ -23,5 +26,6 @@ module "PIPELINE" {
   GITHUB_REPO                    = var.GITHUB_REPO
   FEATURE_NAME                   = var.FEATURE_NAME
   ENV_VARS                       = var.ENV_VARS
+  TF_PLAN_COMPUTE_TYPE           = var.TF_PLAN_COMPUTE_TYPE
   TAGS                           = var.TAGS
 }

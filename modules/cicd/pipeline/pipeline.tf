@@ -20,6 +20,7 @@ variable "ENV_VARS" {
   default = []
 }
 variable "TAGS" {}
+variable "TF_PLAN_COMPUTE_TYPE" {}
 
 resource "aws_codebuild_project" "tf_cicd_plan" {
   name         = "${var.ENV}-${var.FEATURE_NAME}-cicd-plan"
@@ -31,7 +32,7 @@ resource "aws_codebuild_project" "tf_cicd_plan" {
   }
 
   environment {
-    compute_type                = "BUILD_GENERAL1_SMALL"
+    compute_type                = var.TF_PLAN_COMPUTE_TYPE
     image                       = var.IMAGE
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"

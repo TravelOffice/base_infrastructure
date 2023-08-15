@@ -1,37 +1,77 @@
-import AWS from "aws-sdk";
+import AWS from 'aws-sdk';
 import {
   DEFAULT_PERMISSIONS,
   DEFAULT_WHITELIST,
   DEFAULT_ROLES,
-} from "./data.js";
+  TO_TABLE,
+} from './to_data.js';
+
+import {
+  MK_DEFAULT_PERMISSIONS,
+  MK_DEFAULT_WHITELIST,
+  MK_DEFAULT_ROLES,
+  MK_TABLE,
+} from './marketplace_data.js';
 
 const dynamodb = new AWS.DynamoDB({
-  apiVersion: "2012-08-10",
-  region: "ap-southeast-1",
+  apiVersion: '2012-08-10',
+  region: 'ap-southeast-1',
 });
 
-const ROLE_INDEX = "ROLE";
-const PERMISSION_INDEX = "PERMISSION";
-const WHITELIST_INDEX = "PERMISSION#WHITELIST";
+const ROLE_INDEX = 'ROLE';
+const PERMISSION_INDEX = 'PERMISSION';
+const WHITELIST_INDEX = 'PERMISSION#WHITELIST';
 
 const main = async () => {
+  await initTravelOfficeInfo();
+  await initMarketplaceInfo();
+};
+
+const initTravelOfficeInfo = async () => {
   // Init default permissions
   await writePermissionToDynamo(
-    DEFAULT_PERMISSIONS.table,
+    TO_TABLE,
     DEFAULT_PERMISSIONS.groups.concat([]),
     PERMISSION_INDEX,
     PERMISSION_INDEX
   );
   // Init default whitelist
   await writePermissionToDynamo(
-    DEFAULT_WHITELIST.table,
+    TO_TABLE,
     DEFAULT_WHITELIST.groups.concat([]),
     WHITELIST_INDEX,
     PERMISSION_INDEX
   );
   // Init default role
-  await writeRoleToDynamo();
-};
+  await writeRoleToDynamo(
+    TO_TABLE,
+    listDefaultPermissions(DEFAULT_PERMISSIONS),
+    DEFAULT_ROLES.roles,
+  );
+}
+
+const initMarketplaceInfo = async () => {
+  // Init default permissions
+  await writePermissionToDynamo(
+    MK_TABLE,
+    MK_DEFAULT_PERMISSIONS.groups.concat([]),
+    PERMISSION_INDEX,
+    PERMISSION_INDEX
+  );
+  // Init default whitelist
+  await writePermissionToDynamo(
+    MK_TABLE,
+    MK_DEFAULT_WHITELIST.groups.concat([]),
+    WHITELIST_INDEX,
+    PERMISSION_INDEX
+  );
+  // Init default role
+  await writeRoleToDynamo(
+    MK_TABLE,
+    listDefaultPermissions(MK_DEFAULT_PERMISSIONS),
+    MK_DEFAULT_ROLES.roles,
+  );
+}
 
 const writePermissionToDynamo = async (table, records, pk, skPrefix) => {
   while (records.length > 0) {
@@ -52,14 +92,13 @@ const writePermissionToDynamo = async (table, records, pk, skPrefix) => {
   }
 };
 
-const writeRoleToDynamo = async () => {
+const writeRoleToDynamo = async (table, defaultPermissions, defaultRoles) => {
   const requestItems = {};
-  const defaultPermissions = listDefaultPermissions();
-  requestItems[`${process.env.BUILD_ENV}-${DEFAULT_ROLES.table}`] =
-    DEFAULT_ROLES.roles.map((role) => {
+  requestItems[`${process.env.BUILD_ENV}-${table}`] =
+    defaultRoles.map((role) => {
       let { permissions } = role;
       if (role.extend) {
-        const sourceRole = DEFAULT_ROLES.roles.find((x) =>
+        const sourceRole = defaultRoles.find((x) =>
           role.extend.includes(x.name)
         );
         if (sourceRole) {
@@ -87,9 +126,9 @@ const writeRoleToDynamo = async () => {
   await dynamodb.batchWriteItem({ RequestItems: requestItems }).promise();
 };
 
-const listDefaultPermissions = () => {
+const listDefaultPermissions = (defaultPermissions) => {
   let permissions = [];
-  DEFAULT_PERMISSIONS.groups.forEach((group) => {
+  defaultPermissions.groups.forEach((group) => {
     permissions = permissions.concat(group.permissions);
   })
   return permissions;

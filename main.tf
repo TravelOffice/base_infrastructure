@@ -159,14 +159,16 @@ module "base_backend_secret_manager" {
   ENV          = var.ENV
   FEATURE_NAME = local.base_backend
   STORE_DATA = {
-    "COGNITO_USER_POOL_ID"         = module.cognito_user_pool.id
-    "COGNITO_CLIENT_ID"            = module.cognito_user_pool.client_id
-    "TF_BUCKET"                    = local.tf_state_bucket
-    "NOTIFICATION_SENDER_EMAIL"    = local.constants["NOTIFICATION_SENDER_EMAIL"]
-    "ADMIN_EMAIL"                  = local.constants["ADMIN_EMAIL"]
-    "DYNAMO_TRAVEL_TABLE"          = module.travel_table_dynamodb.db_name
-    "DYNAMO_ROLE_PERMISSION_TABLE" = module.role_permission_table_dynamodb.db_name
-    "DOMAIN_NAME"                  = local.hosted_domain_name
+    "COGNITO_USER_POOL_ID"                     = module.cognito_user_pool.id
+    "COGNITO_CLIENT_ID"                        = module.cognito_user_pool.client_id
+    "TF_BUCKET"                                = local.tf_state_bucket
+    "NOTIFICATION_SENDER_EMAIL"                = local.constants["NOTIFICATION_SENDER_EMAIL"]
+    "ADMIN_EMAIL"                              = local.constants["ADMIN_EMAIL"]
+    "DYNAMO_TRAVEL_TABLE"                      = module.travel_table_dynamodb.db_name
+    "DYNAMO_MARKETPLACE_TABLE"                 = module.marketplace_table_dynamodb.db_name
+    "DYNAMO_ROLE_PERMISSION_TABLE"             = module.role_permission_table_dynamodb.db_name
+    "DYNAMO_MARKETPLACE_ROLE_PERMISSION_TABLE" = module.marketplace_role_permission_table_dynamodb.db_name
+    "DOMAIN_NAME"                              = local.hosted_domain_name
   }
   TAGS = local.base_backend_tags
 }
@@ -238,30 +240,31 @@ module "marketing_secret_manager" {
   ENV          = var.ENV
   FEATURE_NAME = local.marketing_backend
   STORE_DATA = {
-    "CHAT_APPSYNC_API_KEY"             = module.chat_appsync.api_key
-    "CHAT_APPSYNC_GRAPHQL_ENDPOINT"    = module.chat_appsync.graphql_endpoint
-    "CHAT_APPSYNC_REALTIME_ENDPOINT"   = module.chat_appsync.realtime_endpoint
-    "DYNAMO_TRAVEL_TABLE"              = module.travel_table_dynamodb.db_name
-    "DYNAMO_CHAT_TABLE"                = module.chat_table_dynamodb.db_name
-    "DYNAMO_ROLE_PERMISSION_TABLE"     = module.role_permission_table_dynamodb.db_name
-    "DYNAMO_MAIL_TABLE"                = module.mail_table_dynamodb.db_name
-    "DYNAMO_MARKETPLACE_TABLE"         = module.marketplace_table_dynamodb.db_name
-    "FB_MESSAGE_PLATFORM_VERIFY_TOKEN" = local.fb_token
-    "FB_GRAPH_ENDPOINT"                = local.fb_graph_endpoint
-    "FACEBOOK_CLIENT_ID"               = local.fb_client_id
-    "FACEBOOK_CLIENT_SECRET"           = local.fb_client_secret
-    "ZALO_MESSAGE_PLATFORM_APP_ID"     = local.zalo_app_id
-    "ZALO_MESSAGE_PLATFORM_SECRET_KEY" = local.zalo_secret_key
-    "COGNITO_USER_POOL_ID"             = module.cognito_user_pool.id
-    "COGNITO_CLIENT_ID"                = module.cognito_user_pool.client_id
-    "CHAT_FILE_BUCKET"                 = module.sale_chat_attachment_bucket.id
-    "CHAT_FILE_BUCKET_URL"             = module.sale_chat_attachment_bucket.bucket_regional_domain_name
-    "CHAT_FILE_CDN"                    = "https://${local.chat_cdn}"
-    "MAIL_BUCKET"                      = module.mail_bucket.id
-    "MAIL_BUCKET_URL"                  = module.mail_bucket.bucket_regional_domain_name
-    "MAIL_CDN"                         = "https://${local.mail_cdn}"
-    "NEW_CONVERSATION_QUEUE_ENDPOINT"  = module.queue.new_conversation_queue_url
-    "ENCRYPT_SECRET_KEY"               = local.encryption_secret_key
+    "CHAT_APPSYNC_API_KEY"                     = module.chat_appsync.api_key
+    "CHAT_APPSYNC_GRAPHQL_ENDPOINT"            = module.chat_appsync.graphql_endpoint
+    "CHAT_APPSYNC_REALTIME_ENDPOINT"           = module.chat_appsync.realtime_endpoint
+    "DYNAMO_TRAVEL_TABLE"                      = module.travel_table_dynamodb.db_name
+    "DYNAMO_CHAT_TABLE"                        = module.chat_table_dynamodb.db_name
+    "DYNAMO_ROLE_PERMISSION_TABLE"             = module.role_permission_table_dynamodb.db_name
+    "DYNAMO_MAIL_TABLE"                        = module.mail_table_dynamodb.db_name
+    "DYNAMO_MARKETPLACE_TABLE"                 = module.marketplace_table_dynamodb.db_name
+    "DYNAMO_MARKETPLACE_ROLE_PERMISSION_TABLE" = module.marketplace_role_permission_table_dynamodb.db_name
+    "FB_MESSAGE_PLATFORM_VERIFY_TOKEN"         = local.fb_token
+    "FB_GRAPH_ENDPOINT"                        = local.fb_graph_endpoint
+    "FACEBOOK_CLIENT_ID"                       = local.fb_client_id
+    "FACEBOOK_CLIENT_SECRET"                   = local.fb_client_secret
+    "ZALO_MESSAGE_PLATFORM_APP_ID"             = local.zalo_app_id
+    "ZALO_MESSAGE_PLATFORM_SECRET_KEY"         = local.zalo_secret_key
+    "COGNITO_USER_POOL_ID"                     = module.cognito_user_pool.id
+    "COGNITO_CLIENT_ID"                        = module.cognito_user_pool.client_id
+    "CHAT_FILE_BUCKET"                         = module.sale_chat_attachment_bucket.id
+    "CHAT_FILE_BUCKET_URL"                     = module.sale_chat_attachment_bucket.bucket_regional_domain_name
+    "CHAT_FILE_CDN"                            = "https://${local.chat_cdn}"
+    "MAIL_BUCKET"                              = module.mail_bucket.id
+    "MAIL_BUCKET_URL"                          = module.mail_bucket.bucket_regional_domain_name
+    "MAIL_CDN"                                 = "https://${local.mail_cdn}"
+    "NEW_CONVERSATION_QUEUE_ENDPOINT"          = module.queue.new_conversation_queue_url
+    "ENCRYPT_SECRET_KEY"                       = local.encryption_secret_key
   }
   TAGS = local.marketing_tags
 }
@@ -303,6 +306,13 @@ module "role_permission_table_dynamodb" {
   source  = "../../modules/database/dynamodb/role_permission_table"
   ENV     = var.ENV
   DB_NAME = "role_permission_table"
+  TAGS    = local.marketing_tags
+}
+
+module "marketplace_role_permission_table_dynamodb" {
+  source  = "../../modules/database/dynamodb/role_permission_table"
+  ENV     = var.ENV
+  DB_NAME = "marketplace_role_permission_table"
   TAGS    = local.marketing_tags
 }
 

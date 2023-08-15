@@ -1,32 +1,33 @@
+export const TO_TABLE = 'role_permission_table';
+
 export const DEFAULT_ROLES = {
-  table: "role_permission_table",
   roles: [
     {
-      name: "ROOT",
-      extend: ["ADMIN"],
+      name: 'ROOT',
+      extend: ['ADMIN'],
       isDefault: true,
       permissions: [],
     },
     {
-      name: "ADMIN",
-      extend: ["OPERATOR"],
+      name: 'ADMIN',
+      extend: ['OPERATOR'],
       isDefault: true,
       permissions: [
-        "link_page",
-        "unlink_page",
-        "assign_chat",
-        "view_all_conversations",
-        "view_message",
-        "read_user",
-        "create_user",
-        "update_user",
-        "delete_user",
-        "view_all_users",
-        "get_permissions",
-        "get_roles",
-        "create_role",
-        "update_role",
-        "delete_roles",
+        'link_page',
+        'unlink_page',
+        'assign_chat',
+        'view_all_conversations',
+        'view_message',
+        'read_user',
+        'create_user',
+        'update_user',
+        'delete_user',
+        'view_all_users',
+        'get_permissions',
+        'get_roles',
+        'create_role',
+        'update_role',
+        'delete_roles',
         'create_customer',
         'update_customer',
         'get_customers',
@@ -50,12 +51,12 @@ export const DEFAULT_ROLES = {
       ],
     },
     {
-      name: "SALE",
+      name: 'SALE',
       isDefault: true,
       permissions: [
-        "view_assigned_conversations",
-        "view_message",
-        "send_message",
+        'view_assigned_conversations',
+        'view_message',
+        'send_message',
         'create_customer',
         'update_customer',
         'get_customers',
@@ -73,7 +74,7 @@ export const DEFAULT_ROLES = {
       ],
     },
     {
-      name: "OPERATOR",
+      name: 'OPERATOR',
       isDefault: true,
       permissions: [
         'create_departure_tour',
@@ -105,8 +106,8 @@ export const DEFAULT_ROLES = {
       ],
     },
     {
-      name: "OPERATOR_MANAGER",
-      extend: ["OPERATOR"],
+      name: 'OPERATOR_MANAGER',
+      extend: ['OPERATOR'],
       isDefault: true,
       permissions: [
         'assign_tour_operator'
@@ -116,241 +117,240 @@ export const DEFAULT_ROLES = {
 };
 
 export const DEFAULT_PERMISSIONS = {
-  table: "role_permission_table",
   groups: [
     {
-      name: "Setting",
+      name: 'Setting',
       permissions: [
         {
-          name: "link_page",
-          title: "Link page",
+          name: 'link_page',
+          title: 'Link page',
           statements: [
             {
-              path: "/facebook/link",
-              action: "POST",
+              path: '/facebook/link',
+              action: 'POST',
             },
             {
-              path: "/zalo/link",
-              action: "GET",
+              path: '/zalo/link',
+              action: 'GET',
             },
             {
-              path: "/zalo/link",
-              action: "POST",
+              path: '/zalo/link',
+              action: 'POST',
             },
             {
-              action: "POST",
-              path: "/telegram/link",
+              action: 'POST',
+              path: '/telegram/link',
             },
           ],
         },
         {
-          name: "unlink_page",
-          title: "Unlink page",
+          name: 'unlink_page',
+          title: 'Unlink page',
           statements: [
             {
-              path: "/admin/linked_pages",
-              action: "DELETE",
+              path: '/admin/linked_pages',
+              action: 'DELETE',
             },
           ],
         },
       ],
     },
     {
-      name: "Chat",
+      name: 'Chat',
       permissions: [
         {
-          name: "assign_chat",
-          title: "Assign chat",
+          name: 'assign_chat',
+          title: 'Assign chat',
           statements: [
             {
-              action: "POST",
-              path: "/admin/assign-chat",
+              action: 'POST',
+              path: '/admin/assign-chat',
             },
           ],
         },
         {
-          name: "view_all_conversations",
-          title: "View all conversations",
+          name: 'view_all_conversations',
+          title: 'View all conversations',
           statements: [
             {
-              path: "adminAllFbConversations",
+              path: 'adminAllFbConversations',
             },
             {
-              path: "adminAllZaloConversations",
+              path: 'adminAllZaloConversations',
             },
             {
-              path: "adminAllTelegramConversations",
+              path: 'adminAllTelegramConversations',
             },
             {
-              action: "GET",
-              path: "/admin/linked_pages",
+              action: 'GET',
+              path: '/admin/linked_pages',
             },
           ],
         },
         {
-          name: "view_assigned_conversations",
-          title: "View assigned conversations",
+          name: 'view_assigned_conversations',
+          title: 'View assigned conversations',
           statements: [
             {
-              path: "allFbConversations",
+              path: 'allFbConversations',
             },
             {
-              path: "allZaloConversations",
+              path: 'allZaloConversations',
             },
             {
-              path: "allTelegramConversations",
+              path: 'allTelegramConversations',
             },
             {
-              action: "GET",
-              path: "/admin/linked_pages",
+              action: 'GET',
+              path: '/admin/linked_pages',
             },
           ],
         },
         {
-          name: "view_message",
-          title: "View message",
+          name: 'view_message',
+          title: 'View message',
           statements: [
             {
-              path: "allFbMessages",
+              path: 'allFbMessages',
             },
             {
-              path: "allZaloMessages",
+              path: 'allZaloMessages',
             },
             {
-              path: "allTelegramMessages",
+              path: 'allTelegramMessages',
             },
             {
-              path: "getTelegramFileInfo",
+              path: 'getTelegramFileInfo',
             },
             {
-              path: "userProfile",
+              path: 'userProfile',
             },
             {
-              path: "onNewMessageReceived",
+              path: 'onNewMessageReceived',
             },
             {
-              path: "getZaloAudio"
+              path: 'getZaloAudio'
             }
           ],
         },
         {
-          name: "send_message",
-          title: "Send message",
+          name: 'send_message',
+          title: 'Send message',
           statements: [
             {
-              path: "sendMessage",
+              path: 'sendMessage',
             },
             {
-              path: "/presigned-url",
-              action: "GET",
+              path: '/presigned-url',
+              action: 'GET',
             },
             {
-              action: "GET",
-              path: "/upload-file-to-chat-platform",
+              action: 'GET',
+              path: '/upload-file-to-chat-platform',
             },
           ],
         },
       ],
     },
     {
-      name: "User",
+      name: 'User',
       permissions: [
         {
-          name: "create_user",
-          title: "Create User",
+          name: 'create_user',
+          title: 'Create User',
           statements: [
             {
-              action: "POST",
-              path: "/users",
+              action: 'POST',
+              path: '/users',
             },
           ],
         },
         {
-          name: "update_user",
-          title: "Update User",
+          name: 'update_user',
+          title: 'Update User',
           statements: [
             {
-              action: "PUT",
-              path: "/users/{userId}",
+              action: 'PUT',
+              path: '/users/{userId}',
             },
           ],
         },
         {
-          name: "delete_user",
-          title: "Delete User",
+          name: 'delete_user',
+          title: 'Delete User',
           statements: [
             {
-              action: "DELETE",
-              path: "/users/{userId}",
+              action: 'DELETE',
+              path: '/users/{userId}',
             },
           ],
         },
         {
-          name: "view_all_users",
-          title: "View All Users",
+          name: 'view_all_users',
+          title: 'View All Users',
           statements: [
             {
-              action: "GET",
-              path: "/users",
+              action: 'GET',
+              path: '/users',
             },
             {
-              action: "GET",
-              path: "/users/{userId}",
+              action: 'GET',
+              path: '/users/{userId}',
             },
           ],
         },
       ],
     },
     {
-      name: "Role Permissions",
+      name: 'Role Permissions',
       permissions: [
         {
-          name: "get_permissions",
-          title: "View Permissions",
+          name: 'get_permissions',
+          title: 'View Permissions',
           statements: [
             {
-              path: "/admin/permissions",
-              action: "GET",
+              path: '/admin/permissions',
+              action: 'GET',
             },
           ],
         },
         {
-          name: "get_roles",
-          title: "View Roles",
+          name: 'get_roles',
+          title: 'View Roles',
           statements: [
             {
-              path: "/admin/roles",
-              action: "GET",
+              path: '/admin/roles',
+              action: 'GET',
             },
           ],
         },
         {
-          name: "create_role",
-          title: "Create Role",
+          name: 'create_role',
+          title: 'Create Role',
           statements: [
             {
-              path: "/admin/roles",
-              action: "POST",
+              path: '/admin/roles',
+              action: 'POST',
             },
           ],
         },
         {
-          name: "update_role",
-          title: "Update Role",
+          name: 'update_role',
+          title: 'Update Role',
           statements: [
             {
-              path: "/admin/roles/{roleName}",
-              action: "PUT",
+              path: '/admin/roles/{roleName}',
+              action: 'PUT',
             },
           ],
         },
         {
-          name: "delete_roles",
-          title: "Delete Role",
+          name: 'delete_roles',
+          title: 'Delete Role',
           statements: [
             {
-              path: "/admin/roles/{roleName}",
-              action: "DELETE",
+              path: '/admin/roles/{roleName}',
+              action: 'DELETE',
             },
           ]
         }
@@ -528,6 +528,10 @@ export const DEFAULT_PERMISSIONS = {
               action: 'PUT'
             },
             {
+              path: '/bookings/{id}/payment-pending',
+              action: 'PUT'
+            },
+            {
               path: '/bookings/{id}/notes',
               action: 'POST'
             },
@@ -582,6 +586,11 @@ export const DEFAULT_PERMISSIONS = {
               path: '/departure-tours/{id}',
               action: 'PUT'
             },
+            {
+              path: '/departure-tours/{id}/operation-status',
+              action: 'PUT'
+            },
+         
             {
               path: '/me/departure-tours',
               action: 'PUT'
@@ -1013,47 +1022,46 @@ export const DEFAULT_PERMISSIONS = {
 }
 
 export const DEFAULT_WHITELIST = {
-  table: "role_permission_table",
   groups: [
     {
-      name: "Me",
+      name: 'Me',
       permissions: [
         {
-          name: "read",
-          title: "Read",
+          name: 'read',
+          title: 'Read',
           statements: [
             {
-              action: "GET",
-              path: "/me",
+              action: 'GET',
+              path: '/me',
             },
             {
-              action: "GET",
-              path: "/me/avatar/presigned-url"
+              action: 'GET',
+              path: '/me/avatar/presigned-url'
             }
           ],
         },
         {
-          name: "update",
-          title: "Update",
+          name: 'update',
+          title: 'Update',
           statements: [
             {
-              action: "PUT",
-              path: "/me",
+              action: 'PUT',
+              path: '/me',
             },
           ],
         },
       ],
     },
     {
-      name: "Common",
+      name: 'Common',
       permissions: [
         {
-          name: "sendAndSubscribeNewNotification",
-          title: "Send / subscribe new notification",
+          name: 'sendAndSubscribeNewNotification',
+          title: 'Send / subscribe new notification',
           statements: [
-            { path: "onNewNotificationReceived" },
-            { path: "sendNotification" },
-            { path: "syncEmail" }
+            { path: 'onNewNotificationReceived' },
+            { path: 'sendNotification' },
+            { path: 'syncEmail' }
           ],
         },
       ],

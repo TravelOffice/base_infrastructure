@@ -12,6 +12,12 @@ variable "WRITE_CAPACITY" {
 variable "READ_CAPACITY" {
   default = 1
 }
+variable "STREAM_ENABLED" {
+  default = true
+}
+variable "STREAM_VIEW_TYPE" {
+  default = "NEW_AND_OLD_IMAGES"
+}
 variable "TAGS" {}
 variable "DB_NAME" {}
 
@@ -105,6 +111,8 @@ module "dynamodb_table" {
   read_capacity       = local.is_ondemand ? null : var.READ_CAPACITY
   autoscaling_enabled = var.AUTOSCALING_ENABLED
   billing_mode        = var.BILLING_MODE
+  stream_enabled      = var.STREAM_ENABLED
+  stream_view_type    = var.STREAM_VIEW_TYPE
   ttl_attribute_name  = "ttl"
   ttl_enabled         = true
   tags                = var.TAGS

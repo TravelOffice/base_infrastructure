@@ -60,6 +60,10 @@ module "dynamodb_table" {
     {
       name = "lsi5"
       type = "S"
+    },
+    {
+      name = "receivedOrg"
+      type = "S"
     }
   ]
 
@@ -108,10 +112,10 @@ module "dynamodb_table" {
     },
     {
       hash_key           = "receivedOrg"
-      range_key          = "createdAt"
+      range_key          = "sk"
       name               = "ReceivedOrgIndex"
-      non_key_attributes = []
-      projection_type    = "KEYS_ONLY"
+      non_key_attributes = ["description", "totalPax", "pricePerPax", "commissionRate", "authorId", "offerStatus"]
+      projection_type    = "INCLUDE"
       read_capacity      = local.is_ondemand ? null : var.READ_CAPACITY
       write_capacity     = local.is_ondemand ? null : var.WRITE_CAPACITY
     },

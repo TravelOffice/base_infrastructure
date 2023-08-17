@@ -39,7 +39,7 @@ module "dynamodb_table" {
     },
     {
       name = "sk"
-      type = "S"
+      type = "N"
     },
     {
       name = "lsi1"

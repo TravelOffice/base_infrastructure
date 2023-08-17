@@ -46,6 +46,11 @@ output "MARKETING" {
           arn  = module.chat_table_dynamodb.arn
           name = module.chat_table_dynamodb.db_name
         }
+        marketplace_table = {
+          arn         = module.marketplace_table_dynamodb.arn
+          stream_arn  = module.marketplace_table_dynamodb.stream_arn
+          name        = module.marketplace_table_dynamodb.db_name
+        }
         role_permission_table = {
           arn  = module.role_permission_table_dynamodb.arn
           name = module.role_permission_table_dynamodb.db_name

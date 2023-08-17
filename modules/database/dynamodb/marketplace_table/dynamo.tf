@@ -132,7 +132,7 @@ output "arn" {
 }
 
 output "stream_arn" {
-  value = module.dynamodb_table.stream_arn
+  value = module.dynamodb_table.dynamodb_table_stream_arn
 }
 
 output "db_name" {

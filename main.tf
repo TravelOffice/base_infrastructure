@@ -265,6 +265,7 @@ module "marketing_secret_manager" {
     "MAIL_CDN"                                 = "https://${local.mail_cdn}"
     "NEW_CONVERSATION_QUEUE_ENDPOINT"          = module.queue.new_conversation_queue_url
     "ENCRYPT_SECRET_KEY"                       = local.encryption_secret_key
+    "SEARCH_ENGINE_ENDPOINT"                   = module.search.lb_endpoint
   }
   TAGS = local.marketing_tags
 }
@@ -391,10 +392,14 @@ resource "aws_cloudfront_response_headers_policy" "custom_header" {
 }
 
 module "search" {
-  source     = "../../modules/search"
-  AWS_REGION = var.AWS_REGION
-  ENV        = var.ENV
-  TAGS       = local.marketing_tags
+  source        = "../../modules/search"
+  vpc_id        = module.marketing_vpc.id
+  public_subnet = module.marketing_vpc.public_subnets
+  domain_arn    = local.api_gateway_acm
+  feature_name  = local.marketing_backend
+  hosted_zone   = local.hosted_zone_id
+  env           = var.ENV
+  tags          = local.marketing_tags
 }
 
 resource "aws_vpc_endpoint" "s3" {

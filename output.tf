@@ -47,9 +47,9 @@ output "MARKETING" {
           name = module.chat_table_dynamodb.db_name
         }
         marketplace_table = {
-          arn         = module.marketplace_table_dynamodb.arn
-          stream_arn  = module.marketplace_table_dynamodb.stream_arn
-          name        = module.marketplace_table_dynamodb.db_name
+          arn        = module.marketplace_table_dynamodb.arn
+          stream_arn = module.marketplace_table_dynamodb.stream_arn
+          name       = module.marketplace_table_dynamodb.db_name
         }
         role_permission_table = {
           arn  = module.role_permission_table_dynamodb.arn
@@ -68,7 +68,7 @@ output "MARKETING" {
       auto_assign_chat_queue = module.queue.new_conversation_queue_arn
     }
     search = {
-      volume_id = module.search.volume_id
+      lb_arn = module.search.lb_arn
     }
   }
 }

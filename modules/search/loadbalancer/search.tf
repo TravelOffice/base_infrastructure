@@ -1,0 +1,85 @@
+variable "env" {}
+variable "feature_name" {}
+variable "name" {}
+variable "vpc_id" {}
+variable "public_subnet" {}
+variable "domain_arn" {}
+variable "hosted_zone" {}
+variable "tags" {}
+
+locals {
+  lb_name             = lower("${var.env}-${var.feature_name}-${var.name}")
+  security_group_name = lower("${var.env}-${var.feature_name}-lb-search-sg")
+}
+
+resource "aws_lb" "search" {
+  name               = local.lb_name
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.lb_sg.id]
+  subnets            = var.public_subnet
+
+  enable_deletion_protection = true
+
+  tags = var.tags
+}
+
+resource "aws_security_group" "lb_sg" {
+  name_prefix = local.security_group_name
+  description = "Allow http/https to the search load balancer"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    description      = "Allow HTTPS to LB"
+    from_port        = 443
+    to_port          = 443
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  ingress {
+    description      = "Allow HTTP to LB"
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = merge(
+    var.tags,
+    { "Name" = local.security_group_name },
+  )
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_route53_record" "search" {
+  zone_id = var.hosted_zone
+  name    = lower("${var.env}-${var.feature_name}-search")
+  type    = "A"
+  alias {
+    name                   = aws_lb.search.dns_name
+    zone_id                = aws_lb.search.zone_id
+    evaluate_target_health = true
+  }
+}
+
+output "lb_arn" {
+  value = aws_lb.search.arn
+}
+
+output "endpoint" {
+  value = aws_route53_record.search.fqdn
+}

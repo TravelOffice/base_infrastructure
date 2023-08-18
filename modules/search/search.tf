@@ -1,71 +1,40 @@
-variable "ENV" {}
-variable "TAGS" {}
-variable "AWS_REGION" {}
+variable "aws_region" {}
+variable "feature_name" {}
+variable "vpc_id" {}
+variable "public_subnet" {}
+variable "domain_arn" {}
+variable "hosted_zone" {}
+variable "env" {}
+variable "tags" {}
 
-resource "aws_ebs_volume" "volume" {
-  availability_zone = "${var.AWS_REGION}a"
-  size              = var.ENV == "dev" ? 40 : 100
-  final_snapshot    = true
-  type              = "gp3"
-  encrypted         = true
-
-  tags = merge(
-    var.TAGS,
-    {
-      Name = "EBS-Search-Service"
-    }
-  )
+module "search_lb" {
+  source        = "./loadbalancer"
+  vpc_id        = var.vpc_id
+  name          = "search-lb"
+  public_subnet = var.public_subnet
+  domain_arn    = var.domain_arn
+  hosted_zone   = var.hosted_zone
+  env           = var.env
+  feature_name  = var.feature_name
+  tags          = var.tags
 }
+
+module "search_volume" {
+  source     = "./volume"
+  aws_region = var.aws_region
+  env        = var.env
+  tags       = var.tags
+}
+
+
+output "lb_endpoint" {
+  value = module.search_lb.endpoint
+}
+
+output "lb_arn" {
+  value = module.search_lb.lb_arn
+}
+
 output "volume_id" {
-  value = aws_ebs_volume.volume.id
-}
-## add backup ebs
-resource "aws_backup_vault" "vault" {
-  name = "vault-EBS"
-}
-resource "aws_backup_plan" "backup" {
-  name = "EBS-bk-plan"
-  rule {
-    rule_name         = "rule-bk-ebs"
-    target_vault_name = aws_backup_vault.vault.name
-    schedule          = var.SCHEDULE_BACKUP_PLAN
-    lifecycle {
-      cold_storage_after = 0
-      delete_after       = 30
-    }
-  }
-}
-
-resource "aws_iam_role" "backup-role" {
-  name               = "backup-role"
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": ["sts:AssumeRole"],
-      "Effect": "allow",
-      "Principal": {
-        "Service": ["backup.amazonaws.com"]
-      }
-    }
-  ]
-}
-POLICY
-}
-
-resource "aws_iam_role_policy_attachment" "backup-role" {
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSBackupServiceRolePolicyForBackup"
-  role       = aws_iam_role.backup-role.name
-}
-
-resource "aws_backup_selection" "selection" {
-  name    = "selection-EBS"
-  plan_id = aws_backup_plan.backup.id
-  selection_tag {
-    type  = var.BACKUP_SELECTION_RESOURCE.type
-    key   = var.BACKUP_SELECTION_RESOURCE.key
-    value = var.BACKUP_SELECTION_RESOURCE.value
-  }
-  iam_role_arn = aws_iam_role.backup-role.arn
+  value = module.search_volume.volume_id
 }

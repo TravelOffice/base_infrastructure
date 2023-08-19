@@ -6,17 +6,16 @@ export const MK_DEFAULT_ROLES = {
       name: 'ROOT',
       extend: ['ADMIN', 'SALE'],
       isDefault: true,
-      permissions: [
-        'create_organization',
-      ],
+      permissions: [],
     },
     {
       name: 'ADMIN',
       extend: ['SALE'],
       isDefault: true,
       permissions: [
-        'update_organization',
-        'view_org_feedback',
+        'modify_organization',
+        'view_all_feedback',
+        'view_specified_feedback'
       ],
     },
     {
@@ -24,24 +23,16 @@ export const MK_DEFAULT_ROLES = {
       isDefault: true,
       permissions: [
         'view_organization',
-        'create_org_feedback',
-        'update_org_feedback',
-        'delete_org_feedback',
+        'view_specified_feedback',
+        'modify_organization_feedback',
         'view_post',
-        'create_post',
-        'update_post',
+        'modify_post',
         'view_post_comment',
-        'create_post_comment',
-        'update_post_comment',
-        'delete_post_comment',
+        'modify_post_comment',
         'view_post_rating',
-        'create_post_rating',
-        'update_post_rating',
-        'delete_post_rating',
-        'create_post_bookmark',
-        'delete_post_bookmark',
+        'modify_post_rating',
+        'modify_post_bookmark',
         'follow_post',
-        'unfollow_post'
       ],
     },
   ],
@@ -57,50 +48,34 @@ export const MK_DEFAULT_PERMISSIONS = {
           title: 'View Organization',
           statements: [
             {
-              path: 'marketplace/organizations/{id}',
+              path: '/marketplace/organizations/{id}',
               action: 'GET'
             },
             {
-              path: 'marketplace/organizations',
+              path: '/marketplace/organizations',
               action: 'GET'
             },
             {
-              path: 'marketplace/organizations/{id}/ratings',
+              path: '/marketplace/organizations/{id}/ratings',
               action: 'GET'
             },
           ]
         },
         {
-          name: 'create_organization',
-          title: 'Create Organization',
+          name: 'modify_organization',
           statements: [
             {
-              path: 'marketplace/organizations',
+              path: '/marketplace/organizations',
               action: 'POST'
             },
- 
-          ]
-        },
-        {
-          name: 'update_organization',
-          title: 'Update Organization',
-          statements: [
             {
-              path: 'marketplace/organizations',
+              path: '/marketplace/organizations',
               action: 'PUT'
             },
- 
-          ]
-        },
-        {
-          name: 'delete_organization',
-          title: 'Delete Organization',
-          statements: [
             {
-              path: 'marketplace/organizations',
+              path: '/marketplace/organizations',
               action: 'DELETE'
             },
- 
           ]
         },
       ],
@@ -109,48 +84,36 @@ export const MK_DEFAULT_PERMISSIONS = {
       name: 'Organization Feedback',
       permissions: [
         {
-          name: 'view_org_feedback',
-          title: 'View Organizaiton Feedback',
+          name: 'view_all_feedback',
+          title: 'View All Feedback',
           statements: [
             {
-              path: 'marketplace/organization/{id}/feedback/{feedbackId}',
+              path: '/marketplace/organizations/{id}/feedback',
               action: 'GET'
             },
-            {
-              path: 'marketplace/organization/{id}/feedback',
-              action: 'GET'
-            },
- 
           ]
         },
         {
-          name: 'create_org_feedback',
-          title: 'Create Org Feedback',
+          name: 'view_specified_feedback',
+          title: 'View Specified Feedback',
           statements: [
             {
-              path: 'marketplace/organization/{id}/feedback',
+              path: '/marketplace/organizations/{id}/feedback/{feedbackId',
+              action: 'GET'
+            },
+          ]
+        },
+        {
+          name: 'modify_organization_feedback',
+          title: 'Modify organization feedback',
+          statements: [
+            {
+              path: '/marketplace/organizations/{id}/feedback',
               action: 'POST'
             },
- 
-          ]
-        },
-        {
-          name: 'update_org_feedback',
-          title: 'Update Org Feedback',
-          statements: [
             {
-              path: 'marketplace/organization/{id}/feedback/{feedbackId}',
+              path: '/marketplace/organizations/{id}/feedback/{feedbackId',
               action: 'PUT'
-            },
-          ]
-        },
-        {
-          name: 'delete_org_feedback',
-          title: 'Delete Org Feedback',
-          statements: [
-            {
-              path: 'marketplace/organization/{id}/feedback/{feedbackId}',
-              action: 'DELETE'
             },
           ]
         },
@@ -164,35 +127,29 @@ export const MK_DEFAULT_PERMISSIONS = {
           title: 'View Post',
           statements: [
             {
-              path: 'marketplace/posts/{id}',
+              path: '/marketplace/posts/{id}',
               action: 'GET'
             },
             {
-              path: 'marketplace/posts',
+              path: '/marketplace/posts',
               action: 'GET'
             },
  
           ]
         },
         {
-          name: 'create_post',
-          title: 'Create Post',
+          name: 'modify_post',
+          title: 'Modify Post',
           statements: [
             {
-              path: 'marketplace/posts',
+              path: '/marketplace/posts',
               action: 'POST'
             },
- 
-          ]
-        },
-        {
-          name: 'update_post',
-          title: 'Update Post',
-          statements: [
             {
-              path: 'marketplace/posts/{id}',
+              path: '/marketplace/posts/{id}',
               action: 'PUT'
             },
+ 
           ]
         },
       ],
@@ -205,43 +162,30 @@ export const MK_DEFAULT_PERMISSIONS = {
           title: 'View Post Comment',
           statements: [
             {
-              path: 'marketplace/posts/{id}/comments/{commentId}',
+              path: '/marketplace/posts/{id}/comments/{commentId}',
               action: 'GET'
             },
             {
-              path: 'marketplace/posts/{id}/comments',
+              path: '/marketplace/posts/{id}/comments',
               action: 'GET'
             },
  
           ]
         },
         {
-          name: 'create_post_comment',
-          title: 'Create Post Comment',
+          name: 'modify_post_comment',
+          title: 'Modify Post Comment',
           statements: [
             {
-              path: 'marketplace/posts/{id}/comments',
+              path: '/marketplace/posts/{id}/comments',
               action: 'POST'
             },
- 
-          ]
-        },
-        {
-          name: 'update_post_comment',
-          title: 'Update Post Comment',
-          statements: [
             {
-              path: 'marketplace/posts/{id}/comments/{commentId}',
+              path: '/marketplace/posts/{id}/comments/{commentId}',
               action: 'PUT'
             },
-          ]
-        },
-        {
-          name: 'delete_post_comment',
-          title: 'Delete Post Comment',
-          statements: [
             {
-              path: 'marketplace/posts/{id}/comments/{commentId}',
+              path: '/marketplace/posts/{id}/comments/{commentId}',
               action: 'DELETE'
             },
           ]
@@ -256,43 +200,30 @@ export const MK_DEFAULT_PERMISSIONS = {
           title: 'View Post Rating',
           statements: [
             {
-              path: 'marketplace/posts/{id}/ratings/{ratingId}',
+              path: '/marketplace/posts/{id}/ratings/{ratingId}',
               action: 'GET'
             },
             {
-              path: 'marketplace/posts/{id}/ratings',
+              path: '/marketplace/posts/{id}/ratings',
               action: 'GET'
             },
  
           ]
         },
         {
-          name: 'create_post_rating',
-          title: 'Create Post Rating',
+          name: 'modify_post_rating',
+          title: 'Modify Post Rating',
           statements: [
             {
-              path: 'marketplace/posts/{id}/ratings',
+              path: '/marketplace/posts/{id}/ratings',
               action: 'POST'
             },
- 
-          ]
-        },
-        {
-          name: 'update_post_rating',
-          title: 'Update Post Rating',
-          statements: [
             {
-              path: 'marketplace/posts/{id}/ratings/{ratingId}',
+              path: '/marketplace/posts/{id}/ratings/{ratingId}',
               action: 'PUT'
             },
-          ]
-        },
-        {
-          name: 'delete_post_rating',
-          title: 'Delete Post Rating',
-          statements: [
             {
-              path: 'marketplace/posts/{id}/ratings/{ratingId}',
+              path: '/marketplace/posts/{id}/ratings/{ratingId}',
               action: 'DELETE'
             },
           ]
@@ -303,19 +234,13 @@ export const MK_DEFAULT_PERMISSIONS = {
       name: 'Post Bookmark',
       permissions: [
         {
-          name: 'create_post_bookmark',
-          title: 'Create Post Bookmark',
+          name: 'modify_post_bookmark',
+          title: 'Modify Post Bookmark',
           statements: [
             {
               path: '/marketplace/posts/{id}/bookmark',
               action: 'POST'
             },
-          ]
-        },
-        {
-          name: 'delete_post_bookmark',
-          title: 'Delete Post Bookmark',
-          statements: [
             {
               path: '/marketplace/posts/{id}/bookmark',
               action: 'DELETE'
@@ -335,12 +260,6 @@ export const MK_DEFAULT_PERMISSIONS = {
               path: '/marketplace/posts/{id}/follow',
               action: 'POST'
             },
-          ]
-        },
-        {
-          name: 'unfollow_post',
-          title: 'Unfollow Post',
-          statements: [
             {
               path: '/marketplace/posts/{id}/follow',
               action: 'DELETE'
@@ -348,7 +267,87 @@ export const MK_DEFAULT_PERMISSIONS = {
           ]
         },
       ],
-    }
+    },
+    {
+      name: 'Post Offer',
+      permissions: [
+        {
+          name: 'view_post_offer',
+          title: 'View Post Offer',
+          statements: [
+            {
+              path: '/marketplace/posts/{id}/offers',
+              action: 'GET'
+            },
+            {
+              path: '/marketplace/offers/{id}',
+              action: 'GET'
+            },
+ 
+          ]
+        },
+        {
+          name: 'view_post_offer',
+          title: 'View Organization Offer',
+          statements: [
+            {
+              path: '/marketplace/me/organizations/sent-offers',
+              action: 'GET'
+            },
+            {
+              path: '/marketplace/me/organizations/received-offers',
+              action: 'GET'
+            },
+ 
+          ]
+        },
+        {
+          name: 'modify_post_offer',
+          title: 'Modify Post Offer',
+          statements: [
+            {
+              path: '/marketplace/posts/{id}/offer',
+              action: 'POST'
+            },
+            {
+              path: '/marketplace/offers/{id}',
+              action: 'PUT'
+            },
+            {
+              path: '/marketplace/offers/{id}/cancel',
+              action: 'PUT'
+            },
+            {
+              path: '/marketplace/offers/{id}/accept',
+              action: 'PUT'
+            },
+            {
+              path: '/marketplace/offers/{id}/reject',
+              action: 'PUT'
+            },
+          ]
+        },
+      ],
+    },
+    {
+      name: 'Marketplace User',
+      permissions: [
+        {
+          name: 'view_users',
+          title: 'View users',
+          statements: [
+            {
+              path: '/marketplace/users',
+              action: 'GET'
+            },
+            {
+              path: '/marketplace/users',
+              action: 'POST'
+            },
+          ]
+        },
+      ],
+    },
   ]
 }
 
@@ -384,8 +383,8 @@ export const MK_DEFAULT_WHITELIST = {
           ],
         },
         {
-          name: 'update',
-          title: 'Update',
+          name: 'modify',
+          title: 'Modify',
           statements: [
             {
               action: 'PUT',

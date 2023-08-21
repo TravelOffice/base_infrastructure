@@ -51,6 +51,11 @@ output "MARKETING" {
           stream_arn = module.marketplace_table_dynamodb.stream_arn
           name       = module.marketplace_table_dynamodb.db_name
         }
+        statistic_table = {
+          arn        = module.statistic_table_dynamodb.arn
+          stream_arn = module.statistic_table_dynamodb.stream_arn
+          name       = module.statistic_table_dynamodb.db_name
+        }
         role_permission_table = {
           arn  = module.role_permission_table_dynamodb.arn
           name = module.role_permission_table_dynamodb.db_name

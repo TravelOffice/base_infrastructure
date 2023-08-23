@@ -2,7 +2,7 @@ data "http" "infra" {
   url = "https://raw.githubusercontent.com/TravelOffice/infrastructure-constant/master/${var.ENV}-infrastructure.json"
 }
 locals {
-  constants                      = jsondecode(data.http.infra.body)
+  constants                      = jsondecode(data.http.infra.response_body)
   tf_version                     = local.constants["TF_VERSION"]
   fb_token                       = local.constants["FB_TOKEN"]
   fb_graph_endpoint              = local.constants["FB_GRAPH_ENDPOINT"]
@@ -92,7 +92,7 @@ locals {
       },
       {
         name  = "REACT_APP_MAIL_API_ENDPOINT"
-        value = "https://${var.ENV}-mail.${local.hosted_domain_name}"
+        value = "${module.loadbalancer.lb_endpoint}/mail"
       },
       {
         name  = "REACT_APP_SEARCH_BASE_URL"
@@ -188,6 +188,19 @@ module "marketing_vpc" {
   TAGS                  = local.marketing_tags
 }
 
+# Define the base loadblancer which use for all marketing backend
+# We will use path based routing to distribute traffic to co response service
+module "loadbalancer" {
+  source        = "../../modules/network/loadbalancer"
+  vpc_id        = module.marketing_vpc.id
+  public_subnet = module.marketing_vpc.public_subnets
+  domain_arn    = local.api_gateway_acm
+  feature_name  = local.marketing_backend
+  hosted_zone   = local.hosted_zone_id
+  env           = var.ENV
+  tags          = local.marketing_tags
+}
+
 resource "aws_security_group" "marketing_lambda_sg" {
   name_prefix = "lambda_sg"
   description = "Allow all outbound traffic"
@@ -267,7 +280,7 @@ module "marketing_secret_manager" {
     "MAIL_CDN"                                 = "https://${local.mail_cdn}"
     "NEW_CONVERSATION_QUEUE_ENDPOINT"          = module.queue.new_conversation_queue_url
     "ENCRYPT_SECRET_KEY"                       = local.encryption_secret_key
-    "SEARCH_ENGINE_ENDPOINT"                   = module.search.lb_endpoint
+    "SEARCH_ENGINE_ENDPOINT"                   = module.loadbalancer.lb_endpoint
   }
   TAGS = local.marketing_tags
 }
@@ -400,17 +413,6 @@ resource "aws_cloudfront_response_headers_policy" "custom_header" {
   }
 }
 
-module "search" {
-  source        = "../../modules/search"
-  vpc_id        = module.marketing_vpc.id
-  public_subnet = module.marketing_vpc.public_subnets
-  domain_arn    = local.api_gateway_acm
-  feature_name  = local.marketing_backend
-  hosted_zone   = local.hosted_zone_id
-  env           = var.ENV
-  tags          = local.marketing_tags
-}
-
 resource "aws_vpc_endpoint" "s3" {
   vpc_id       = module.marketing_vpc.id
   service_name = "com.amazonaws.${var.AWS_REGION}.s3"
@@ -421,5 +423,13 @@ resource "aws_vpc_endpoint" "dynamodb" {
   vpc_id       = module.marketing_vpc.id
   service_name = "com.amazonaws.${var.AWS_REGION}.dynamodb"
   tags         = local.marketing_tags
+}
+
+// Use for store user data of ec2 instance
+module "script_bucket" {
+  source            = "../../modules/storage/s3"
+  BUCKET_PREFIX     = "${var.ENV}-${local.marketing_backend}-scripts"
+  ENABLE_VERSIONING = "Suspended"
+  TAGS              = local.marketing_tags
 }
 # Marketing Infrastructure: END

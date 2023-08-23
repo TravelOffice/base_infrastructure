@@ -98,15 +98,15 @@ const writeRoleToDynamo = async (table, defaultPermissions, defaultRoles) => {
     defaultRoles.map((role) => {
       let { permissions } = role;
       if (role.extend) {
-        const sourceRole = defaultRoles.find((x) =>
+        const sourceRoles = defaultRoles.filter((x) =>
           role.extend.includes(x.name)
         );
-        if (sourceRole) {
+        sourceRoles.map((sourceRole) => {
           permissions = permissions.concat(sourceRole.permissions);
           permissions = permissions.filter(
             (item, index) => permissions.indexOf(item) === index
           );
-        }
+        })
       }
       permissions = permissions.map(permission => {
         return defaultPermissions.find(item => item.name === permission);

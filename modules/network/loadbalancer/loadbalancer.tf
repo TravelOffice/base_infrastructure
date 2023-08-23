@@ -1,6 +1,5 @@
 variable "env" {}
 variable "feature_name" {}
-variable "name" {}
 variable "vpc_id" {}
 variable "public_subnet" {}
 variable "domain_arn" {}
@@ -8,11 +7,11 @@ variable "hosted_zone" {}
 variable "tags" {}
 
 locals {
-  lb_name             = lower("${var.env}-${var.feature_name}-${var.name}")
-  security_group_name = lower("${var.env}-${var.feature_name}-lb-search-sg")
+  lb_name             = lower("${var.env}-${var.feature_name}-lb")
+  security_group_name = lower("${var.env}-${var.feature_name}-lb-sg")
 }
 
-resource "aws_lb" "search" {
+resource "aws_lb" "common" {
   name               = local.lb_name
   internal           = false
   load_balancer_type = "application"
@@ -65,21 +64,21 @@ resource "aws_security_group" "lb_sg" {
   }
 }
 
-resource "aws_route53_record" "search" {
+resource "aws_route53_record" "common" {
   zone_id = var.hosted_zone
-  name    = lower("${var.env}-${var.feature_name}-search")
+  name    = lower("${var.env}-${var.feature_name}-lb")
   type    = "A"
   alias {
-    name                   = aws_lb.search.dns_name
-    zone_id                = aws_lb.search.zone_id
+    name                   = aws_lb.common.dns_name
+    zone_id                = aws_lb.common.zone_id
     evaluate_target_health = true
   }
 }
 
 output "lb_arn" {
-  value = aws_lb.search.arn
+  value = aws_lb.common.arn
 }
 
-output "endpoint" {
-  value = aws_route53_record.search.fqdn
+output "lb_endpoint" {
+  value = aws_route53_record.common.fqdn
 }

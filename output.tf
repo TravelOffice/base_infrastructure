@@ -73,7 +73,11 @@ output "MARKETING" {
       auto_assign_chat_queue = module.queue.new_conversation_queue_arn
     }
     search = {
-      lb_arn = module.search.lb_arn
+      lb_arn      = module.loadbalancer.lb_arn
+      lb_endpoint = module.loadbalancer.lb_endpoint
+    }
+    s3 = {
+      script_bucket = module.script_bucket.id
     }
   }
 }

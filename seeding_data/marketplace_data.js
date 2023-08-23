@@ -4,7 +4,7 @@ export const MK_DEFAULT_ROLES = {
   roles: [
     {
       name: 'ROOT',
-      extend: ['ADMIN', 'SALE'],
+      extend: ['SALE', 'ADMIN'],
       isDefault: true,
       permissions: [],
     },
@@ -14,8 +14,10 @@ export const MK_DEFAULT_ROLES = {
       isDefault: true,
       permissions: [
         'modify_organization',
+        'modify_user',
         'view_all_feedback',
-        'view_specified_feedback'
+        'view_specified_feedback',
+        'view_organization_offer'
       ],
     },
     {
@@ -26,13 +28,15 @@ export const MK_DEFAULT_ROLES = {
         'view_specified_feedback',
         'modify_organization_feedback',
         'view_post',
-        'modify_post',
         'view_post_comment',
         'modify_post_comment',
         'view_post_rating',
         'modify_post_rating',
         'modify_post_bookmark',
         'follow_post',
+        'view_post_offer',
+        'modify_post_offer',
+        'view_user'
       ],
     },
   ],
@@ -287,7 +291,7 @@ export const MK_DEFAULT_PERMISSIONS = {
           ]
         },
         {
-          name: 'view_post_offer',
+          name: 'view_organization_offer',
           title: 'View Organization Offer',
           statements: [
             {
@@ -306,7 +310,7 @@ export const MK_DEFAULT_PERMISSIONS = {
           title: 'Modify Post Offer',
           statements: [
             {
-              path: '/marketplace/posts/{id}/offer',
+              path: '/marketplace/posts/{id}/offers',
               action: 'POST'
             },
             {
@@ -333,17 +337,31 @@ export const MK_DEFAULT_PERMISSIONS = {
       name: 'Marketplace User',
       permissions: [
         {
-          name: 'view_users',
-          title: 'View users',
+          name: 'view_user',
+          title: 'View user',
           statements: [
             {
               path: '/marketplace/users',
               action: 'GET'
             },
             {
+              path: '/marketplace/users/{id}',
+              action: 'GET'
+            }
+          ]
+        },
+        {
+          name: 'modify_user',
+          title: 'Modify user',
+          statements: [
+            {
               path: '/marketplace/users',
               action: 'POST'
             },
+            {
+              path: '/marketplace/enable-user',
+              action: 'PUT'
+            }
           ]
         },
       ],

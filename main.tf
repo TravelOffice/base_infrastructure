@@ -92,7 +92,7 @@ locals {
       },
       {
         name  = "REACT_APP_MAIL_API_ENDPOINT"
-        value = "${module.loadbalancer.lb_endpoint}/mail"
+        value = "https://${module.loadbalancer.lb_endpoint}/mail"
       },
       {
         name  = "REACT_APP_SEARCH_BASE_URL"
@@ -280,7 +280,7 @@ module "marketing_secret_manager" {
     "MAIL_CDN"                                 = "https://${local.mail_cdn}"
     "NEW_CONVERSATION_QUEUE_ENDPOINT"          = module.queue.new_conversation_queue_url
     "ENCRYPT_SECRET_KEY"                       = local.encryption_secret_key
-    "SEARCH_ENGINE_ENDPOINT"                   = module.loadbalancer.lb_endpoint
+    "SEARCH_ENGINE_ENDPOINT"                   = "https://${module.loadbalancer.lb_endpoint}"
   }
   TAGS = local.marketing_tags
 }

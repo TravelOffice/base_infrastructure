@@ -2,20 +2,12 @@ variable "ENV" {
   default = "prod"
 }
 
-variable "TF_VERSION" {
-  default = "1.1.4"
-}
-
 variable "TF_LOG" {
   default = "ERROR"
 }
 
 variable "BRANCH_NAME" {
   default = "master"
-}
-
-variable "PREFIX" {
-  default = "root"
 }
 
 variable "AWS_REGION" {

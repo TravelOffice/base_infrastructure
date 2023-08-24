@@ -70,7 +70,14 @@ export const DEFAULT_ROLES = {
         'create_source',
         'update_source',
         'get_sources',
-        'delete_source'
+        'delete_source',
+        'create_tour_location',
+        'update_tour_location',
+        'get_tour_locations',
+        'delete_tour_location',
+        'get_departure_tours',
+        'get_tour_templates',
+        'view_all_users',
       ],
     },
     {
@@ -102,7 +109,8 @@ export const DEFAULT_ROLES = {
         'view_tour_estimation',
         'create_tour_estimation',
         'update_tour_estimation',
-        'delete_tour_estimation'
+        'delete_tour_estimation',
+        'view_all_users'
       ],
     },
     {

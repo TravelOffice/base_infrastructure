@@ -6,25 +6,25 @@ variable "MFA_CONFIGURATION" {
   default = "OFF"
 }
 variable "SMS_VERIFICATION_SUBJECT" {
-  default = "Your verification code is {####}."
+  default = "Mã xác thực của bạn là: {####}."
 }
 variable "ADMIN_CREATE_USER_CONFIG_SMS_MESSAGE" {
-  default = "Your username is {username} and temporary password is {####}. If you do not log in within 7 days you'll need a new invite."
+  default = "Chúc mừng bạn! Hệ thống đã kích hoạt thành công tài khoản TravelOffice. Username: {username}, Password: {####}"
 }
 variable "SMS_AUTHENTICATION_MESSAGE" {
-  default = "Your authentication code is {####}."
+  default = "<p>Mã xác thực của bạn là: <strong>{####}</strong></p>"
 }
 variable "EMAIL_VERIFICATION_SUBJECT" {
-  default = "Your verification code"
+  default = "Đổi mật khẩu tài khoản TravelOffice"
 }
 variable "EMAIL_VERIFICATION_MESSAGE" {
-  default = "{username}, your verification code is {####}."
+  default = "<p>Mã xác thực của bạn là: <strong>{####}</strong></p>"
 }
 variable "ADMIN_CREATE_USER_CONFIG_EMAIL_SUBJECT" {
-  default = "iTab Account"
+  default = "Kích hoạt tài khoản TravelOffice"
 }
 variable "ADMIN_CREATE_USER_CONFIG_EMAIL_MESSAGE" {
-  default = "Your username is {username} and temporary password is {####}"
+  default = "<p>Chúc mừng bạn! Hệ thống đã kích hoạt thành công tài khoản TravelOffice</p><p>Username: <strong>{username}</strong></p><p>Password: <strong>{####}</strong></p>"
 }
 variable "PASSWORD_POLICY" {
   default = {

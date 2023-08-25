@@ -10,13 +10,19 @@ variable "WRITE_CAPACITY" {
   default = 1
 }
 variable "MAX_WRITE_CAPACITY" {
-  default = 10
+  default = 5
+}
+variable "MIN_WRITE_CAPACITY" {
+  default = 5
 }
 variable "READ_CAPACITY" {
   default = 1
 }
 variable "MAX_READ_CAPACITY" {
   default = 10
+}
+variable "MIN_READ_CAPACITY" {
+  default = 5
 }
 variable "TAGS" {}
 variable "DB_NAME" {}
@@ -100,16 +106,23 @@ module "dynamodb_table" {
     scale_in_cooldown  = 60
     scale_out_cooldown = 60
     target_value       = 70
-    max_capacity       = var.MAX_WRITE_CAPACITY
+    max_capacity       = var.MIN_WRITE_CAPACITY
   }
 
   autoscaling_read = {
     scale_in_cooldown  = 60
     scale_out_cooldown = 60
     target_value       = 70
-    max_capacity       = var.MAX_READ_CAPACITY
+    max_capacity       = var.MIN_READ_CAPACITY
   }
-
+  autoscaling_indexes = {
+    TitleIndex = {
+      read_max_capacity  = var.MAX_READ_CAPACITY
+      read_min_capacity  = var.MIN_READ_CAPACITY
+      write_max_capacity = var.MAX_READ_CAPACITY
+      write_min_capacity = var.MIN_WRITE_CAPACITY
+    }
+  }
   // ttl config
   ttl_enabled        = true
   ttl_attribute_name = "ttl"

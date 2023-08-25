@@ -41,10 +41,8 @@ export const DEFAULT_ROLES = {
         'get_bookings',
         'create_source',
         'update_source',
-        'get_sources',
         'delete_source',
         'create_supplier',
-        'get_suppliers',
         'update_supplier',
         'delete_supplier',
         'delete_payment_voucher',
@@ -78,6 +76,7 @@ export const DEFAULT_ROLES = {
         'get_departure_tours',
         'get_tour_templates',
         'view_all_users',
+        'get_suppliers',
       ],
     },
     {
@@ -110,7 +109,10 @@ export const DEFAULT_ROLES = {
         'create_tour_estimation',
         'update_tour_estimation',
         'delete_tour_estimation',
-        'view_all_users'
+        'view_all_users',
+        'get_sources',
+        'get_suppliers',
+        'get_bookings',
       ],
     },
     {

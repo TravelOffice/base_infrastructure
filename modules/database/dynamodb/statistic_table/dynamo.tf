@@ -30,6 +30,9 @@ variable "STREAM_ENABLED" {
 variable "STREAM_VIEW_TYPE" {
   default = "NEW_AND_OLD_IMAGES"
 }
+variable "PITR" {
+  default = false
+}
 variable "TAGS" {}
 variable "DB_NAME" {}
 
@@ -114,21 +117,23 @@ module "dynamodb_table" {
     scale_in_cooldown  = 60
     scale_out_cooldown = 60
     target_value       = 70
-    max_capacity       = var.MIN_WRITE_CAPACITY
+    max_capacity       = var.MAX_WRITE_CAPACITY
   }
 
   autoscaling_read = {
     scale_in_cooldown  = 60
     scale_out_cooldown = 60
     target_value       = 70
-    max_capacity       = var.MIN_READ_CAPACITY
+    max_capacity       = var.MAX_READ_CAPACITY
   }
-  billing_mode       = var.BILLING_MODE
-  stream_enabled     = var.STREAM_ENABLED
-  stream_view_type   = var.STREAM_VIEW_TYPE
-  ttl_attribute_name = "ttl"
-  ttl_enabled        = true
-  tags               = var.TAGS
+  billing_mode                   = var.BILLING_MODE
+  stream_enabled                 = var.STREAM_ENABLED
+  stream_view_type               = var.STREAM_VIEW_TYPE
+  ttl_attribute_name             = "ttl"
+  ttl_enabled                    = true
+  tags                           = var.TAGS
+  point_in_time_recovery_enabled = var.PITR
+
 }
 
 output "arn" {

@@ -108,14 +108,14 @@ module "dynamodb_table" {
     scale_in_cooldown  = 60
     scale_out_cooldown = 60
     target_value       = 70
-    max_capacity       = var.MIN_WRITE_CAPACITY
+    max_capacity       = var.MAX_WRITE_CAPACITY
   }
 
   autoscaling_read = {
     scale_in_cooldown  = 60
     scale_out_cooldown = 60
     target_value       = 70
-    max_capacity       = var.MIN_READ_CAPACITY
+    max_capacity       = var.MAX_READ_CAPACITY
   }
   billing_mode       = var.BILLING_MODE
   ttl_attribute_name = "ttl"

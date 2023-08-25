@@ -17,8 +17,16 @@ resource "aws_s3_bucket" "tf_bucket" {
 }
 
 resource "aws_s3_bucket_acl" "bucket_acl" {
+  bucket     = aws_s3_bucket.tf_bucket.id
+  acl        = var.ACL
+  depends_on = [aws_s3_bucket_ownership_controls.s3_bucket_acl_ownership]
+}
+# Resource to avoid error "AccessControlListNotSupported: The bucket does not allow ACLs"
+resource "aws_s3_bucket_ownership_controls" "s3_bucket_acl_ownership" {
   bucket = aws_s3_bucket.tf_bucket.id
-  acl    = var.ACL
+  rule {
+    object_ownership = "ObjectWriter"
+  }
 }
 
 resource "aws_s3_bucket_versioning" "bucket_versioning" {

@@ -48,3 +48,128 @@ variable "DYNAMO_BILLING_MODE" {
 variable "DYNAMO_AUTOSCALING_ENABLED" {
   default = false
 }
+
+variable "PITR" {
+  default = false
+}
+
+
+// chat_table
+variable "CHAT_WCU" {
+  default = 1
+}
+
+variable "CHAT_MAX_WCU" {
+  default = 1
+}
+
+variable "CHAT_RCU" {
+  default = 1
+}
+
+variable "CHAT_MAX_RCU" {
+  default = 1
+}
+
+// mail_table
+variable "MAIL_WCU" {
+  default = 1
+}
+
+variable "MAIL_MAX_WCU" {
+  default = 1
+}
+
+variable "MAIL_RCU" {
+  default = 1
+}
+
+variable "MAIL_MAX_RCU" {
+  default = 1
+}
+
+// marketplace_role_permmisison_table
+variable "MK_ROLE_WCU" {
+  default = 1
+}
+
+variable "MK_ROLE_MAX_WCU" {
+  default = 1
+}
+
+variable "MK_ROLE_RCU" {
+  default = 1
+}
+
+variable "MK_ROLE_MAX_RCU" {
+  default = 1
+}
+
+// marketplace_table
+variable "MK_WCU" {
+  default = 1
+}
+
+variable "MK_MAX_WCU" {
+  default = 1
+}
+
+
+variable "MK_RCU" {
+  default = 1
+}
+
+variable "MK_MAX_RCU" {
+  default = 1
+}
+
+// role_permission_table
+variable "ROLE_WCU" {
+  default = 1
+}
+
+variable "ROLE_MAX_WCU" {
+  default = 1
+}
+
+variable "ROLE_RCU" {
+  default = 1
+}
+
+variable "ROLE_MAX_RCU" {
+  default = 1
+}
+
+// statistic_table
+variable "STATISTIC_WCU" {
+  default = 1
+}
+
+variable "STATISTIC_MAX_WCU" {
+  default = 1
+}
+
+variable "STATISTIC_RCU" {
+  default = 1
+}
+
+variable "STATISTIC_MAX_RCU" {
+  default = 1
+}
+
+// travel_table
+variable "TRAVEL_WCU" {
+  default = 1
+}
+
+variable "TRAVEL_MAX_WCU" {
+  default = 1
+}
+
+variable "TRAVEL_RCU" {
+  default = 1
+}
+
+variable "TRAVEL_MAX_RCU" {
+  default = 1
+}

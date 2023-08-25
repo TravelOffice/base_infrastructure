@@ -40,3 +40,12 @@ variable "MARKETING_PRIVATE_SUBNETS_CIDR" {
 variable "MARKETING_DATABASE_SUBNETS_CIDR" {
   default = ["10.10.0.128/28", "10.10.0.160/28"]
 }
+
+
+variable "DYNAMODB_BILLING_MODE" {
+  default = "PROVISIONED"
+}
+
+variable "DYNAMO_AUTOSCALING_ENABLED" {
+  default = true
+}

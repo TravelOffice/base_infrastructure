@@ -9,8 +9,14 @@ variable "BILLING_MODE" {
 variable "WRITE_CAPACITY" {
   default = 1
 }
+variable "MAX_WRITE_CAPACITY" {
+  default = 5
+}
 variable "READ_CAPACITY" {
   default = 1
+}
+variable "MAX_READ_CAPACITY" {
+  default = 5
 }
 variable "TAGS" {}
 variable "DB_NAME" {}
@@ -92,10 +98,31 @@ module "dynamodb_table" {
   write_capacity      = local.is_ondemand ? null : var.WRITE_CAPACITY
   read_capacity       = local.is_ondemand ? null : var.READ_CAPACITY
   autoscaling_enabled = var.AUTOSCALING_ENABLED
-  billing_mode        = var.BILLING_MODE
-  ttl_attribute_name  = "ttl"
-  ttl_enabled         = true
-  tags                = var.TAGS
+  autoscaling_write = {
+    scale_in_cooldown  = 60
+    scale_out_cooldown = 60
+    target_value       = 70
+    max_capacity       = var.MAX_WRITE_CAPACITY
+  }
+
+  autoscaling_read = {
+    scale_in_cooldown  = 60
+    scale_out_cooldown = 60
+    target_value       = 70
+    max_capacity       = var.MAX_READ_CAPACITY
+  }
+  autoscaling_indexes = {
+    TitleIndex = {
+      read_max_capacity  = 30
+      read_min_capacity  = 10
+      write_max_capacity = 30
+      write_min_capacity = 10
+    }
+  }
+  billing_mode       = var.BILLING_MODE
+  ttl_attribute_name = "ttl"
+  ttl_enabled        = true
+  tags               = var.TAGS
 }
 
 output "arn" {

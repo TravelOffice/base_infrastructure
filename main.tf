@@ -298,38 +298,48 @@ module "chat_appsync" {
 }
 
 module "travel_table_dynamodb" {
-  source  = "../../modules/database/dynamodb/travel_table"
-  ENV     = var.ENV
-  DB_NAME = "travel_table"
-  TAGS    = local.marketing_tags
+  source              = "../../modules/database/dynamodb/travel_table"
+  ENV                 = var.ENV
+  DB_NAME             = "travel_table"
+  TAGS                = local.marketing_tags
+  BILLING_MODE        = var.DYNAMO_BILLING_MODE
+  AUTOSCALING_ENABLED = var.DYNAMO_AUTOSCALING_ENABLED
 }
 
 module "chat_table_dynamodb" {
-  source  = "../../modules/database/dynamodb/chat_table"
-  ENV     = var.ENV
-  DB_NAME = "chat_table"
-  TAGS    = local.marketing_tags
+  source              = "../../modules/database/dynamodb/chat_table"
+  ENV                 = var.ENV
+  DB_NAME             = "chat_table"
+  TAGS                = local.marketing_tags
+  BILLING_MODE        = var.DYNAMO_BILLING_MODE
+  AUTOSCALING_ENABLED = var.DYNAMO_AUTOSCALING_ENABLED
 }
 
 module "marketplace_table_dynamodb" {
-  source  = "../../modules/database/dynamodb/marketplace_table"
-  ENV     = var.ENV
-  DB_NAME = "marketplace_table"
-  TAGS    = local.marketing_tags
+  source              = "../../modules/database/dynamodb/marketplace_table"
+  ENV                 = var.ENV
+  DB_NAME             = "marketplace_table"
+  TAGS                = local.marketing_tags
+  BILLING_MODE        = var.DYNAMO_BILLING_MODE
+  AUTOSCALING_ENABLED = var.DYNAMO_AUTOSCALING_ENABLED
 }
 
 module "statistic_table_dynamodb" {
-  source  = "../../modules/database/dynamodb/statistic_table"
-  ENV     = var.ENV
-  DB_NAME = "statistic_table"
-  TAGS    = local.marketing_tags
+  source              = "../../modules/database/dynamodb/statistic_table"
+  ENV                 = var.ENV
+  DB_NAME             = "statistic_table"
+  TAGS                = local.marketing_tags
+  BILLING_MODE        = var.DYNAMO_BILLING_MODE
+  AUTOSCALING_ENABLED = var.DYNAMO_AUTOSCALING_ENABLED
 }
 
 module "role_permission_table_dynamodb" {
-  source  = "../../modules/database/dynamodb/role_permission_table"
-  ENV     = var.ENV
-  DB_NAME = "role_permission_table"
-  TAGS    = local.marketing_tags
+  source              = "../../modules/database/dynamodb/role_permission_table"
+  ENV                 = var.ENV
+  DB_NAME             = "role_permission_table"
+  TAGS                = local.marketing_tags
+  BILLING_MODE        = var.DYNAMO_BILLING_MODE
+  AUTOSCALING_ENABLED = var.DYNAMO_AUTOSCALING_ENABLED
 }
 
 module "marketplace_role_permission_table_dynamodb" {

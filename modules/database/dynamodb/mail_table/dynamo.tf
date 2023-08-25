@@ -115,14 +115,6 @@ module "dynamodb_table" {
     target_value       = 70
     max_capacity       = var.MIN_READ_CAPACITY
   }
-  autoscaling_indexes = {
-    TitleIndex = {
-      read_max_capacity  = var.MAX_READ_CAPACITY
-      read_min_capacity  = var.MIN_READ_CAPACITY
-      write_max_capacity = var.MAX_READ_CAPACITY
-      write_min_capacity = var.MIN_WRITE_CAPACITY
-    }
-  }
   // ttl config
   ttl_enabled        = true
   ttl_attribute_name = "ttl"

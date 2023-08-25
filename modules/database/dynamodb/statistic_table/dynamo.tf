@@ -107,18 +107,6 @@ module "dynamodb_table" {
       non_key_attributes = []
     }
   ]
-
-  global_secondary_indexes = [
-    {
-      hash_key           = "sk"
-      range_key          = "pk"
-      name               = "ReverseIndex"
-      non_key_attributes = []
-      projection_type    = "KEYS_ONLY"
-      read_capacity      = local.is_ondemand ? null : var.READ_CAPACITY
-      write_capacity     = local.is_ondemand ? null : var.WRITE_CAPACITY
-    },
-  ]
   write_capacity      = local.is_ondemand ? null : var.WRITE_CAPACITY
   read_capacity       = local.is_ondemand ? null : var.READ_CAPACITY
   autoscaling_enabled = var.AUTOSCALING_ENABLED
@@ -134,14 +122,6 @@ module "dynamodb_table" {
     scale_out_cooldown = 60
     target_value       = 70
     max_capacity       = var.MIN_READ_CAPACITY
-  }
-  autoscaling_indexes = {
-    TitleIndex = {
-      read_max_capacity  = var.MAX_READ_CAPACITY
-      read_min_capacity  = var.MIN_READ_CAPACITY
-      write_max_capacity = var.MAX_READ_CAPACITY
-      write_min_capacity = var.MIN_WRITE_CAPACITY
-    }
   }
   billing_mode       = var.BILLING_MODE
   stream_enabled     = var.STREAM_ENABLED

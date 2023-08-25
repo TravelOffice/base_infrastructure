@@ -155,7 +155,19 @@ module "dynamodb_table" {
     max_capacity       = var.MIN_READ_CAPACITY
   }
   autoscaling_indexes = {
-    TitleIndex = {
+    PageIdIndex = {
+      read_max_capacity  = var.MAX_READ_CAPACITY
+      read_min_capacity  = var.MIN_READ_CAPACITY
+      write_max_capacity = var.MAX_READ_CAPACITY
+      write_min_capacity = var.MIN_WRITE_CAPACITY
+    }
+    ReverseIndex = {
+      read_max_capacity  = var.MAX_READ_CAPACITY
+      read_min_capacity  = var.MIN_READ_CAPACITY
+      write_max_capacity = var.MAX_READ_CAPACITY
+      write_min_capacity = var.MIN_WRITE_CAPACITY
+    }
+    TypeGSI = {
       read_max_capacity  = var.MAX_READ_CAPACITY
       read_min_capacity  = var.MIN_READ_CAPACITY
       write_max_capacity = var.MAX_READ_CAPACITY

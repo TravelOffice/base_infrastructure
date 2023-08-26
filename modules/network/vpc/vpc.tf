@@ -19,7 +19,7 @@ variable "TAGS" {}
 
 module "VPC" {
   source               = "terraform-aws-modules/vpc/aws"
-  version              = "3.11.0"
+  version              = "5.1.1"
   name                 = "${var.ENV}-${var.FEATURE_NAME}-vpc"
   cidr                 = var.VPC_CIDR
   azs                  = ["${var.AWS_REGION}a", "${var.AWS_REGION}b"]

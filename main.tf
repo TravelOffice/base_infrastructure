@@ -298,84 +298,91 @@ module "chat_appsync" {
 }
 
 module "travel_table_dynamodb" {
-  source              = "../../modules/database/dynamodb/travel_table"
-  ENV                 = var.ENV
-  DB_NAME             = "travel_table"
-  TAGS                = local.marketing_tags
-  BILLING_MODE        = var.DYNAMO_BILLING_MODE
-  AUTOSCALING_ENABLED = var.DYNAMO_AUTOSCALING_ENABLED
-  PITR                = var.PITR
-  WRITE_CAPACITY      = var.TRAVEL_WCU
-  MAX_WRITE_CAPACITY  = var.TRAVEL_MAX_WCU
-  READ_CAPACITY       = var.TRAVEL_RCU
-  MAX_READ_CAPACITY   = var.TRAVEL_MAX_RCU
+  source                      = "../../modules/database/dynamodb/travel_table"
+  ENV                         = var.ENV
+  DB_NAME                     = "travel_table"
+  TAGS                        = local.marketing_tags
+  BILLING_MODE                = var.DYNAMO_BILLING_MODE
+  AUTOSCALING_ENABLED         = var.DYNAMO_AUTOSCALING_ENABLED
+  PITR                        = var.PITR
+  WRITE_CAPACITY              = var.TRAVEL_WCU
+  MAX_WRITE_CAPACITY          = var.TRAVEL_MAX_WCU
+  READ_CAPACITY               = var.TRAVEL_RCU
+  MAX_READ_CAPACITY           = var.TRAVEL_MAX_RCU
+  DELETION_PROTECTION_ENABLED = var.DELETION_PROTECTION_ENABLED
 }
 
 module "chat_table_dynamodb" {
-  source              = "../../modules/database/dynamodb/chat_table"
-  ENV                 = var.ENV
-  DB_NAME             = "chat_table"
-  TAGS                = local.marketing_tags
-  BILLING_MODE        = var.DYNAMO_BILLING_MODE
-  AUTOSCALING_ENABLED = var.DYNAMO_AUTOSCALING_ENABLED
-  WRITE_CAPACITY      = var.CHAT_WCU
-  MAX_WRITE_CAPACITY  = var.CHAT_MAX_WCU
-  READ_CAPACITY       = var.CHAT_RCU
-  MAX_READ_CAPACITY   = var.CHAT_MAX_RCU
+  source                      = "../../modules/database/dynamodb/chat_table"
+  ENV                         = var.ENV
+  DB_NAME                     = "chat_table"
+  TAGS                        = local.marketing_tags
+  BILLING_MODE                = var.DYNAMO_BILLING_MODE
+  AUTOSCALING_ENABLED         = var.DYNAMO_AUTOSCALING_ENABLED
+  WRITE_CAPACITY              = var.CHAT_WCU
+  MAX_WRITE_CAPACITY          = var.CHAT_MAX_WCU
+  READ_CAPACITY               = var.CHAT_RCU
+  MAX_READ_CAPACITY           = var.CHAT_MAX_RCU
+  DELETION_PROTECTION_ENABLED = var.DELETION_PROTECTION_ENABLED
+
 }
 
 module "marketplace_table_dynamodb" {
-  source              = "../../modules/database/dynamodb/marketplace_table"
-  ENV                 = var.ENV
-  DB_NAME             = "marketplace_table"
-  TAGS                = local.marketing_tags
-  BILLING_MODE        = var.DYNAMO_BILLING_MODE
-  AUTOSCALING_ENABLED = var.DYNAMO_AUTOSCALING_ENABLED
-  PITR                = var.PITR
-  WRITE_CAPACITY      = var.MK_WCU
-  MAX_WRITE_CAPACITY  = var.MK_MAX_WCU
-  READ_CAPACITY       = var.MK_RCU
-  MAX_READ_CAPACITY   = var.MK_MAX_RCU
+  source                      = "../../modules/database/dynamodb/marketplace_table"
+  ENV                         = var.ENV
+  DB_NAME                     = "marketplace_table"
+  TAGS                        = local.marketing_tags
+  BILLING_MODE                = var.DYNAMO_BILLING_MODE
+  AUTOSCALING_ENABLED         = var.DYNAMO_AUTOSCALING_ENABLED
+  PITR                        = var.PITR
+  WRITE_CAPACITY              = var.MK_WCU
+  MAX_WRITE_CAPACITY          = var.MK_MAX_WCU
+  READ_CAPACITY               = var.MK_RCU
+  MAX_READ_CAPACITY           = var.MK_MAX_RCU
+  DELETION_PROTECTION_ENABLED = var.DELETION_PROTECTION_ENABLED
+
 }
 
 module "statistic_table_dynamodb" {
-  source              = "../../modules/database/dynamodb/statistic_table"
-  ENV                 = var.ENV
-  DB_NAME             = "statistic_table"
-  TAGS                = local.marketing_tags
-  BILLING_MODE        = var.DYNAMO_BILLING_MODE
-  AUTOSCALING_ENABLED = var.DYNAMO_AUTOSCALING_ENABLED
-  PITR                = var.PITR
-  WRITE_CAPACITY      = var.STATISTIC_WCU
-  MAX_WRITE_CAPACITY  = var.STATISTIC_MAX_WCU
-  READ_CAPACITY       = var.STATISTIC_RCU
-  MAX_READ_CAPACITY   = var.STATISTIC_MAX_RCU
+  source                      = "../../modules/database/dynamodb/statistic_table"
+  ENV                         = var.ENV
+  DB_NAME                     = "statistic_table"
+  TAGS                        = local.marketing_tags
+  BILLING_MODE                = var.DYNAMO_BILLING_MODE
+  AUTOSCALING_ENABLED         = var.DYNAMO_AUTOSCALING_ENABLED
+  PITR                        = var.PITR
+  WRITE_CAPACITY              = var.STATISTIC_WCU
+  MAX_WRITE_CAPACITY          = var.STATISTIC_MAX_WCU
+  READ_CAPACITY               = var.STATISTIC_RCU
+  MAX_READ_CAPACITY           = var.STATISTIC_MAX_RCU
+  DELETION_PROTECTION_ENABLED = var.DELETION_PROTECTION_ENABLED
 }
 
 module "role_permission_table_dynamodb" {
-  source              = "../../modules/database/dynamodb/role_permission_table"
-  ENV                 = var.ENV
-  DB_NAME             = "role_permission_table"
-  TAGS                = local.marketing_tags
-  BILLING_MODE        = var.DYNAMO_BILLING_MODE
-  AUTOSCALING_ENABLED = var.DYNAMO_AUTOSCALING_ENABLED
-  WRITE_CAPACITY      = var.ROLE_WCU
-  MAX_WRITE_CAPACITY  = var.ROLE_MAX_WCU
-  READ_CAPACITY       = var.ROLE_RCU
-  MAX_READ_CAPACITY   = var.ROLE_MAX_RCU
+  source                      = "../../modules/database/dynamodb/role_permission_table"
+  ENV                         = var.ENV
+  DB_NAME                     = "role_permission_table"
+  TAGS                        = local.marketing_tags
+  BILLING_MODE                = var.DYNAMO_BILLING_MODE
+  AUTOSCALING_ENABLED         = var.DYNAMO_AUTOSCALING_ENABLED
+  WRITE_CAPACITY              = var.ROLE_WCU
+  MAX_WRITE_CAPACITY          = var.ROLE_MAX_WCU
+  READ_CAPACITY               = var.ROLE_RCU
+  MAX_READ_CAPACITY           = var.ROLE_MAX_RCU
+  DELETION_PROTECTION_ENABLED = var.DELETION_PROTECTION_ENABLED
 }
 
 module "marketplace_role_permission_table_dynamodb" {
-  source              = "../../modules/database/dynamodb/role_permission_table"
-  ENV                 = var.ENV
-  DB_NAME             = "marketplace_role_permission_table"
-  TAGS                = local.marketing_tags
-  AUTOSCALING_ENABLED = var.DYNAMO_AUTOSCALING_ENABLED
-  WRITE_CAPACITY      = var.MK_ROLE_WCU
-  MAX_WRITE_CAPACITY  = var.MK_ROLE_MAX_WCU
-  READ_CAPACITY       = var.MK_ROLE_RCU
-  MAX_READ_CAPACITY   = var.MK_ROLE_MAX_RCU
-
+  source                      = "../../modules/database/dynamodb/role_permission_table"
+  ENV                         = var.ENV
+  DB_NAME                     = "marketplace_role_permission_table"
+  TAGS                        = local.marketing_tags
+  AUTOSCALING_ENABLED         = var.DYNAMO_AUTOSCALING_ENABLED
+  WRITE_CAPACITY              = var.MK_ROLE_WCU
+  MAX_WRITE_CAPACITY          = var.MK_ROLE_MAX_WCU
+  READ_CAPACITY               = var.MK_ROLE_RCU
+  MAX_READ_CAPACITY           = var.MK_ROLE_MAX_RCU
+  DELETION_PROTECTION_ENABLED = var.DELETION_PROTECTION_ENABLED
 }
 
 module "mail_pipeline" {
@@ -391,16 +398,16 @@ module "mail_pipeline" {
 }
 
 module "mail_table_dynamodb" {
-  source              = "../../modules/database/dynamodb/mail_table"
-  ENV                 = var.ENV
-  DB_NAME             = "mail_table"
-  TAGS                = local.marketing_tags
-  AUTOSCALING_ENABLED = var.DYNAMO_AUTOSCALING_ENABLED
-  WRITE_CAPACITY      = var.MAIL_WCU
-  MAX_WRITE_CAPACITY  = var.MAIL_MAX_WCU
-  READ_CAPACITY       = var.MAIL_RCU
-  MAX_READ_CAPACITY   = var.MAIL_MAX_RCU
-
+  source                      = "../../modules/database/dynamodb/mail_table"
+  ENV                         = var.ENV
+  DB_NAME                     = "mail_table"
+  TAGS                        = local.marketing_tags
+  AUTOSCALING_ENABLED         = var.DYNAMO_AUTOSCALING_ENABLED
+  WRITE_CAPACITY              = var.MAIL_WCU
+  MAX_WRITE_CAPACITY          = var.MAIL_MAX_WCU
+  READ_CAPACITY               = var.MAIL_RCU
+  MAX_READ_CAPACITY           = var.MAIL_MAX_RCU
+  DELETION_PROTECTION_ENABLED = var.DELETION_PROTECTION_ENABLED
 }
 
 module "sale_chat_attachment_bucket" {

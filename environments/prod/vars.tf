@@ -174,3 +174,7 @@ variable "TRAVEL_RCU" {
 variable "TRAVEL_MAX_RCU" {
   default = 10
 }
+
+variable "DELETION_PROTECTION_ENABLED" {
+  default = true
+}

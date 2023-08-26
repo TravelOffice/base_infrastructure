@@ -26,13 +26,15 @@ variable "MIN_READ_CAPACITY" {
 }
 variable "TAGS" {}
 variable "DB_NAME" {}
-
+variable "DELETION_PROTECTION_ENABLED" {
+  default = false
+}
 locals {
   is_ondemand = var.BILLING_MODE == "PAY_PER_REQUEST"
 }
 module "dynamodb_table" {
   source  = "terraform-aws-modules/dynamodb-table/aws"
-  version = "1.2.2"
+  version = "3.3.0"
 
   name      = "${var.ENV}-${var.DB_NAME}"
   hash_key  = "pk"
@@ -117,10 +119,12 @@ module "dynamodb_table" {
     target_value       = 70
     max_capacity       = var.MAX_READ_CAPACITY
   }
-  billing_mode       = var.BILLING_MODE
-  ttl_attribute_name = "ttl"
-  ttl_enabled        = true
-  tags               = var.TAGS
+  billing_mode                = var.BILLING_MODE
+  ttl_attribute_name          = "ttl"
+  ttl_enabled                 = true
+  tags                        = var.TAGS
+  deletion_protection_enabled = var.DELETION_PROTECTION_ENABLED
+
 }
 
 output "arn" {

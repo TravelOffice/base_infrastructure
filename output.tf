@@ -75,6 +75,8 @@ output "MARKETING" {
     search = {
       lb_arn      = module.loadbalancer.lb_arn
       lb_endpoint = module.loadbalancer.lb_endpoint
+      lb_front_end_http_arn = module.loadbalancer.lb_front_end_http_arn
+      lb_front_end_https_arn = module.loadbalancer.lb_front_end_https_arn
     }
     s3 = {
       script_bucket = module.script_bucket.id

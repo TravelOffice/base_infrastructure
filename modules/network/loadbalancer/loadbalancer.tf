@@ -23,6 +23,40 @@ resource "aws_lb" "common" {
   tags = var.tags
 }
 
+resource "aws_lb_listener" "front_end_http" {
+  load_balancer_arn = aws_lb.common.arn
+  port              = "80"
+  protocol          = "HTTP"
+
+  default_action {
+    type = "redirect"
+
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+}
+
+resource "aws_lb_listener" "front_end_https" {
+  load_balancer_arn = aws_lb.common.arn
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = var.domain_arn
+
+  default_action {
+    type = "fixed-response"
+
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "Not found target"
+      status_code  = "404"
+    }
+  }
+}
+
 resource "aws_security_group" "lb_sg" {
   name_prefix = local.security_group_name
   description = "Allow http/https to the search load balancer"
@@ -81,4 +115,12 @@ output "lb_arn" {
 
 output "lb_endpoint" {
   value = aws_route53_record.common.fqdn
+}
+
+output "lb_front_end_http_arn" {
+  value = aws_lb_listener.front_end_http.arn
+}
+
+output "lb_front_end_https_arn" {
+  value = aws_lb_listener.front_end_https.arn
 }

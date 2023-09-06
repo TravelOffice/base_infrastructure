@@ -42,8 +42,6 @@ export const DEFAULT_ROLES = {
         'create_source',
         'update_source',
         'delete_source',
-        'create_supplier',
-        'update_supplier',
         'delete_supplier',
         'delete_payment_voucher',
       ],
@@ -112,6 +110,8 @@ export const DEFAULT_ROLES = {
         'view_all_users',
         'get_sources',
         'get_suppliers',
+        'create_supplier',
+        'update_supplier',
         'get_bookings',
       ],
     },
@@ -553,6 +553,10 @@ export const DEFAULT_PERMISSIONS = {
               path: '/bookings/{id}/notes/{noteId}',
               action: 'DELETE'
             },
+            {
+              path: '/passengers/attached-docs/presigned-url',
+              action: 'GET'
+            }
           ]
         },
         {

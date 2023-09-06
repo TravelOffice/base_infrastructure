@@ -28,6 +28,7 @@ export const MK_DEFAULT_ROLES = {
         'view_specified_feedback',
         'modify_organization_feedback',
         'view_post',
+        'modify_post',
         'view_post_comment',
         'modify_post_comment',
         'view_post_rating',
@@ -420,6 +421,14 @@ export const MK_DEFAULT_WHITELIST = {
             {
               action: 'GET',
               path: '/marketplace/me/followed-posts'
+            },
+            {
+              path: '/marketplace/me/received-offers',
+              action: 'GET'
+            },
+            {
+              path: '/marketplace/me/sent-offers',
+              action: 'GET'
             }
           ],
         },

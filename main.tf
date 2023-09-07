@@ -18,6 +18,7 @@ locals {
   sale_frontend                  = local.constants["SALE_FRONTEND"]
   base_backend                   = local.constants["BASE_BACKEND"]
   mail_backend                   = local.constants["MAIL_BACKEND"]
+  marketplace                    = local.constants["MARKETPLACE"]
   encryption_secret_key          = local.constants["ENCRYPTION_SECRET_KEY"]
   codepipeline_bucket            = local.constants["CODEPIPELINE_BUCKET"]
   mail_cdn                       = local.constants["MAIL_CDN"]
@@ -93,7 +94,11 @@ locals {
       {
         name  = "REACT_APP_LB_BASE_URL"
         value = "https://${module.loadbalancer.lb_endpoint}"
-      }
+      },
+      {
+        name  = "REACT_APP_MARKETPLACE_PAGE"
+        value = "https://${local.marketplace}.${local.hosted_domain_name}"
+      },
     ]
   }
 }

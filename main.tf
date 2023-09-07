@@ -91,12 +91,8 @@ locals {
         value = local.fb_client_id
       },
       {
-        name  = "REACT_APP_MAIL_API_ENDPOINT"
-        value = "https://${module.loadbalancer.lb_endpoint}/mail"
-      },
-      {
-        name  = "REACT_APP_SEARCH_BASE_URL"
-        value = "https://${var.ENV}-mail.${local.hosted_domain_name}/search"
+        name  = "REACT_APP_LB_BASE_URL"
+        value = "https://${module.loadbalancer.lb_endpoint}"
       }
     ]
   }

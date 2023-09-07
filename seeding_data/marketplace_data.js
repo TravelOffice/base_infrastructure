@@ -36,7 +36,8 @@ export const MK_DEFAULT_ROLES = {
         'follow_post',
         'view_post_offer',
         'modify_post_offer',
-        'view_user'
+        'view_user',
+        'view_statistics',
       ],
     },
   ],
@@ -138,7 +139,14 @@ export const MK_DEFAULT_PERMISSIONS = {
               path: '/marketplace/posts',
               action: 'GET'
             },
- 
+            {
+              path: '/marketplace/posts/trending',
+              action: 'GET'
+            },
+            {
+              path: '/marketplace/posts/linked-target-info/{id}',
+              action: 'GET'
+            },
           ]
         },
         {
@@ -153,7 +161,7 @@ export const MK_DEFAULT_PERMISSIONS = {
               path: '/marketplace/posts/{id}',
               action: 'PUT'
             },
- 
+
           ]
         },
       ],
@@ -173,7 +181,7 @@ export const MK_DEFAULT_PERMISSIONS = {
               path: '/marketplace/posts/{id}/comments',
               action: 'GET'
             },
- 
+
           ]
         },
         {
@@ -211,7 +219,7 @@ export const MK_DEFAULT_PERMISSIONS = {
               path: '/marketplace/posts/{id}/ratings',
               action: 'GET'
             },
- 
+
           ]
         },
         {
@@ -287,7 +295,7 @@ export const MK_DEFAULT_PERMISSIONS = {
               path: '/marketplace/offers/{id}',
               action: 'GET'
             },
- 
+
           ]
         },
         {
@@ -302,7 +310,7 @@ export const MK_DEFAULT_PERMISSIONS = {
               path: '/marketplace/me/organizations/received-offers',
               action: 'GET'
             },
- 
+
           ]
         },
         {
@@ -365,6 +373,21 @@ export const MK_DEFAULT_PERMISSIONS = {
           ]
         },
       ],
+    },
+    {
+      name: 'Statistics',
+      permissions: [
+        {
+          name: 'view_statistics',
+          title: 'View Statistics Data',
+          statements: [
+            {
+              path: '/marketplace/organizations/{id}/statistic',
+              action: 'GET'
+            },
+          ]
+        },
+      ]
     },
   ]
 }

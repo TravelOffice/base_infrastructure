@@ -141,7 +141,7 @@ export const MK_DEFAULT_PERMISSIONS = {
               action: 'GET'
             },
             {
-              path: '/marketplace/posts/trending',
+              path: '/marketplace/trending-posts',
               action: 'GET'
             },
             {

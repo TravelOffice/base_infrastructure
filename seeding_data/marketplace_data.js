@@ -429,6 +429,10 @@ export const MK_DEFAULT_WHITELIST = {
             {
               path: '/marketplace/me/sent-offers',
               action: 'GET'
+            },
+            {
+              path: '/marketplace/presigned_url',
+              action: 'GET'
             }
           ],
         },

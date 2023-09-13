@@ -23,6 +23,7 @@ locals {
   codepipeline_bucket            = local.constants["CODEPIPELINE_BUCKET"]
   mail_cdn                       = local.constants["MAIL_CDN"]
   chat_cdn                       = local.constants["CHAT_CDN"]
+  marketplace_cdn                = local.constants["MARKETPLACE_CDN"]
   tf_state_bucket                = local.constants["TF_STATE_BUCKET"]
   codestar_connector_credentials = local.constants["CODESTAR_CONNECTOR_CREDENTIALS"]
 
@@ -45,6 +46,11 @@ locals {
     Env       = var.ENV
     Terraform = true
     Feature   = local.mail_backend
+  }
+  marketplace_tags = {
+    Env       = var.ENV
+    Terraform = true
+    Feature   = local.marketplace
   }
   is_prod = var.ENV == "prod"
   code_build_env = {
@@ -279,6 +285,9 @@ module "marketing_secret_manager" {
     "MAIL_BUCKET"                              = module.mail_bucket.id
     "MAIL_BUCKET_URL"                          = module.mail_bucket.bucket_regional_domain_name
     "MAIL_CDN"                                 = "https://${local.mail_cdn}"
+    "MARKETPLACE_FILE_BUCKET"                  = module.marketplace_attachment_bucket.id
+    "MARKETPLACE_FILE_BUCKET_URL"              = module.marketplace_attachment_bucket.bucket_regional_domain_name
+    "MARKETPLACE_FILE_CDN"                     = "https://${local.marketplace_cdn}"
     "NEW_CONVERSATION_QUEUE_ENDPOINT"          = module.queue.new_conversation_queue_url
     "ENCRYPT_SECRET_KEY"                       = local.encryption_secret_key
     "SEARCH_ENGINE_ENDPOINT"                   = "https://${module.loadbalancer.lb_endpoint}"
@@ -486,3 +495,24 @@ module "script_bucket" {
   TAGS              = local.marketing_tags
 }
 # Marketing Infrastructure: END
+
+
+# Marketplace web
+module "marketplace_attachment_bucket" {
+  source        = "../../modules/storage/s3"
+  BUCKET_PREFIX = "${var.ENV}-${local.marketplace}-attachments"
+  TAGS          = local.marketplace_tags
+}
+
+module "marketplace_cdn" {
+  source              = "../../modules/cdn"
+  S3_BUCKET           = module.marketplace_attachment_bucket
+  ACM                 = local.cloudfront_acm
+  ALIASES             = [local.marketplace_cdn]
+  HOSTED_ZONE_ID      = local.hosted_zone_id
+  DEFAULT_ROOT_OBJECT = ""
+  RECORD_NAME         = "marketplacecdn"
+  CUSTOM_HEADER_ID    = aws_cloudfront_response_headers_policy.custom_header.id
+  TAGS                = local.marketplace_tags
+  depends_on          = [module.marketplace_attachment_bucket]
+}

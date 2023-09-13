@@ -8,7 +8,7 @@ variable "HOSTED_ZONE_ID" {}
 variable "RECORD_NAME" {}
 variable "CUSTOM_HEADER_ID" {}
 variable "BLOCK_PUBLIC_ACCESS" {
-  default = false
+  default = true
 }
 variable "TAGS" {}
 

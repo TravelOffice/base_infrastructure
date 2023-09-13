@@ -68,6 +68,10 @@ output "MARKETING" {
         attachment_s3_bucket = module.sale_chat_attachment_bucket.id
         cdn_domain           = module.sale_frontend_hosting.cdn_domain
       }
+      marketplace_web = {
+        attachment_s3_bucket = module.marketplace_attachment_bucket.id
+      }
+      
     }
     queue = {
       auto_assign_chat_queue = module.queue.new_conversation_queue_arn

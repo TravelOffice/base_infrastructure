@@ -57,122 +57,122 @@ variable "PITR" {
 
 // chat_table
 variable "CHAT_WCU" {
-  default = 5
+  default = 50
 }
 
 variable "CHAT_MAX_WCU" {
-  default = 10
+  default = 100
 }
 
 variable "CHAT_RCU" {
-  default = 5
+  default = 50
 }
 
 variable "CHAT_MAX_RCU" {
-  default = 10
+  default = 100
 }
 
 // mail_table
 variable "MAIL_WCU" {
-  default = 5
+  default = 50
 }
 
 variable "MAIL_MAX_WCU" {
-  default = 10
+  default = 100
 }
 
 variable "MAIL_RCU" {
-  default = 5
+  default = 50
 }
 
 variable "MAIL_MAX_RCU" {
-  default = 10
+  default = 100
 }
 
-// marketplace_role_permmisison_table
+// marketplace_role_permission_table
 variable "MK_ROLE_WCU" {
-  default = 5
+  default = 50
 }
 
 variable "MK_ROLE_MAX_WCU" {
-  default = 10
+  default = 100
 }
 
 variable "MK_ROLE_RCU" {
-  default = 5
+  default = 50
 }
 
 variable "MK_ROLE_MAX_RCU" {
-  default = 10
+  default = 100
 }
 
 // marketplace_table
 variable "MK_WCU" {
-  default = 5
+  default = 50
 }
 
 variable "MK_MAX_WCU" {
-  default = 10
+  default = 100
 }
 
 
 variable "MK_RCU" {
-  default = 5
+  default = 50
 }
 
 variable "MK_MAX_RCU" {
-  default = 10
+  default = 100
 }
 
 // role_permission_table
 variable "ROLE_WCU" {
-  default = 5
+  default = 50
 }
 
 variable "ROLE_MAX_WCU" {
-  default = 10
+  default = 100
 }
 
 variable "ROLE_RCU" {
-  default = 5
+  default = 50
 }
 
 variable "ROLE_MAX_RCU" {
-  default = 10
+  default = 100
 }
 
 // statistic_table
 variable "STATISTIC_WCU" {
-  default = 5
+  default = 50
 }
 
 variable "STATISTIC_MAX_WCU" {
-  default = 10
+  default = 100
 }
 
 variable "STATISTIC_RCU" {
-  default = 5
+  default = 50
 }
 
 variable "STATISTIC_MAX_RCU" {
-  default = 10
+  default = 100
 }
 
 // travel_table
 variable "TRAVEL_WCU" {
-  default = 5
+  default = 50
 }
 
 variable "TRAVEL_MAX_WCU" {
-  default = 10
+  default = 100
 }
 
 variable "TRAVEL_RCU" {
-  default = 5
+  default = 50
 }
 
 variable "TRAVEL_MAX_RCU" {
-  default = 10
+  default = 100
 }
 
 variable "DELETION_PROTECTION_ENABLED" {

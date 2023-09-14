@@ -44,6 +44,7 @@ export const DEFAULT_ROLES = {
         'delete_source',
         'delete_supplier',
         'delete_payment_voucher',
+        'approve_payment_voucher',
       ],
     },
     {
@@ -859,6 +860,16 @@ export const DEFAULT_PERMISSIONS = {
             }
           ]
         },
+        {
+          name: 'approve_payment_voucher',
+          title: 'approve Payment Voucher',
+          statements: [
+            {
+              path: '/payment-vouchers/{id}/approve',
+              action: 'PUT'
+            }
+          ]
+        },
       ]
     },
     {
@@ -1051,6 +1062,10 @@ export const DEFAULT_WHITELIST = {
             {
               action: 'GET',
               path: '/me/avatar/presigned-url'
+            },
+            {
+              action: 'GET',
+              path: '/presigned-url'
             }
           ],
         },

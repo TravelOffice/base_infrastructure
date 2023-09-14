@@ -60,7 +60,7 @@ variable "CHAT_WCU" {
 }
 
 variable "CHAT_MAX_WCU" {
-  default = 1
+  default = 10
 }
 
 variable "CHAT_RCU" {
@@ -68,7 +68,7 @@ variable "CHAT_RCU" {
 }
 
 variable "CHAT_MAX_RCU" {
-  default = 1
+  default = 10
 }
 
 // mail_table
@@ -77,7 +77,7 @@ variable "MAIL_WCU" {
 }
 
 variable "MAIL_MAX_WCU" {
-  default = 1
+  default = 10
 }
 
 variable "MAIL_RCU" {
@@ -85,7 +85,7 @@ variable "MAIL_RCU" {
 }
 
 variable "MAIL_MAX_RCU" {
-  default = 1
+  default = 10
 }
 
 // marketplace_role_permmisison_table
@@ -94,7 +94,7 @@ variable "MK_ROLE_WCU" {
 }
 
 variable "MK_ROLE_MAX_WCU" {
-  default = 1
+  default = 10
 }
 
 variable "MK_ROLE_RCU" {
@@ -102,7 +102,7 @@ variable "MK_ROLE_RCU" {
 }
 
 variable "MK_ROLE_MAX_RCU" {
-  default = 1
+  default = 10
 }
 
 // marketplace_table
@@ -111,7 +111,7 @@ variable "MK_WCU" {
 }
 
 variable "MK_MAX_WCU" {
-  default = 1
+  default = 10
 }
 
 
@@ -120,7 +120,7 @@ variable "MK_RCU" {
 }
 
 variable "MK_MAX_RCU" {
-  default = 1
+  default = 10
 }
 
 // role_permission_table
@@ -129,7 +129,7 @@ variable "ROLE_WCU" {
 }
 
 variable "ROLE_MAX_WCU" {
-  default = 1
+  default = 10
 }
 
 variable "ROLE_RCU" {
@@ -137,7 +137,7 @@ variable "ROLE_RCU" {
 }
 
 variable "ROLE_MAX_RCU" {
-  default = 1
+  default = 10
 }
 
 // statistic_table
@@ -146,7 +146,7 @@ variable "STATISTIC_WCU" {
 }
 
 variable "STATISTIC_MAX_WCU" {
-  default = 1
+  default = 10
 }
 
 variable "STATISTIC_RCU" {
@@ -154,7 +154,7 @@ variable "STATISTIC_RCU" {
 }
 
 variable "STATISTIC_MAX_RCU" {
-  default = 1
+  default = 10
 }
 
 // travel_table
@@ -163,7 +163,7 @@ variable "TRAVEL_WCU" {
 }
 
 variable "TRAVEL_MAX_WCU" {
-  default = 1
+  default = 10
 }
 
 variable "TRAVEL_RCU" {
@@ -171,7 +171,7 @@ variable "TRAVEL_RCU" {
 }
 
 variable "TRAVEL_MAX_RCU" {
-  default = 1
+  default = 10
 }
 
 variable "DELETION_PROTECTION_ENABLED" {

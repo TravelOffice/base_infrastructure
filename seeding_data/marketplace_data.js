@@ -6,7 +6,9 @@ export const MK_DEFAULT_ROLES = {
       name: 'ROOT',
       extend: ['SALE', 'ADMIN'],
       isDefault: true,
-      permissions: [],
+      permissions: [
+        'accept_term'
+      ],
     },
     {
       name: 'ADMIN',
@@ -75,11 +77,11 @@ export const MK_DEFAULT_PERMISSIONS = {
               action: 'POST'
             },
             {
-              path: '/marketplace/organizations',
+              path: '/marketplace/organizations/{id}',
               action: 'PUT'
             },
             {
-              path: '/marketplace/organizations',
+              path: '/marketplace/organizations/{id}',
               action: 'DELETE'
             },
           ]
@@ -162,7 +164,14 @@ export const MK_DEFAULT_PERMISSIONS = {
               path: '/marketplace/posts/{id}',
               action: 'PUT'
             },
-
+            {
+              path: '/marketplace/available-leads',
+              action: 'GET'
+            },
+            {
+              path: '/marketplace/available-tour-templates',
+              action: 'GET'
+            },
           ]
         },
       ],
@@ -390,6 +399,25 @@ export const MK_DEFAULT_PERMISSIONS = {
         },
       ]
     },
+    {
+      name: 'Term',
+      permissions: [
+        {
+          name: 'accept_term',
+          title: 'Accept Term',
+          statements: [
+            {
+              path: '/marketplace/onboarding/accept-terms',
+              action: 'POST'
+            },
+            {
+              path: '/marketplace/accept-terms',
+              action: 'GET'
+            }
+          ]
+        }
+      ]
+    }
   ]
 }
 
@@ -431,7 +459,7 @@ export const MK_DEFAULT_WHITELIST = {
               action: 'GET'
             },
             {
-              path: '/marketplace/presigned_url',
+              path: '/marketplace/presigned-url',
               action: 'GET'
             }
           ],

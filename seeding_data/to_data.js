@@ -4,13 +4,13 @@ export const DEFAULT_ROLES = {
   roles: [
     {
       name: 'ROOT',
-      extend: ['ADMIN'],
+      extend: ['ADMIN', 'SALE', 'OPERATOR', 'OPERATOR_MANAGER'],
       isDefault: true,
       permissions: [],
     },
     {
       name: 'ADMIN',
-      extend: ['OPERATOR'],
+      extend: ['OPERATOR', 'OPERATOR_MANAGER'],
       isDefault: true,
       permissions: [
         'link_page',

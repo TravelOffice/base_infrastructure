@@ -18,8 +18,7 @@ export const MK_DEFAULT_ROLES = {
         'modify_organization',
         'modify_user',
         'view_all_feedback',
-        'view_specified_feedback',
-        'view_organization_offer'
+        'view_specified_feedback'
       ],
     },
     {
@@ -41,6 +40,7 @@ export const MK_DEFAULT_ROLES = {
         'modify_post_offer',
         'view_user',
         'view_statistics',
+        'view_organization_offer'
       ],
     },
   ],

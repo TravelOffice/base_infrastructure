@@ -30,6 +30,15 @@ module "VPC" {
   single_nat_gateway   = true
   enable_dhcp_options  = true
   enable_dns_hostnames = true
+  default_security_group_egress = [
+    {
+      from_port        = 0
+      to_port          = 0
+      protocol         = "-1"
+      cidr_blocks      = "0.0.0.0/0"
+      ipv6_cidr_blocks = "::/0"
+    },
+  ]
 
   tags = var.TAGS
 }

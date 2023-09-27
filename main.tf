@@ -288,6 +288,7 @@ module "marketing_secret_manager" {
     "MARKETPLACE_FILE_BUCKET"                  = module.marketplace_attachment_bucket.id
     "MARKETPLACE_FILE_BUCKET_URL"              = module.marketplace_attachment_bucket.bucket_regional_domain_name
     "MARKETPLACE_FILE_CDN"                     = "https://${local.marketplace_cdn}"
+    "MARKETPLACE_NOTIFICATION_SNS_TOPIC"       = module.marketplace_notification_sns.topic_arn
     "NEW_CONVERSATION_QUEUE_ENDPOINT"          = module.queue.new_conversation_queue_url
     "ENCRYPT_SECRET_KEY"                       = local.encryption_secret_key
     "SEARCH_ENGINE_ENDPOINT"                   = "https://${module.loadbalancer.lb_endpoint}"
@@ -494,8 +495,21 @@ module "script_bucket" {
   ENABLE_VERSIONING = "Suspended"
   TAGS              = local.marketing_tags
 }
+// Use for travel connect notification
+module "marketplace_notification_sqs" {
+  source = "../../modules/fanout/sqs"
+  NAME   = "marketplace-notification-queue"
+  ENV    = var.ENV
+  TAGS   = local.marketplace_tags
+}
+module "marketplace_notification_sns" {
+  source                = "../../modules/fanout/sns"
+  SNS_TOPIC_NAME        = "marketplace-notification-topic"
+  SUBSCRIPTION_ENDPOINT = module.marketplace_notification_sqs.arn
+  ENV                   = var.ENV
+  TAGS                  = local.marketplace_tags
+}
 # Marketing Infrastructure: END
-
 
 # Marketplace web
 module "marketplace_attachment_bucket" {

@@ -71,15 +71,16 @@ output "MARKETING" {
       marketplace_web = {
         attachment_s3_bucket = module.marketplace_attachment_bucket.id
       }
-      
+
     }
     queue = {
       auto_assign_chat_queue = module.queue.new_conversation_queue_arn
+      marketplace_notification_queue = module.marketplace_notification_sqs.arn
     }
     search = {
-      lb_arn      = module.loadbalancer.lb_arn
-      lb_endpoint = module.loadbalancer.lb_endpoint
-      lb_front_end_http_arn = module.loadbalancer.lb_front_end_http_arn
+      lb_arn                 = module.loadbalancer.lb_arn
+      lb_endpoint            = module.loadbalancer.lb_endpoint
+      lb_front_end_http_arn  = module.loadbalancer.lb_front_end_http_arn
       lb_front_end_https_arn = module.loadbalancer.lb_front_end_https_arn
     }
     s3 = {

@@ -26,6 +26,7 @@ locals {
   marketplace_cdn                = local.constants["MARKETPLACE_CDN"]
   tf_state_bucket                = local.constants["TF_STATE_BUCKET"]
   codestar_connector_credentials = local.constants["CODESTAR_CONNECTOR_CREDENTIALS"]
+  firebase_credential            = local.constants["FIREBASE_CREDENTIAL"]
 
   marketing_tags = {
     Env       = var.ENV
@@ -292,6 +293,7 @@ module "marketing_secret_manager" {
     "NEW_CONVERSATION_QUEUE_ENDPOINT"          = module.queue.new_conversation_queue_url
     "ENCRYPT_SECRET_KEY"                       = local.encryption_secret_key
     "SEARCH_ENGINE_ENDPOINT"                   = "https://${module.loadbalancer.lb_endpoint}"
+    "FIREBASE_CREDENTIAL"                      = jsonencode(local.firebase_credential)
   }
   TAGS = local.marketing_tags
 }

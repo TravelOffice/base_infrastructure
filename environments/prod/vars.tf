@@ -2,6 +2,10 @@ variable "ENV" {
   default = "prod"
 }
 
+variable "SCM_CONSTANT_ARN" {
+  default = "arn:aws:secretsmanager:ap-southeast-1:800823848420:secret:prod-infrastructure-constant-FEt8TM"
+}
+
 variable "TF_LOG" {
   default = "ERROR"
 }

@@ -1,14 +1,18 @@
-data "http" "infra" {
-  url = "https://raw.githubusercontent.com/TravelOffice/infrastructure-constant/master/${var.ENV}-infrastructure.json"
+variable "ENV" {}
+data "aws_secretsmanager_secret" "secrets" {
+  arn = var.ENV == "dev" ? var.DEV_SCM_CONSTANT_ARN : var.PROD_SCM_CONSTANT_ARN
 }
 
-variable "ENV" {}
+data "aws_secretsmanager_secret_version" "current" {
+  secret_id = data.aws_secretsmanager_secret.secrets.id
+}
+
 variable "BRANCH_NAME" {}
 variable "IMAGE" {
   default = "aws/codebuild/standard:6.0"
 }
 locals {
-  constants                      = jsondecode(data.http.infra.body)
+  constants                      = jsondecode(data.aws_secretsmanager_secret_version.current.secret_string)
   codestar_connector_credentials = local.constants["CODESTAR_CONNECTOR_CREDENTIALS"]
   tf_state_bucket                = local.constants["TF_STATE_BUCKET"]
   codepipeline_bucket            = local.constants["CODEPIPELINE_BUCKET"]

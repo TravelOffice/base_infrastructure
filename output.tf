@@ -92,9 +92,9 @@ output "MARKETING" {
 output "COMMON_CONFIG" {
   value = {
     region                         = var.AWS_REGION
-    codestar_connector_credentials = local.codestar_connector_credentials
-    tf_bucket                      = local.tf_state_bucket
-    codepipeline_bucket            = local.codepipeline_bucket
+    codestar_connector_credentials = nonsensitive(local.codestar_connector_credentials)
+    tf_bucket                      = nonsensitive(local.tf_state_bucket)
+    codepipeline_bucket            = nonsensitive(local.codepipeline_bucket)
     cognito = {
       user_pool = {
         id  = module.cognito_user_pool.id
@@ -108,12 +108,12 @@ output "COMMON_CONFIG" {
     }
     route53 = {
       hosted_zone = {
-        id = local.hosted_zone_id
+        id = nonsensitive(local.hosted_zone_id)
         domain = {
-          name = local.hosted_domain_name
+          name = nonsensitive(local.hosted_domain_name)
           certificate = {
-            api_gateway = local.api_gateway_acm
-            cloudfront  = local.cloudfront_acm
+            api_gateway = nonsensitive(local.api_gateway_acm)
+            cloudfront  = nonsensitive(local.cloudfront_acm)
           }
         }
       }

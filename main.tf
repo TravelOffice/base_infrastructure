@@ -1,8 +1,13 @@
-data "http" "infra" {
-  url = "https://raw.githubusercontent.com/TravelOffice/infrastructure-constant/master/${var.ENV}-infrastructure.json"
+data "aws_secretsmanager_secret" "secrets" {
+  arn = var.SCM_CONSTANT_ARN
 }
+
+data "aws_secretsmanager_secret_version" "current" {
+  secret_id = data.aws_secretsmanager_secret.secrets.id
+}
+
 locals {
-  constants                      = jsondecode(data.http.infra.response_body)
+  constants                      = jsondecode(data.aws_secretsmanager_secret_version.current.secret_string)
   tf_version                     = local.constants["TF_VERSION"]
   fb_token                       = local.constants["FB_TOKEN"]
   fb_graph_endpoint              = local.constants["FB_GRAPH_ENDPOINT"]
@@ -14,11 +19,11 @@ locals {
   hosted_domain_name             = local.constants["HOSTED_DOMAIN_NAME"]
   cloudfront_acm                 = local.constants["CLOUDFRONT_ACM"]
   api_gateway_acm                = local.constants["API_GATEWAY_ACM"]
-  marketing_backend              = local.constants["MARKETING_BACKEND"]
-  sale_frontend                  = local.constants["SALE_FRONTEND"]
-  base_backend                   = local.constants["BASE_BACKEND"]
-  mail_backend                   = local.constants["MAIL_BACKEND"]
-  marketplace                    = local.constants["MARKETPLACE"]
+  marketing_backend              = "marketing-backend"
+  sale_frontend                  = "sale-frontend"
+  base_backend                   = "base-backend"
+  mail_backend                   = "mail-backend"
+  marketplace                    = "marketplace"
   encryption_secret_key          = local.constants["ENCRYPTION_SECRET_KEY"]
   codepipeline_bucket            = local.constants["CODEPIPELINE_BUCKET"]
   mail_cdn                       = local.constants["MAIL_CDN"]
@@ -293,7 +298,7 @@ module "marketing_secret_manager" {
     "NEW_CONVERSATION_QUEUE_ENDPOINT"          = module.queue.new_conversation_queue_url
     "ENCRYPT_SECRET_KEY"                       = local.encryption_secret_key
     "SEARCH_ENGINE_ENDPOINT"                   = "https://${module.loadbalancer.lb_endpoint}"
-    "FIREBASE_CREDENTIAL"                      = jsonencode(local.firebase_credential)
+    "FIREBASE_CREDENTIAL"                      = local.firebase_credential
   }
   TAGS = local.marketing_tags
 }

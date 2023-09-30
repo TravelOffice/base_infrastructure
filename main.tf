@@ -296,11 +296,11 @@ module "marketing_secret_manager" {
     "MARKETPLACE_FILE_BUCKET"                  = module.marketplace_attachment_bucket.id
     "MARKETPLACE_FILE_BUCKET_URL"              = module.marketplace_attachment_bucket.bucket_regional_domain_name
     "MARKETPLACE_FILE_CDN"                     = "https://${local.marketplace_cdn}"
-    "MARKETPLACE_NOTIFICATION_SNS_TOPIC"       = module.marketplace_notification_sns.topic_arn
+    "MARKETPLACE_NOTIFICATION_SNS_TOPIC"       = module.system_notification_sns.topic_arn
     "NEW_CONVERSATION_QUEUE_ENDPOINT"          = module.queue.new_conversation_queue_url
     "ENCRYPT_SECRET_KEY"                       = local.encryption_secret_key
     "SEARCH_ENGINE_ENDPOINT"                   = "https://${module.loadbalancer.lb_endpoint}"
-    "FIREBASE_CREDENTIAL"                      = local.firebase_credential
+    "FIREBASE_CREDENTIAL"                      = jsonencode(local.firebase_credential)
   }
   TAGS = local.marketing_tags
 }
@@ -518,16 +518,42 @@ module "script_bucket" {
   TAGS              = local.marketing_tags
 }
 // Use for travel connect notification
-module "marketplace_notification_sqs" {
+module "system_subscribe_sqs" {
   source = "../../modules/fanout/sqs"
-  NAME   = "marketplace-notification-queue"
+  NAME   = "system-subscribe-to-fcm-topic"
   ENV    = var.ENV
   TAGS   = local.marketplace_tags
 }
-module "marketplace_notification_sns" {
+module "system_subscribe_sns" {
   source                = "../../modules/fanout/sns"
-  SNS_TOPIC_NAME        = "marketplace-notification-topic"
-  SUBSCRIPTION_ENDPOINT = module.marketplace_notification_sqs.arn
+  SNS_TOPIC_NAME        = "system-subscribe-to-fcm-topic"
+  SUBSCRIPTION_ENDPOINT = module.system_subscribe_sqs.arn
+  ENV                   = var.ENV
+  TAGS                  = local.marketplace_tags
+}
+module "system_unsubscribe_sqs" {
+  source = "../../modules/fanout/sqs"
+  NAME   = "system-unsubscribe-from-fcm-topic"
+  ENV    = var.ENV
+  TAGS   = local.marketplace_tags
+}
+module "system_unsubscribe_sns" {
+  source                = "../../modules/fanout/sns"
+  SNS_TOPIC_NAME        = "system-unsubscribe-from-fcm-topic"
+  SUBSCRIPTION_ENDPOINT = module.system_unsubscribe_sqs.arn
+  ENV                   = var.ENV
+  TAGS                  = local.marketplace_tags
+}
+module "system_notification_sqs" {
+  source = "../../modules/fanout/sqs"
+  NAME   = "system-notification"
+  ENV    = var.ENV
+  TAGS   = local.marketplace_tags
+}
+module "system_notification_sns" {
+  source                = "../../modules/fanout/sns"
+  SNS_TOPIC_NAME        = "system-notification"
+  SUBSCRIPTION_ENDPOINT = module.system_notification_sqs.arn
   ENV                   = var.ENV
   TAGS                  = local.marketplace_tags
 }

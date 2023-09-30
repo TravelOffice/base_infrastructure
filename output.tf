@@ -77,8 +77,10 @@ output "MARKETING" {
 
     }
     queue = {
-      auto_assign_chat_queue         = module.queue.new_conversation_queue_arn
-      marketplace_notification_queue = module.marketplace_notification_sqs.arn
+      auto_assign_chat_queue    = module.queue.new_conversation_queue_arn
+      system_notification_queue = module.system_notification_sqs.arn
+      system_subscribe_queue    = module.system_subscribe_sqs.arn
+      system_unsubscribe_queue  = module.system_unsubscribe_sqs.arn
     }
     search = {
       lb_arn                 = module.loadbalancer.lb_arn

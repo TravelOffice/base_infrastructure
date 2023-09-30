@@ -52,13 +52,16 @@ output "MARKETING" {
           name       = module.marketplace_table_dynamodb.db_name
         }
         statistic_table = {
-          arn        = module.statistic_table_dynamodb.arn
-          stream_arn = module.statistic_table_dynamodb.stream_arn
-          name       = module.statistic_table_dynamodb.db_name
+          arn  = module.statistic_table_dynamodb.arn
+          name = module.statistic_table_dynamodb.db_name
         }
         role_permission_table = {
           arn  = module.role_permission_table_dynamodb.arn
           name = module.role_permission_table_dynamodb.db_name
+        }
+        notification_table = {
+          arn  = module.notification_table_dynamodb.arn
+          name = module.notification_table_dynamodb.db_name
         }
       }
     }
@@ -74,7 +77,7 @@ output "MARKETING" {
 
     }
     queue = {
-      auto_assign_chat_queue = module.queue.new_conversation_queue_arn
+      auto_assign_chat_queue         = module.queue.new_conversation_queue_arn
       marketplace_notification_queue = module.marketplace_notification_sqs.arn
     }
     search = {

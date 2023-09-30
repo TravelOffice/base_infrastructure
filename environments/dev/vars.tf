@@ -161,6 +161,23 @@ variable "STATISTIC_MAX_RCU" {
   default = 10
 }
 
+// notification_table
+variable "NOTIFICATION_WCU" {
+  default = 1
+}
+
+variable "NOTIFICATION_MAX_WCU" {
+  default = 10
+}
+
+variable "NOTIFICATION_RCU" {
+  default = 1
+}
+
+variable "NOTIFICATION_MAX_RCU" {
+  default = 10
+}
+
 // travel_table
 variable "TRAVEL_WCU" {
   default = 1

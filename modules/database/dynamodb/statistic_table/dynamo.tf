@@ -144,10 +144,6 @@ output "arn" {
   value = module.dynamodb_table.dynamodb_table_arn
 }
 
-output "stream_arn" {
-  value = module.dynamodb_table.dynamodb_table_stream_arn
-}
-
 output "db_name" {
   value = "${var.ENV}-${var.DB_NAME}"
 }

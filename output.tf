@@ -39,12 +39,14 @@ output "MARKETING" {
       }
       dynamodb = {
         travel_table = {
-          arn  = module.travel_table_dynamodb.arn
-          name = module.travel_table_dynamodb.db_name
+          arn        = module.travel_table_dynamodb.arn
+          stream_arn = module.travel_table_dynamodb.stream_arn
+          name       = module.travel_table_dynamodb.db_name
         }
         chat_table = {
-          arn  = module.chat_table_dynamodb.arn
-          name = module.chat_table_dynamodb.db_name
+          arn        = module.chat_table_dynamodb.arn
+          stream_arn = module.chat_table_dynamodb.stream_arn
+          name       = module.chat_table_dynamodb.db_name
         }
         marketplace_table = {
           arn        = module.marketplace_table_dynamodb.arn

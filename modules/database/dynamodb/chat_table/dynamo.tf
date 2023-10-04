@@ -24,6 +24,12 @@ variable "MAX_READ_CAPACITY" {
 variable "MIN_READ_CAPACITY" {
   default = 5
 }
+variable "STREAM_ENABLED" {
+  default = true
+}
+variable "STREAM_VIEW_TYPE" {
+  default = "NEW_AND_OLD_IMAGES"
+}
 variable "DELETION_PROTECTION_ENABLED" {
   default = false
 }
@@ -162,12 +168,18 @@ module "dynamodb_table" {
 
   autoscaling_enabled         = var.AUTOSCALING_ENABLED
   billing_mode                = var.BILLING_MODE
+  stream_enabled              = var.STREAM_ENABLED
+  stream_view_type            = var.STREAM_VIEW_TYPE
   tags                        = var.TAGS
   deletion_protection_enabled = var.DELETION_PROTECTION_ENABLED
 }
 
 output "arn" {
   value = module.dynamodb_table.dynamodb_table_arn
+}
+
+output "stream_arn" {
+  value = module.dynamodb_table.dynamodb_table_stream_arn
 }
 
 output "db_name" {

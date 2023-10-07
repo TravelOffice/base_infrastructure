@@ -87,10 +87,6 @@ module "dynamodb_table" {
       type = "S"
     },
     {
-      name = "stPk"
-      type = "S"
-    },
-    {
       name = "stSk"
       type = "S"
     }
@@ -157,10 +153,9 @@ module "dynamodb_table" {
       write_capacity     = local.is_ondemand ? null : var.WRITE_CAPACITY
     },
     {
-      hash_key           = "stPk"
+      hash_key           = "pk"
       range_key          = "stSk"
       name               = "StatisticGSI"
-      non_key_attributes = []
       projection_type    = "INCLUDE"
       non_key_attributes = ["stAt"]
       read_capacity      = local.is_ondemand ? null : var.READ_CAPACITY

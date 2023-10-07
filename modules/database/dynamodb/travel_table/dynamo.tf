@@ -93,7 +93,7 @@ module "dynamodb_table" {
     {
       name = "stSk"
       type = "S"
-    },
+    }
   ]
 
   local_secondary_indexes = [
@@ -161,7 +161,8 @@ module "dynamodb_table" {
       range_key          = "stSk"
       name               = "StatisticGSI"
       non_key_attributes = []
-      projection_type    = "KEYS_ONLY"
+      projection_type    = "INCLUDE"
+      non_key_attributes = ["stAt"]
       read_capacity      = local.is_ondemand ? null : var.READ_CAPACITY
       write_capacity     = local.is_ondemand ? null : var.WRITE_CAPACITY
     },

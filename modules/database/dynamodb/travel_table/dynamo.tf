@@ -85,7 +85,15 @@ module "dynamodb_table" {
     {
       name = "typeGsi"
       type = "S"
-    }
+    },
+    {
+      name = "stPk"
+      type = "S"
+    },
+    {
+      name = "stSk"
+      type = "S"
+    },
   ]
 
   local_secondary_indexes = [
@@ -148,6 +156,15 @@ module "dynamodb_table" {
       read_capacity      = local.is_ondemand ? null : var.READ_CAPACITY
       write_capacity     = local.is_ondemand ? null : var.WRITE_CAPACITY
     },
+    {
+      hash_key           = "stPk"
+      range_key          = "stSk"
+      name               = "StatisticGSI"
+      non_key_attributes = []
+      projection_type    = "KEYS_ONLY"
+      read_capacity      = local.is_ondemand ? null : var.READ_CAPACITY
+      write_capacity     = local.is_ondemand ? null : var.WRITE_CAPACITY
+    },
   ]
   write_capacity      = local.is_ondemand ? null : var.WRITE_CAPACITY
   read_capacity       = local.is_ondemand ? null : var.READ_CAPACITY
@@ -179,6 +196,12 @@ module "dynamodb_table" {
       write_min_capacity = var.MIN_WRITE_CAPACITY
     }
     TypeGSI = {
+      read_max_capacity  = var.MAX_READ_CAPACITY
+      read_min_capacity  = var.MIN_READ_CAPACITY
+      write_max_capacity = var.MAX_READ_CAPACITY
+      write_min_capacity = var.MIN_WRITE_CAPACITY
+    }
+    StatisticGSI = {
       read_max_capacity  = var.MAX_READ_CAPACITY
       read_min_capacity  = var.MIN_READ_CAPACITY
       write_max_capacity = var.MAX_READ_CAPACITY

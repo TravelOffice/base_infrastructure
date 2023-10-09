@@ -300,7 +300,6 @@ module "marketing_secret_manager" {
     "NEW_CONVERSATION_QUEUE_ENDPOINT"          = module.queue.new_conversation_queue_url
     "ENCRYPT_SECRET_KEY"                       = local.encryption_secret_key
     "SEARCH_ENGINE_ENDPOINT"                   = "https://${module.loadbalancer.lb_endpoint}"
-    "FIREBASE_CREDENTIAL"                      = jsonencode(local.firebase_credential)
   }
   TAGS = local.marketing_tags
 }

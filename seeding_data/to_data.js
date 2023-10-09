@@ -557,7 +557,11 @@ export const DEFAULT_PERMISSIONS = {
             {
               path: '/passengers/attached-docs/presigned-url',
               action: 'GET'
-            }
+            },
+            {
+              path: '/bookings/{id}/customers',
+              action: 'PUT'
+            },
           ]
         },
         {
@@ -1077,6 +1081,25 @@ export const DEFAULT_WHITELIST = {
               action: 'PUT',
               path: '/me',
             },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'Statistic',
+      permissions: [
+        {
+          name: 'read',
+          title: 'Read',
+          statements: [
+            {
+              action: 'GET',
+              path: '/statistic/tenant',
+            },
+            {
+              action: 'GET',
+              path: '/statistic/sales/{id}',
+            }
           ],
         },
       ],

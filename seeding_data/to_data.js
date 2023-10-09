@@ -1082,6 +1082,25 @@ export const DEFAULT_WHITELIST = {
       ],
     },
     {
+      name: 'Statistic',
+      permissions: [
+        {
+          name: 'read',
+          title: 'Read',
+          statements: [
+            {
+              action: 'GET',
+              path: '/statistic/tenant',
+            },
+            {
+              action: 'GET',
+              path: '/statistic/sales/{id}',
+            }
+          ],
+        },
+      ],
+    },
+    {
       name: 'Common',
       permissions: [
         {

@@ -45,6 +45,7 @@ export const DEFAULT_ROLES = {
         'delete_supplier',
         'delete_payment_voucher',
         'approve_payment_voucher',
+        'modify_kpi'
       ],
     },
     {
@@ -121,7 +122,8 @@ export const DEFAULT_ROLES = {
       extend: ['OPERATOR'],
       isDefault: true,
       permissions: [
-        'assign_tour_operator'
+        'assign_tour_operator',
+        'view_manager_dashboard'
       ],
     },
   ],
@@ -129,6 +131,16 @@ export const DEFAULT_ROLES = {
 
 export const DEFAULT_PERMISSIONS = {
   groups: [
+    {
+      name: 'Dashboard',
+      permissions: [
+        {
+          name: 'view_manager_dashboard',
+          title: 'View Manager Dashboard',
+          statements: []
+        }
+      ]
+    },
     {
       name: 'Setting',
       permissions: [
@@ -164,6 +176,20 @@ export const DEFAULT_PERMISSIONS = {
             },
           ],
         },
+        {
+          name: 'modify_kpi',
+          title: 'Modify KPI',
+          statements: [
+            {
+              path: '/settings/kpi',
+              action: 'POST'
+            },
+            {
+              path: '/settings/kpi/update-target',
+              action: 'PUT'
+            }
+          ]
+        }
       ],
     },
     {
@@ -1052,6 +1078,37 @@ export const DEFAULT_PERMISSIONS = {
 
 export const DEFAULT_WHITELIST = {
   groups: [
+    {
+      name: 'Notification',
+      permissions: [
+        {
+          name: 'notifications',
+          title: 'Notifications',
+          statements: [
+            {
+              action: 'GET',
+              path: '/me/notifications',
+            },
+            {
+              action: 'GET',
+              path: '/notifications/sessions',
+            },
+            {
+              action: 'POST',
+              path: '/notifications/sessions',
+            },
+            {
+              action: 'GET',
+              path: '/notifications/sessions/{token}',
+            },
+            {
+              action: 'DELETE',
+              path: '/notifications/sessions/{token}',
+            },
+          ]
+        }
+      ]
+    },
     {
       name: 'Me',
       permissions: [

@@ -424,6 +424,37 @@ export const MK_DEFAULT_PERMISSIONS = {
 export const MK_DEFAULT_WHITELIST = {
   groups: [
     {
+      name: 'Notification',
+      permissions: [
+        {
+          name: 'notifications',
+          title: 'Notifications',
+          statements: [
+            {
+              action: 'GET',
+              path: '/me/notifications',
+            },
+            {
+              action: 'GET',
+              path: '/notifications/sessions',
+            },
+            {
+              action: 'POST',
+              path: '/notifications/sessions',
+            },
+            {
+              action: 'GET',
+              path: '/notifications/sessions/{token}',
+            },
+            {
+              action: 'DELETE',
+              path: '/notifications/sessions/{token}',
+            },
+          ]
+        }
+      ]
+    },
+    {
       name: 'Me',
       permissions: [
         {
@@ -461,7 +492,27 @@ export const MK_DEFAULT_WHITELIST = {
             {
               path: '/marketplace/presigned-url',
               action: 'GET'
-            }
+            },
+            {
+              action: 'GET',
+              path: '/me/notifications',
+            },
+            {
+              action: 'GET',
+              path: '/notifications/sessions',
+            },
+            {
+              action: 'POST',
+              path: '/notifications/sessions',
+            },
+            {
+              action: 'GET',
+              path: '/notifications/sessions/{token}',
+            },
+            {
+              action: 'DELETE',
+              path: '/notifications/sessions/{token}',
+            },
           ],
         },
         {

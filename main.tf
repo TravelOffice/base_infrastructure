@@ -183,6 +183,7 @@ module "base_backend_secret_manager" {
     "DYNAMO_ROLE_PERMISSION_TABLE"             = module.role_permission_table_dynamodb.db_name
     "DYNAMO_MARKETPLACE_ROLE_PERMISSION_TABLE" = module.marketplace_role_permission_table_dynamodb.db_name
     "DYNAMO_NOTIFICATION_TABLE"                = module.notification_table_dynamodb.db_name
+    "DYNAMO_SETTING_TABLE"                     = module.setting_table_dynamodb.db_name
     "DOMAIN_NAME"                              = local.hosted_domain_name
   }
   TAGS = local.base_backend_tags
@@ -279,6 +280,7 @@ module "marketing_secret_manager" {
     "DYNAMO_STATISTIC_TABLE"                   = module.statistic_table_dynamodb.db_name
     "DYNAMO_MARKETPLACE_ROLE_PERMISSION_TABLE" = module.marketplace_role_permission_table_dynamodb.db_name
     "DYNAMO_NOTIFICATION_TABLE"                = module.notification_table_dynamodb.db_name
+    "DYNAMO_SETTING_TABLE"                     = module.setting_table_dynamodb.db_name
     "FB_MESSAGE_PLATFORM_VERIFY_TOKEN"         = local.fb_token
     "FB_GRAPH_ENDPOINT"                        = local.fb_graph_endpoint
     "FACEBOOK_CLIENT_ID"                       = local.fb_client_id
@@ -414,6 +416,19 @@ module "notification_table_dynamodb" {
   MAX_WRITE_CAPACITY          = var.NOTIFICATION_MAX_WCU
   READ_CAPACITY               = var.NOTIFICATION_RCU
   MAX_READ_CAPACITY           = var.NOTIFICATION_MAX_RCU
+  DELETION_PROTECTION_ENABLED = var.DELETION_PROTECTION_ENABLED
+}
+
+module "setting_table_dynamodb" {
+  source                      = "../../modules/database/dynamodb/setting_table"
+  ENV                         = var.ENV
+  DB_NAME                     = "setting_table"
+  TAGS                        = local.marketing_tags
+  AUTOSCALING_ENABLED         = var.DYNAMO_AUTOSCALING_ENABLED
+  WRITE_CAPACITY              = var.SETTING_WCU
+  MAX_WRITE_CAPACITY          = var.SETTING_MAX_WCU
+  READ_CAPACITY               = var.SETTING_RCU
+  MAX_READ_CAPACITY           = var.SETTING_MAX_RCU
   DELETION_PROTECTION_ENABLED = var.DELETION_PROTECTION_ENABLED
 }
 

@@ -179,6 +179,23 @@ variable "NOTIFICATION_MAX_RCU" {
   default = 100
 }
 
+// setting_table
+variable "SETTING_WCU" {
+  default = 10
+}
+
+variable "SETTING_MAX_WCU" {
+  default = 50
+}
+
+variable "SETTING_RCU" {
+  default = 10
+}
+
+variable "SETTING_MAX_RCU" {
+  default = 50
+}
+
 // travel_table
 variable "TRAVEL_WCU" {
   default = 50

@@ -65,6 +65,10 @@ output "MARKETING" {
           arn  = module.notification_table_dynamodb.arn
           name = module.notification_table_dynamodb.db_name
         }
+        setting_table = {
+          arn  = module.setting_table_dynamodb.arn
+          name = module.setting_table_dynamodb.db_name
+        }
       }
     }
     frontend = {

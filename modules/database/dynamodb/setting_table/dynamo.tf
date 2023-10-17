@@ -124,22 +124,12 @@ module "dynamodb_table" {
     target_value       = 70
     max_capacity       = var.MAX_READ_CAPACITY
   }
-  autoscaling_indexes = {
-    ReverseIndex = {
-      read_max_capacity  = var.MAX_READ_CAPACITY
-      read_min_capacity  = var.MIN_READ_CAPACITY
-      write_max_capacity = var.MAX_READ_CAPACITY
-      write_min_capacity = var.MIN_WRITE_CAPACITY
-    }
-  }
   billing_mode                   = var.BILLING_MODE
   ttl_attribute_name             = "ttl"
   ttl_enabled                    = true
   tags                           = var.TAGS
   point_in_time_recovery_enabled = var.PITR
   deletion_protection_enabled    = var.DELETION_PROTECTION_ENABLED
-
-
 }
 
 output "arn" {

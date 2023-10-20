@@ -1105,6 +1105,14 @@ export const DEFAULT_WHITELIST = {
               action: 'DELETE',
               path: '/notifications/sessions/{token}',
             },
+            {
+              action: 'PUT',
+              path: '/me/notifications/mark-all-read',
+            },
+            {
+              action: 'PUT',
+              path: '/me/notifications/mark-as-read',
+            },
           ]
         }
       ]
@@ -1127,6 +1135,10 @@ export const DEFAULT_WHITELIST = {
             {
               action: 'GET',
               path: '/presigned-url'
+            },
+            {
+              action: 'GET',
+              path: '/settings/kpi'
             }
           ],
         },

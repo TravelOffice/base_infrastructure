@@ -513,6 +513,14 @@ export const MK_DEFAULT_WHITELIST = {
               action: 'DELETE',
               path: '/notifications/sessions/{token}',
             },
+            {
+              action: 'PUT',
+              path: '/me/notifications/mark-all-read',
+            },
+            {
+              action: 'PUT',
+              path: '/me/notifications/mark-as-read',
+            },
           ],
         },
         {

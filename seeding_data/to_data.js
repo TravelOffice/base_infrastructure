@@ -1168,6 +1168,14 @@ export const DEFAULT_WHITELIST = {
             {
               action: 'GET',
               path: '/statistic/sales/{id}',
+            },
+            {
+              action: 'GET',
+              path: '/statistic/chat-sessions',
+            },
+            {
+              action: 'GET',
+              path: '/statistic/{username}/chat-sessions',
             }
           ],
         },

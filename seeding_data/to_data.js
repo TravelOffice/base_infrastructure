@@ -1176,6 +1176,10 @@ export const DEFAULT_WHITELIST = {
             {
               action: 'GET',
               path: '/statistic/{username}/chat-sessions',
+            },
+            {
+              action: 'GET',
+              path: '/statistic/tenant/conversation-platforms',
             }
           ],
         },

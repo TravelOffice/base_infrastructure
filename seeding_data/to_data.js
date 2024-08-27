@@ -18,7 +18,7 @@ export const DEFAULT_ROLES = {
         'assign_chat',
         'view_all_conversations',
         'view_message',
-        'read_user',
+        'view_all_users',
         'create_user',
         'update_user',
         'delete_user',
@@ -123,7 +123,7 @@ export const DEFAULT_ROLES = {
       isDefault: true,
       permissions: [
         'assign_tour_operator',
-        'view_manager_dashboard'
+        // 'view_manager_dashboard'
       ],
     },
   ],

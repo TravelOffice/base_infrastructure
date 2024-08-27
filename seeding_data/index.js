@@ -1,4 +1,5 @@
-import AWS from 'aws-sdk';
+import { DynamoDBClient, BatchWriteItemCommand } from "@aws-sdk/client-dynamodb";
+import { marshall } from "@aws-sdk/util-dynamodb";
 import {
   DEFAULT_PERMISSIONS,
   DEFAULT_WHITELIST,
@@ -13,8 +14,7 @@ import {
   MK_TABLE,
 } from './marketplace_data.js';
 
-const dynamodb = new AWS.DynamoDB({
-  apiVersion: '2012-08-10',
+const dynamodb = new DynamoDBClient({
   region: 'ap-southeast-1',
 });
 
@@ -28,21 +28,18 @@ const main = async () => {
 };
 
 const initTravelOfficeInfo = async () => {
-  // Init default permissions
   await writePermissionToDynamo(
     TO_TABLE,
     DEFAULT_PERMISSIONS.groups.concat([]),
     PERMISSION_INDEX,
     PERMISSION_INDEX
   );
-  // Init default whitelist
   await writePermissionToDynamo(
     TO_TABLE,
     DEFAULT_WHITELIST.groups.concat([]),
     WHITELIST_INDEX,
     PERMISSION_INDEX
   );
-  // Init default role
   await writeRoleToDynamo(
     TO_TABLE,
     listDefaultPermissions(DEFAULT_PERMISSIONS),
@@ -51,21 +48,18 @@ const initTravelOfficeInfo = async () => {
 }
 
 const initMarketplaceInfo = async () => {
-  // Init default permissions
   await writePermissionToDynamo(
     MK_TABLE,
     MK_DEFAULT_PERMISSIONS.groups.concat([]),
     PERMISSION_INDEX,
     PERMISSION_INDEX
   );
-  // Init default whitelist
   await writePermissionToDynamo(
     MK_TABLE,
     MK_DEFAULT_WHITELIST.groups.concat([]),
     WHITELIST_INDEX,
     PERMISSION_INDEX
   );
-  // Init default role
   await writeRoleToDynamo(
     MK_TABLE,
     listDefaultPermissions(MK_DEFAULT_PERMISSIONS),
@@ -80,15 +74,18 @@ const writePermissionToDynamo = async (table, records, pk, skPrefix) => {
     requestItems[`${process.env.BUILD_ENV}-${table}`] = record.map((item) => {
       return {
         PutRequest: {
-          Item: AWS.DynamoDB.Converter.marshall({
+          Item: marshall({
             pk: pk,
             sk: `${skPrefix}#${item.name}`,
             ...item,
+          }, {
+            removeUndefinedValues: true,
           }),
         },
       };
     });
-    await dynamodb.batchWriteItem({ RequestItems: requestItems }).promise();
+    const command = new BatchWriteItemCommand({ RequestItems: requestItems });
+    const rs = await dynamodb.send(command);
   }
 };
 
@@ -111,19 +108,27 @@ const writeRoleToDynamo = async (table, defaultPermissions, defaultRoles) => {
       permissions = permissions.map(permission => {
         return defaultPermissions.find(item => item.name === permission);
       })
+      if (role.name === 'SALE')
+      console.log(permissions);
+      const item = 
+      {
+        pk: ROLE_INDEX,
+        sk: `${ROLE_INDEX}#${role.name}`,
+        extend: role.extend,
+        isDefault: role.isDefault,
+        permissions,
+      };
       return {
         PutRequest: {
-          Item: AWS.DynamoDB.Converter.marshall({
-            pk: ROLE_INDEX,
-            sk: `${ROLE_INDEX}#${role.name}`,
-            extend: role.extend,
-            isDefault: role.isDefault,
-            permissions,
+          Item: marshall(item, {
+            removeUndefinedValues: true,
           }),
         },
       };
     });
-  await dynamodb.batchWriteItem({ RequestItems: requestItems }).promise();
+  const command = new BatchWriteItemCommand({ RequestItems: requestItems });
+  await dynamodb.send(command);
+  console.log('Write role success');
 };
 
 const listDefaultPermissions = (defaultPermissions) => {
